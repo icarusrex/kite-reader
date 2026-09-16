@@ -8,6 +8,7 @@ import { currentLevel, freshProgress, jumpTo, Progress, today } from '../engine/
 import { hasManifest, hasRecording, refreshRecordings, say } from '../audio/speaker';
 import { remove, save } from '../engine/storage';
 import { meter } from '../audio/mic';
+import { exportSounds } from '../audio/exportSounds';
 import { LIBRARY, loadBook } from '../content/readaloud';
 import { tokenize, wordLevel } from '../engine/wordLevel';
 import { BooksAdmin } from '../books/BooksAdmin';
@@ -82,6 +83,7 @@ function ProgressTab() {
 function SoundsTab() {
   const [, force] = useState(0);
   const [recording, setRecording] = useState<string | null>(null);
+  const [exporting, setExporting] = useState(false);
   const rec = useRef<MediaRecorder | null>(null);
   const chunks = useRef<Blob[]>([]);
   const stream = useRef<MediaStream | null>(null);
@@ -110,7 +112,9 @@ function SoundsTab() {
     <>
       <div className="card">
         <h2>Record the pure sounds ({recorded}/{GRAPHEMES.length})</h2>
-        <p>Press and hold <b>Record</b>, say the sound, release. Keep it pure: “mmm”, not “muh”. Stop sounds (t, d, g, p, b, k) should be short and nearly whispered. Recordings stay on this device and override any generated audio.</p>
+        <p>Press and hold <b>Record</b>, say the sound, release. Keep it pure: “mmm”, not “muh”. Stop sounds (t, d, g, p, b, k) should be short and nearly whispered. Recordings on this device override the app’s built-in sounds.</p>
+        <p>When all sounds are recorded, <b>export them for the app</b> so every device gets them (steps in <code>MANUAL-TASKS.md</code>).</p>
+        <button className="btn" disabled={!recorded || exporting} onClick={async () => { setExporting(true); try { await exportSounds(); } finally { setExporting(false); } }}>{exporting ? 'Exporting…' : `Export ${recorded} sound${recorded === 1 ? "" : "s"} for the app`}</button>
       </div>
       <div className="card">
         <table><thead><tr><th>Sound</th><th>Level</th><th>Key word</th><th>Tip</th><th /></tr></thead><tbody>
@@ -123,7 +127,7 @@ function SoundsTab() {
               <td style={{ whiteSpace: 'nowrap' }}>
                 <button className={`btn rec ${recording === g.id ? 'on' : ''}`} onPointerDown={() => start(g.id)} onPointerUp={stopRec} onPointerLeave={stopRec}>{recording === g.id ? 'Recording…' : 'Hold to record'}</button>{' '}
                 <button className="btn light" onClick={() => say({ g: g.id })}>▶</button>{' '}
-                {hasRecording(g.id) ? <span className="pill good">recorded</span> : hasManifest(`phoneme:${g.id}`) ? <span className="pill">generated</span> : <span className="pill warn">TTS fallback</span>}
+                {hasRecording(g.id) ? <span className="pill good">recorded here</span> : hasManifest(`phoneme:${g.id}`) ? <span className="pill good">built in</span> : <span className="pill warn">device voice</span>}
                 {hasRecording(g.id) && <button className="btn light" style={{ marginLeft: 6 }} onClick={async () => { await remove(`rec:g:${g.id}`); await refreshRecordings(); force((n) => n + 1); }}>✕</button>}
               </td>
             </tr>

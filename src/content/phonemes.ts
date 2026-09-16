@@ -32,6 +32,10 @@ export const GRAPHEMES: Grapheme[] = [
   { id: 'w', level: 18, continuous: true, ipa: 'w', tts: 'www', example: 'web', recordTip: 'Round lips: www (short).' },
   { id: 'r', level: 19, continuous: true, ipa: 'ɹ', tts: 'rrr', example: 'rat', recordTip: 'English r, growl: rrr. No trill.' },
   { id: 'k', level: 20, continuous: false, ipa: 'k', tts: 'k', example: 'kite', recordTip: 'Short, whispered: k.' },
+  // Taught later, but needed now for the oral listening games (dog, sun, bed).
+  { id: 'o', level: 26, continuous: true, ipa: 'ɒ', tts: 'o', example: 'octopus', recordTip: 'The "o" in on/dog: ooo (short, not "oh").' },
+  { id: 'u', level: 39, continuous: true, ipa: 'ʌ', tts: 'uh', example: 'up', recordTip: 'The "u" in up/sun: uuu (short).' },
+  { id: 'e', level: 44, continuous: true, ipa: 'ɛ', tts: 'eh', example: 'egg', recordTip: 'The "e" in egg/bed: eee (short, not "ee").' },
 ];
 
 export const GRAPHEME_BY_ID: Record<string, Grapheme> = Object.fromEntries(GRAPHEMES.map((g) => [g.id, g]));

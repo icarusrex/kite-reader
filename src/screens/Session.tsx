@@ -2,16 +2,16 @@ import { useEffect, useRef, useState } from 'react';
 import { meter } from '../audio/mic';
 import { say, stop } from '../audio/speaker';
 import { levelByN } from '../content/levels';
-import { Banner, Build, Ear, Glide, HearTap, HeartWord, Hold, ReadMatch, Reveal, SeeSay, Sentence, WhichWord } from '../activities/Activities';
+import { Banner, Build, Ear, Glide, HearTap, HeartWord, Hold, ReadMatch, Reveal, SeeSay, Sentence, Story, WhichWord } from '../activities/Activities';
 import { ActivityProps } from '../activities/types';
-import { PASS_RATIO, SessionExtras, Step, StepKind, buildCheckout, buildMain } from '../engine/session';
+import { PASS_RATIO, SessionExtras, Step, StepKind, buildCheckout, buildMain, storyFor } from '../engine/session';
 import { SessionLog, coldCheckDue, currentLevel, failCold, passCheckout, passCold, recordAnswer, today } from '../engine/progress';
 import { useStore } from '../app/store';
 import { ParentCorner } from '../ui/components';
 
 const VIEWS: Record<StepKind, (p: ActivityProps) => JSX.Element> = {
   ear: Ear, reveal: Reveal, hearTap: HearTap, seeSay: SeeSay, hold: Hold, glide: Glide, alien: Glide,
-  readMatch: ReadMatch, build: Build, whichWord: WhichWord, sentence: Sentence, banner: Banner, heart: HeartWord,
+  readMatch: ReadMatch, build: Build, whichWord: WhichWord, sentence: Sentence, story: Story, banner: Banner, heart: HeartWord,
 };
 
 interface Tally { answered: number; correct: number }
@@ -64,7 +64,7 @@ export function Session({ onExit, onParent, extras }: { onExit: (log: SessionLog
     update((p) => ({ ...p, sessions: [...p.sessions, log] }));
     if (endedBy === 'fatigue') await say({ p: 'rest' });
     if (storyTime) {
-      setQueue((q) => [...q.slice(0, index + 1), { uid: 'story', kind: 'banner', banner: 'story_time', phase: 'main' }]);
+      setQueue((q) => [...q.slice(0, index + 1), { uid: 'story', kind: 'banner', banner: 'story_time', lines: storyFor(n), phase: 'main' }]);
       setIndex((i) => i + 1);
       pendingExit.current = log;
       return;
@@ -76,7 +76,7 @@ export function Session({ onExit, onParent, extras }: { onExit: (log: SessionLog
   const wantsStoryTime = () => {
     const n = levelRef.current;
     const sessionsSoFar = progressRef.current.sessions.length + 1;
-    return levelByN(n).sentences.length > 0 && sessionsSoFar % 3 === 0;
+    return !!storyFor(n) && sessionsSoFar % 3 === 0;
   };
 
   /** Called when the queue runs out: decide what comes next. */
@@ -89,9 +89,8 @@ export function Session({ onExit, onParent, extras }: { onExit: (log: SessionLog
         update((p) => passCold(p, n));
         const nextP = passCold(progressRef.current, n);
         const next = currentLevel(nextP);
-        say({ p: 'level_done' });
         setLevel(next);
-        return appendSteps(buildMain(nextP, next, extras));
+        return appendSteps([{ uid: `done${n}`, kind: 'banner', banner: 'level_done', phase: 'main' }, ...buildMain(nextP, next, extras)]);
       }
       update((p) => failCold(p, n));
       return appendSteps(buildMain(progressRef.current, n, extras));

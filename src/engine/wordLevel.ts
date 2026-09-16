@@ -187,7 +187,10 @@ export function wordLevel(raw: string): WordLevel {
   };
   if (/[^s]s$/.test(word) && !/(ss|us|is)$/.test(word)) {
     if (/(sh|ch|x|z|ss)es$/.test(word)) { const r = tryBase(word.slice(0, -2), 44, '-es'); if (r) return r; }
-    const r = tryBase(word.slice(0, -1), 28, '-s'); if (r) return r;
+    // "gas", "yes", "bus": what's left isn't a word, so the s belongs to the word rather than being an ending.
+    const base = word.slice(0, -1);
+    const isWord = base.length === 2 ? ['it', 'up', 'at', 'in', 'on', 'go', 'do', 'no', 'so', 'me', 'we', 'he'].includes(base) : !DICT || DICT.has(base) || base in HEART_WORDS;
+    if (isWord) { const r = tryBase(base, 28, '-s'); if (r) return r; }
   }
   if (word.endsWith('ed') && word.length > 4) {
     const stem = word.slice(0, -2);

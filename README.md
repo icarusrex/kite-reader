@@ -4,14 +4,18 @@ A private, home-built early-reading tutor (Mentava-style systematic phonics, Dir
 
 Curriculum spec: `Curriculum v1.md` in the Obsidian vault (`04-personal/Mentava Clone`).
 
-## Status — v0.1
+## Status — v0.2
 
-- Readiness check (dogfish/fishdog directionality + oral blending)
-- Levels 1–10: a, m, s, t, review, f, d, g, i, n
-- Activities: Ear Game (oral PA), Sound Reveal, Hear & Tap, See & Say, Hold It, Glide Blend + Say It Fast, Alien Names, Read & Match, Which Word, Build It, Sentence Read, Story-time prompt
-- Mastery engine: in-session re-injection of misses, Leitner spaced review, 10-item level checkout + next-day cold check, fatigue stop, active-time session cap
-- Neutral error correction (My turn → Your turn), no points/streaks/currency
-- Grown-ups area (press and hold 🔒 top-left 1.5 s): progress, trouble spots, **record pure sounds**, book decodability check, settings, backup/export
+- Readiness check (dogfish/fishdog directionality + oral blending, using only unambiguous pictures)
+- Levels 1–20 (Stage 1): a, m, s, t, review, f, d, g, i, n, p, h, b, l, j, c, v, w, r, k
+- Activities: Ear Game (rhyme, onset-rime, blending, first and final sound), Sound Reveal, Hear & Tap (+ confusable pairs b/d, f/v, r/w), See & Say, Hold It, Glide Blend + Say It Fast, Alien Names, Read & Match, Which Word, Build It, Sentence Read, **Story** (levels 5–20), Heart Word (modelled first, then read cold; tricky part marked)
+- Themed stories remixed from public-domain characters: Pooh and Pig (Winnie-the-Pooh), Tin Man (Oz). Vocabulary cues from *Teach Your Child to Read in 100 Easy Lessons*; no text copied.
+- Mastery engine: in-session re-injection of misses, Leitner spaced review, 10-item level checkout + next-day cold check, fatigue stop, active-time session cap, level-complete celebration
+- DI error correction: My turn → Together → Your turn. No points/streaks/currency
+- Grown-ups area (press and hold 🔒 top-left 1.5 s): progress, trouble spots, record pure sounds and **export them into the app** (`npm run sounds`), books, settings, backup/import
+- Content validator checks letters taught **and** patterns taught (clusters, -s, heart words) via `wordLevel.ts`
+
+**Manual steps for the grown-up: see `MANUAL-TASKS.md`.**
 
 ## Books
 
@@ -21,7 +25,7 @@ Public-domain read-aloud books from the family library live in `src/content/read
 - *Winnie-the-Pooh* (Milne, 1926): introduction + 10 chapters. Public domain in the US; in the EU/Portugal from 1 Jan 2027.
 
 What they power:
-- **Story chair** (📚 on home): grown-up reads aloud; words he can already decode are highlighted, 3 vocabulary words per chapter, discussion prompts, chapters-read log.
+- **Story chair** (📚 on home): grown-up reads aloud; words the child can already decode are highlighted, 3 vocabulary words per chapter, discussion prompts, chapters-read log.
 - **Real-book sentences** in sessions once decodable (`npm run mine` → `src/content/bookSentences.json`).
 - **Readability** per level in Grown-ups → Books.
 
@@ -55,7 +59,7 @@ No API keys are used at runtime.
 
 ## Running it
 
-Web: https://reader.viableplanet.eu, a Cloudflare Worker (`kite-reader`) **behind Cloudflare Access**, so only allowed emails can open it. It must stay behind Access and this repo must stay private: the site bundles the family's own copies of picture books (and *Winnie-the-Pooh*, under EU copyright until 2027) for private, non-commercial use only.
+Web: https://reader.viableplanet.eu, a Cloudflare Worker (`kite-reader`) **behind Cloudflare Access**, so only allowed emails can open it. Private family app.
 
 Deploy: `npm run build && npx wrangler deploy` (or push to `main` once the Cloudflare secrets are set). Local: `npm run local` → http://127.0.0.1:5173.
 

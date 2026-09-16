@@ -12,7 +12,7 @@ export default defineConfig({
       includeAssets: ['icon.svg'],
       workbox: {
         // Books included so the tablet can read them offline.
-        globPatterns: ['**/*.{js,css,html,svg,woff2,json,mp3,jpg}'],
+        globPatterns: ['**/*.{js,css,html,svg,woff2,json,mp3,wav,jpg}'],
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
       },
       manifest: {

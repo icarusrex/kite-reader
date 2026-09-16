@@ -27,4 +27,9 @@ describe('wordLevel', () => {
     expect(wordLevel('sometimes').level).toBe(113);
     expect(wordLevel('himself').level).toBe(65);
   });
+  it('final s is only an ending when the rest is a word', () => {
+    expect(wordLevel('gas').level).toBe(8);
+    expect(wordLevel('cats').level).toBe(28);
+    expect(wordLevel('thing').level).toBe(37);
+  });
 });

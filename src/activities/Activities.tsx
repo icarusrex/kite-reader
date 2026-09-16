@@ -1,12 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { meter } from '../audio/mic';
-import { say, saySegmented, sayYes } from '../audio/speaker';
+import { Utter, say, saySegmented, sayYes } from '../audio/speaker';
 import { GRAPHEME_BY_ID } from '../content/phonemes';
-import { displayChunks, segment } from '../engine/decodable';
+import { displayChunks, segment, trickyParts } from '../engine/decodable';
 import { Caption, Kite, PictureTile, ReplayButton, Tile, Waveform, useTap } from '../ui/components';
 import { useSpokenScore } from './scoring';
 import { useUtterance } from './useSpeech';
 import { ActivityProps, wait } from './types';
+
+/** DI correction for spoken answers: My turn (model) → Together (model while child joins in) → Your turn. */
+const correctSpoken = async (...model: Utter[]) => {
+  await say({ p: 'my_turn' }, { pause: 150 }, ...model, { pause: 400 }, { p: 'together' }, { pause: 150 }, ...model, { pause: 900 }, { p: 'your_turn' });
+};
 
 /* ---------- A1 Sound Reveal (unscored) ---------- */
 export function Reveal({ step, onDone }: ActivityProps) {
@@ -98,7 +103,7 @@ export function SeeSay({ step, ctx, onDone, setNeutral }: ActivityProps) {
   useEffect(() => { say({ p: 'say_sound' }).then(() => setReady(true)); }, [g]);
   const { strip, attempt } = useSpokenScore({
     enabled: ready, parentScoring: ctx.settings.parentScoring, onDone, setNeutral,
-    correction: () => say({ p: 'my_turn' }, { pause: 150 }, { g }, { pause: 400 }, { p: 'your_turn' }),
+    correction: () => correctSpoken({ g }),
   });
   return (
     <div className="stage">
@@ -222,7 +227,7 @@ export function Glide({ step, ctx, onDone, setNeutral }: ActivityProps) {
   const { strip } = useSpokenScore({
     enabled: mode === 'fast' || (mode === 'glide' && (!meter.ready || falls >= 2)),
     parentScoring: ctx.settings.parentScoring, setNeutral,
-    correction: () => say({ p: 'my_turn' }, { pause: 150 }, { w: word }, { pause: 400 }, { p: 'your_turn' }),
+    correction: () => correctSpoken({ w: word }),
     onDone: (ok) => onDone(ok && fallsRef.current === 0),
   });
 
@@ -353,6 +358,7 @@ export function Ear({ step, onDone, setNeutral }: ActivityProps) {
       case 'onset': { const s = segsOf(e.target); await say({ p: 'ear_listen' }, { pause: 300 }, { g: s[0] }, { pause: 500 }, { w: e.target.slice(1) }); break; }
       case 'rhyme': await say({ p: 'ear_rhyme' }, { pause: 150 }, { w: e.target }); break;
       case 'first': await say({ p: 'ear_first' }, { pause: 150 }, { g: e.target }); break;
+      case 'last': await say({ p: 'ear_last' }, { pause: 150 }, { g: e.target }); break;
     }
   };
   const { choose, stateOf } = useTapChoice({
@@ -360,7 +366,7 @@ export function Ear({ step, onDone, setNeutral }: ActivityProps) {
     correction: async () => {
       await say({ p: 'my_turn' }, { pause: 150 });
       if (e.mode === 'rhyme') await say({ w: e.target }, { pause: 200 }, { w: answer });
-      else if (e.mode === 'first') await say({ g: e.target }, { pause: 200 }, { w: answer });
+      else if (e.mode === 'first' || e.mode === 'last') await say({ g: e.target }, { pause: 200 }, { w: answer });
       else { await saySegmented(segsOf(answer), 350); await say({ pause: 200 }, { w: answer }); }
     },
   });
@@ -379,36 +385,70 @@ export function Banner({ step, onDone }: ActivityProps) {
   const done = useRef(false);
   const finish = () => { if (!done.current) { done.current = true; onDone(null); } };
   const tap = useTap(finish);
-  const icon = { checkout: '⭐', cold: '🌅', story_time: '📖', new_sound: '🚪' }[b];
-  const text = { checkout: 'Show what you know', cold: 'Remember yesterday?', story_time: 'Story time! Go find someone.', new_sound: 'A new sound!' }[b];
+  const icon = { checkout: '⭐', cold: '🌅', story_time: '📖', new_sound: '🚪', level_done: '🪁' }[b];
+  const text = { checkout: 'Show what you know', cold: 'Remember yesterday?', story_time: 'Story time! Go find someone.', new_sound: 'A new sound!', level_done: 'You finished a level!' }[b];
+  const story = b === 'story_time' ? step.lines : undefined;
   useEffect(() => {
-    say({ p: b }).then(() => { if (b !== 'story_time') setTimeout(finish, 500); });
+    say({ p: b }).then(() => { if (b !== 'story_time') setTimeout(finish, b === 'level_done' ? 1800 : 500); });
     // eslint-disable-next-line
   }, []);
   return (
     <div className="stage" onPointerDown={b === 'story_time' ? undefined : tap}>
-      <div style={{ fontSize: '26vmin' }}>{icon}</div>
+      {b === 'level_done' && <div className="burst" aria-hidden>{Array.from({ length: 14 }, (_, i) => <span key={i} style={{ '--i': i } as React.CSSProperties} />)}</div>}
+      <div style={{ fontSize: story ? '12vmin' : '26vmin' }}>{icon}</div>
       <h1 className="title">{text}</h1>
+      {story && <div className="story">{story.map((l, i) => <p key={i}>{l}</p>)}</div>}
       {b === 'story_time' && <button className="primary soft" onPointerDown={tap}>We read it ✓</button>}
     </div>
   );
 }
 
-/* ---------- A11 Heart Word (irregular words from books he owns) ---------- */
+/* ---------- A11 Heart Word ---------- */
+/** First exposure (step.model): show the word with the tricky part marked, say it, child repeats (unscored).
+ *  Otherwise the child reads it cold: nothing is said first, the grown-up scores. */
 export function HeartWord({ step, ctx, onDone, setNeutral }: ActivityProps) {
   const word = step.word!;
+  const parts = trickyParts(word, ctx.level);
   const [ready, setReady] = useState(false);
-  useEffect(() => { say({ p: 'heart_word' }, { pause: 200 }, { w: word }, { pause: 400 }, { p: 'your_turn' }).then(() => setReady(true)); /* eslint-disable-next-line */ }, []);
+  useEffect(() => {
+    (step.model
+      ? say({ p: 'heart_word' }, { pause: 200 }, { w: word }, { pause: 400 }, { p: 'together' }, { pause: 150 }, { w: word }, { pause: 900 }, { p: 'your_turn' })
+      : say({ p: 'heart_read' })).then(() => setReady(true));
+    // eslint-disable-next-line
+  }, []);
+  const next = useTap(() => onDone(null));
   const { strip } = useSpokenScore({
-    enabled: ready, parentScoring: ctx.settings.parentScoring, onDone, setNeutral,
-    correction: () => say({ p: 'my_turn' }, { pause: 150 }, { w: word }, { pause: 400 }, { p: 'your_turn' }),
+    enabled: ready && !step.model, parentScoring: ctx.settings.parentScoring, onDone, setNeutral,
+    correction: () => correctSpoken({ w: word }),
   });
   return (
     <div className="stage">
       <div style={{ fontSize: '8vmin' }}>❤️</div>
-      <div className="prompt-word">{word}</div>
+      <div className="prompt-word">{parts.map((pt, i) => <span key={i} className={pt.tricky ? 'tricky' : ''}>{pt.text}</span>)}</div>
       {step.source && <div className="subtitle">for <i>{step.source}</i></div>}
       <Waveform />
+      {step.model ? ready && <div className="parent-strip"><button className="pbtn ok" onPointerDown={next} aria-label="Next">→</button><small>grown-up</small></div> : strip}
+    </div>
+  );
+}
+
+/* ---------- A13 Story ---------- */
+export function Story({ step, ctx, onDone, setNeutral }: ActivityProps) {
+  const lines = step.lines!;
+  const words = lines.flatMap((l, li) => l.split(' ').map((w) => ({ w, li })));
+  const [next, setNext] = useState(0);
+  useEffect(() => { say({ p: 'story' }); }, []);
+  const { strip } = useSpokenScore({
+    enabled: next >= words.length, parentScoring: ctx.settings.parentScoring, setNeutral, onDone,
+    correction: async () => { await say({ p: 'my_turn' }); for (const { w } of words) await say({ w: w.replace(/[^A-Za-z]/g, '') }); await say({ p: 'your_turn' }); setNext(0); },
+  });
+  return (
+    <div className="stage">
+      <div className="story">
+        {lines.map((_, li) => (
+          <p key={li}>{words.map((x, i) => x.li === li && <SentenceChip key={i} w={x.w} state={i < next ? 'done' : i === next ? 'next' : ''} onTap={() => i === next && setNext(next + 1)} />)}</p>
+        ))}
+      </div>
       {strip}
     </div>
   );

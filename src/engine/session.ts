@@ -1,6 +1,6 @@
 import { LEVELS, Level, knownGraphemes, levelByN } from '../content/levels';
 import { GRAPHEMES, GRAPHEME_BY_ID } from '../content/phonemes';
-import { PICTURES } from '../content/pictures';
+import { CLEAR_WORDS, PICTURES } from '../content/pictures';
 import { checkText, segment } from './decodable';
 import BOOK_SENTENCES from '../content/bookSentences.json';
 import { wordLevel } from './wordLevel';
@@ -8,7 +8,7 @@ import { Progress, dueItems } from './progress';
 
 export type StepKind =
   | 'ear' | 'reveal' | 'hearTap' | 'seeSay' | 'hold' | 'glide' | 'alien'
-  | 'readMatch' | 'build' | 'whichWord' | 'sentence' | 'banner' | 'heart';
+  | 'readMatch' | 'build' | 'whichWord' | 'sentence' | 'story' | 'banner' | 'heart';
 
 export interface Step {
   uid: string;
@@ -16,13 +16,15 @@ export interface Step {
   g?: string;               // grapheme
   word?: string;
   text?: string;
+  lines?: string[];         // story sentences
   options?: string[];
-  ear?: { mode: 'blend' | 'onset' | 'rhyme' | 'first'; target: string; options: string[] };
-  banner?: 'checkout' | 'cold' | 'story_time' | 'new_sound';
+  ear?: { mode: 'blend' | 'onset' | 'rhyme' | 'first' | 'last'; target: string; options: string[] };
+  banner?: 'checkout' | 'cold' | 'story_time' | 'new_sound' | 'level_done';
   itemId?: string;          // for spaced repetition
   itemKind?: 'grapheme' | 'word';
   phase: 'main' | 'checkout' | 'cold';
   reinjected?: boolean;
+  model?: boolean;          // heart word: first exposure is shown and modelled, not scored
   source?: string;          // book title for real-book sentences
 }
 
@@ -38,12 +40,10 @@ export function shuffle<T>(a: T[]): T[] {
 const pick = <T,>(a: T[], n: number) => shuffle(a).slice(0, n);
 const cycle = <T,>(a: T[], n: number) => (a.length ? Array.from({ length: n }, (_, i) => a[i % a.length]) : []);
 
-const RHYMES: string[][] = [
-  ['cat', 'hat', 'bat', 'rat', 'mat'], ['fan', 'man', 'van'], ['pig', 'dig'], ['fin', 'pin', 'tin'],
-  ['dad', 'mad', 'sad'], ['map', 'cap', 'nap'], ['lip', 'sip'],
-];
+// Listening games show pictures the child must name from sound alone, so they use CLEAR_WORDS only.
+const RHYMES: string[][] = [['cat', 'hat', 'bat'], ['dog', 'log'], ['ten', 'pen']];
 const PICTURE_WORDS = Object.keys(PICTURES);
-const BLEND_WORDS = ['fan', 'fin', 'dig', 'sad', 'map', 'pig', 'hat', 'bat', 'pin', 'sit', 'man', 'cat', 'tin', 'nap', 'lip', 'rat'];
+const BLEND_WORDS = CLEAR_WORDS;
 
 /** Grapheme distractors: known first, then upcoming ones to fill. */
 function graphemeOptions(target: string, level: number, n: number): string[] {
@@ -68,7 +68,7 @@ function earStep(level: Level): Step {
     case 'rhyme': {
       const fam = pick(RHYMES, 1)[0];
       const [target, answer] = pick(fam, 2);
-      const others = pick(PICTURE_WORDS.filter((w) => !fam.includes(w)), 2);
+      const others = pick(CLEAR_WORDS.filter((w) => !fam.includes(w)), 2);
       return { uid: uid(), kind: 'ear', phase: 'main', ear: { mode: 'rhyme', target, options: shuffle([answer, ...others]) }, word: answer };
     }
     case 'onset_rime':
@@ -77,11 +77,13 @@ function earStep(level: Level): Step {
       const [answer, ...others] = pick(BLEND_WORDS, 3);
       return { uid: uid(), kind: 'ear', phase: 'main', ear: { mode: level.pa === 'onset_rime' ? 'onset' : 'blend', target: answer, options: shuffle([answer, ...others]) }, word: answer };
     }
-    case 'first_sound': {
+    case 'first_sound':
+    case 'final_sound': {
+      const at = level.pa === 'first_sound' ? 0 : -1;
+      const sound = (w: string) => segment(w)!.at(at)!;
       const answer = pick(BLEND_WORDS, 1)[0];
-      const first = segment(answer)![0];
-      const others = pick(BLEND_WORDS.filter((w) => segment(w)![0] !== first), 2);
-      return { uid: uid(), kind: 'ear', phase: 'main', ear: { mode: 'first', target: first, options: shuffle([answer, ...others]) }, word: answer };
+      const others = pick(BLEND_WORDS.filter((w) => sound(w) !== sound(answer)), 2);
+      return { uid: uid(), kind: 'ear', phase: 'main', ear: { mode: at === 0 ? 'first' : 'last', target: sound(answer), options: shuffle([answer, ...others]) }, word: answer };
     }
   }
 }
@@ -131,7 +133,7 @@ export function buildMain(p: Progress, n: number, extras?: SessionExtras): Step[
   const recent = level.newGraphemes.length ? level.newGraphemes : knownGraphemes(n).slice(-3);
 
   // 1. Ear warm-up (oral only)
-  for (let i = 0; i < 3; i++) steps.push(earStep(level));
+  for (let i = 0; i < 4; i++) steps.push(earStep(level));
 
   // 2. Spaced review
   for (const item of dueItems(p, undefined, 5)) {
@@ -147,6 +149,19 @@ export function buildMain(p: Progress, n: number, extras?: SessionExtras): Step[
     const g0 = GRAPHEME_BY_ID[g];
     if (g0.continuous) steps.push({ ...gStep('hold', g, n), itemId: undefined });
     steps.push(gStep('seeSay', g, n));
+  }
+
+  // Confusable sounds (b/d): Hear & Tap with only the two letters
+  for (let i = 0; i < 2 && level.contrast; i++) {
+    const g = pick(level.contrast, 1)[0];
+    steps.push({ ...gStep('hearTap', g, n), options: shuffle([...level.contrast]) });
+  }
+
+  // Heart words of this level: shown and modelled the first time, then read (3 exposures in the first sessions)
+  for (const h of level.heartWords) {
+    const seen = p.items[`h:${h}`]?.seen ?? 0;
+    if (seen < 3) steps.push({ uid: uid(), kind: 'heart', word: h, model: true, phase: 'main' });
+    if (seen < 6) steps.push({ uid: uid(), kind: 'heart', word: h, itemId: `h:${h}`, itemKind: 'word', phase: 'main' });
   }
 
   // Mixed sound practice: new + known
@@ -180,11 +195,17 @@ export function buildMain(p: Progress, n: number, extras?: SessionExtras): Step[
   // 8. Sentence
   // Pre-teach heart words for owned books coming within reach (max 2 new per session)
   const newHeart = (extras?.heart ?? []).filter((h) => !p.items[`h:${h.word}`]).slice(0, 2);
-  for (const h of newHeart) steps.push({ uid: uid(), kind: 'heart', word: h.word, source: h.source, itemId: `h:${h.word}`, itemKind: 'word', phase: 'main' });
+  for (const h of newHeart) {
+    steps.push({ uid: uid(), kind: 'heart', word: h.word, source: h.source, model: true, phase: 'main' });
+    steps.push({ uid: uid(), kind: 'heart', word: h.word, source: h.source, itemId: `h:${h.word}`, itemKind: 'word', phase: 'main' });
+  }
 
   const local = (extras?.sentences ?? []).filter((x) => n > LEVELS.length || checkText(x.text, n, heartUpTo(n)).ratio === 1);
   const fromBooks = [...bookSentencesFor(n).map((b) => ({ text: b.text, source: BOOK_TITLES[b.book] ?? b.book })), ...local];
-  if (fromBooks.length && Math.random() < 0.5) {
+  const sessionsHere = p.levels[n]?.sessions ?? 0;
+  if (level.story && sessionsHere % 2 === 1) {
+    steps.push({ uid: uid(), kind: 'story', lines: level.story, phase: 'main' });
+  } else if (fromBooks.length && Math.random() < 0.5) {
     const b = pick(fromBooks, 1)[0];
     steps.push({ uid: uid(), kind: 'sentence', text: b.text, source: b.source, phase: 'main' });
   } else if (level.sentences.length) {
@@ -218,7 +239,7 @@ export function buildCheckout(n: number, phase: 'checkout' | 'cold' = 'checkout'
 }
 
 const BOOK_TITLES: Record<string, string> = { 'wizard-of-oz': 'The Wonderful Wizard of Oz', 'winnie-the-pooh': 'Winnie-the-Pooh' };
-const heartUpTo = (n: number) => LEVELS.filter((l) => l.n <= n).flatMap((l) => l.heartWords);
+export const heartUpTo = (n: number) => LEVELS.filter((l) => l.n <= n).flatMap((l) => l.heartWords);
 
 /** Real sentences from the read-aloud books that are decodable now (strict check where levels are defined in detail). */
 export function bookSentencesFor(n: number) {
@@ -230,3 +251,8 @@ export function bookSentencesFor(n: number) {
 }
 
 export const PASS_RATIO = { checkout: 0.9, cold: 0.8 } as const;
+
+/** Story for "go find someone": the level's story, else the latest earlier one. */
+export function storyFor(n: number): string[] | undefined {
+  return [...LEVELS].reverse().find((l) => l.n <= n && l.story)?.story;
+}

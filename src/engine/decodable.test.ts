@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { checkText, checkWord, displayChunks, segment } from './decodable';
+import { checkText, checkWord, displayChunks, segment, trickyParts } from './decodable';
 import { LEVELS } from '../content/levels';
 
 describe('decodable', () => {
@@ -18,9 +18,13 @@ describe('decodable', () => {
     const heart: string[] = [];
     for (const l of LEVELS) {
       heart.push(...l.heartWords);
-      const all = [...l.words, ...l.nonsense, ...l.sentences, ...(l.pairs?.flat() ?? [])].join(' ');
+      const all = [...l.words, ...l.nonsense, ...l.sentences, ...(l.story ?? []), ...(l.pairs?.flat() ?? [])].join(' ');
       const res = checkText(all, l.n, heart);
       expect(res.failures, `level ${l.n}`).toEqual([]);
     }
+  });
+  it('marks the tricky part of a heart word', () => {
+    expect(trickyParts('Pooh', 11)).toEqual([{ text: 'P', tricky: false }, { text: 'ooh', tricky: true }]);
+    expect(trickyParts('said', 35)).toEqual([{ text: 's', tricky: false }, { text: 'ai', tricky: true }, { text: 'd', tricky: false }]);
   });
 });

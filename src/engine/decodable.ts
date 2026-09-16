@@ -59,3 +59,24 @@ export function checkText(text: string, level: number, heartWords: string[] = []
   const okCount = results.filter((r) => r.ok).length;
   return { total: tokens.length, decodable: okCount, ratio: tokens.length ? okCount / tokens.length : 1, failures: results.filter((r) => !r.ok) };
 }
+
+/** Split a heart word into parts the child can already sound out and the tricky part to learn by heart
+ *  ("Pooh" at L11 → P | ooh). */
+export function trickyParts(word: string, level: number): { text: string; tricky: boolean }[] {
+  const parts: { text: string; tricky: boolean }[] = [];
+  const letters = word.replace(/[^A-Za-z]/g, '');
+  let i = 0;
+  while (i < letters.length) {
+    const rest = letters.slice(i).toLowerCase();
+    const known = IDS.find((id) => rest.startsWith(id) && (GRAPHEMES.find((g) => g.id === id)!.level <= level));
+    // a letter only counts as regular if the next letters aren't the start of a vowel team (oo, ee…)
+    const team = /^[aeiou]{2}/.test(rest);
+    const len = known && !team ? known.length : team ? 2 : 1;
+    const tricky = !known || team;
+    const last = parts[parts.length - 1];
+    if (last && last.tricky === tricky) last.text += letters.slice(i, i + len);
+    else parts.push({ text: letters.slice(i, i + len), tricky });
+    i += len;
+  }
+  return parts;
+}

@@ -19,6 +19,7 @@ export const PROMPTS = {
   ear_listen: 'Listen. What word is it?',
   ear_rhyme: 'Which one rhymes with',
   ear_first: 'Which one starts with',
+  ear_last: 'Which one ends with',
   yes_1: 'Yes!',
   yes_2: 'That’s it.',
   yes_3: 'You got it.',
@@ -34,6 +35,8 @@ export const PROMPTS = {
   tap_fishdog: 'Tap fishdog.',
   ready_intro: 'Let’s play a little game.',
   heart_word: 'This is a heart word. We learn it by heart. It says',
+  heart_read: 'Read this heart word.',
+  story: 'Read the story. Tap each word as you read it.',
   book_ready: 'You can read a new book!',
 } as const;
 

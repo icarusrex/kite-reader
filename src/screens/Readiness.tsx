@@ -4,10 +4,12 @@ import { segment } from '../engine/decodable';
 import { shuffle } from '../engine/session';
 import { PictureTile, ReplayButton, useTap } from '../ui/components';
 import { useStore } from '../app/store';
+import { CLEAR_WORDS } from '../content/pictures';
 
 type Trial = { kind: 'dir'; answer: 'dogfish' | 'fishdog'; left: 'dogfish' | 'fishdog' } | { kind: 'blend'; answer: string; options: string[] };
 
-const BLEND = ['fan', 'fin', 'dig', 'sad', 'map', 'pig', 'hat', 'bat', 'pin', 'sit', 'cat', 'rat'];
+// Only pictures a child names exactly this way (see CLEAR_WORDS).
+const BLEND = CLEAR_WORDS;
 
 function makeTrials(): Trial[] {
   const dir: Trial[] = Array.from({ length: 8 }, (_, i) => ({ kind: 'dir', answer: i % 2 ? 'dogfish' : 'fishdog', left: Math.random() < 0.5 ? 'dogfish' : 'fishdog' }));

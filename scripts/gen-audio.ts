@@ -56,8 +56,8 @@ async function job(key: string, dir: string, name: string, text: string) {
 
 const words = new Set<string>();
 for (const l of LEVELS) {
-  [...l.words, ...l.heartWords, ...(l.pairs?.flat() ?? [])].forEach((w) => words.add(w.toLowerCase()));
-  l.sentences.forEach((s) => s.split(/\s+/).forEach((w) => words.add(w.replace(/[^A-Za-z]/g, '').toLowerCase())));
+  [...l.words, ...l.nonsense, ...l.heartWords, ...(l.pairs?.flat() ?? [])].forEach((w) => words.add(w.toLowerCase()));
+  [...l.sentences, ...(l.story ?? [])].forEach((s) => s.split(/\s+/).forEach((w) => words.add(w.replace(/[^A-Za-z]/g, '').toLowerCase())));
 }
 Object.keys(PICTURES).forEach((w) => words.add(w));
 // onset-rime pieces used by the ear game

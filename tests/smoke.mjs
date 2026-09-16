@@ -6,7 +6,8 @@ const SHOTS = process.env.SHOTS ?? '/tmp/kite-shots';
 import { mkdirSync } from 'node:fs';
 mkdirSync(SHOTS, { recursive: true });
 const browser = await chromium.launch({
-  executablePath: process.env.CHROMIUM ?? '/opt/pw-browsers/chromium',
+  // On a Mac with Chrome installed: CHANNEL=chrome node tests/smoke.mjs
+  ...(process.env.CHANNEL ? { channel: process.env.CHANNEL } : { executablePath: process.env.CHROMIUM ?? '/opt/pw-browsers/chromium' }),
   args: ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream', '--autoplay-policy=no-user-gesture-required'],
 });
 const ctx = await browser.newContext({ viewport: { width: 1180, height: 820 }, hasTouch: true, permissions: ['microphone'] });
@@ -35,6 +36,8 @@ const kindOf = () => page.evaluate(() => {
   if (st.querySelector('.track')) return st.innerHTML.includes('👾') ? 'alien' : 'glide';
   if (st.querySelector('.slots')) return 'build';
   if (st.querySelector('.sentence')) return 'sentence';
+  if (st.querySelector('.story .chip')) return 'story';
+  if (st.innerHTML.includes('❤️')) return 'heart';
   if (st.querySelector('.title')) return 'banner';
   if (st.innerHTML.includes('👂')) return 'ear';
   if (st.querySelector('.prompt-word')) return 'readMatch';
@@ -55,7 +58,7 @@ async function runSession(label, maxSteps, shots = []) {
       seen.push(kind);
       if (shots.includes(kind)) { await page.waitForTimeout(700); await page.screenshot({ path: `${SHOTS}/${label}-${kind}.png` }); shots = shots.filter((k) => k !== kind); }
     }
-    if (['glide', 'alien', 'bigtile', 'hold', 'sentence'].includes(kind)) await page.evaluate(() => window.__voice && window.__voice(2600));
+    if (['glide', 'alien', 'bigtile', 'hold', 'sentence', 'story', 'heart'].includes(kind)) await page.evaluate(() => window.__voice && window.__voice(2600));
     if (['glide', 'alien'].includes(kind)) await page.waitForTimeout(2800);
     const story = page.getByText('We read it ✓');
     if (await story.count()) { await story.dispatchEvent('pointerdown', { clientX: 500 + i, clientY: 600 }); continue; }
@@ -87,10 +90,21 @@ await page.getByText('Settings', { exact: true }).click();
 await page.locator('select').selectOption(String(target));
 await page.getByText('Allow one more session today').click();
 await page.waitForTimeout(500);
-const s2 = await runSession(`L${target}`, 220, ['glide', 'alien', 'build', 'sentence', 'readMatch', 'whichWord', 'hold', 'ear', 'banner']);
+const s2 = await runSession(`L${target}`, 220, ['glide', 'alien', 'build', 'sentence', 'readMatch', 'whichWord', 'hold', 'ear', 'banner', 'heart', 'hearTap']);
 p = await readProg();
 console.log('B:', s2.join(' > '));
 console.log(`B L${target}:`, JSON.stringify(p.levels[target]), 'items', Object.keys(p.items).length, 'log', JSON.stringify(p.sessions.at(-1)));
+console.log('B misses:', JSON.stringify(p.errors));
+// Second session at the same level: the story replaces the sentence
+await page.waitForTimeout(9500);
+await page.locator('.corner').dispatchEvent('pointerdown'); await page.waitForTimeout(1800);
+await page.getByText('Settings', { exact: true }).click();
+await page.getByText('Allow one more session today').click();
+await page.waitForTimeout(500);
+const s3 = await runSession(`L${target}b`, 220, ['story', 'banner']);
+p = await readProg();
+console.log('C:', s3.join(' > '));
+console.log(`C L${target}:`, JSON.stringify(p.levels[target]), 'log', JSON.stringify(p.sessions.at(-1)));
 await page.waitForTimeout(9500);
 await page.locator('.corner').dispatchEvent('pointerdown'); await page.waitForTimeout(1800);
 await page.screenshot({ path: `${SHOTS}/parent-progress.png`, fullPage: true });
