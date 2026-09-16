@@ -13,14 +13,14 @@ export interface Grapheme {
 }
 
 export const GRAPHEMES: Grapheme[] = [
-  { id: 'a', level: 1, continuous: true, ipa: 'æ', tts: 'aah', example: 'apple', recordTip: 'The "a" in apple. Hold it: aaa.' },
+  { id: 'a', level: 1, continuous: true, ipa: 'æ', tts: 'a', example: 'apple', recordTip: 'The "a" in apple. Hold it: aaa.' },
   { id: 'm', level: 2, continuous: true, ipa: 'm', tts: 'mmm', example: 'map', recordTip: 'Lips closed, hum: mmm. No "muh".' },
   { id: 's', level: 3, continuous: true, ipa: 's', tts: 'sss', example: 'sun', recordTip: 'Snake hiss: sss. No voice.' },
   { id: 't', level: 4, continuous: false, ipa: 't', tts: 't', example: 'top', recordTip: 'Short whispered tap: t. No "tuh".' },
   { id: 'f', level: 6, continuous: true, ipa: 'f', tts: 'fff', example: 'fish', recordTip: 'Teeth on lip, blow: fff.' },
   { id: 'd', level: 7, continuous: false, ipa: 'd', tts: 'd', example: 'dog', recordTip: 'Very short: d. Barely any "uh".' },
   { id: 'g', level: 8, continuous: false, ipa: 'g', tts: 'g', example: 'goat', recordTip: 'Short throat sound: g. No "guh".' },
-  { id: 'i', level: 9, continuous: true, ipa: 'ɪ', tts: 'ih', example: 'insect', recordTip: 'The "i" in insect: iii.' },
+  { id: 'i', level: 9, continuous: true, ipa: 'ɪ', tts: 'i', example: 'insect', recordTip: 'The "i" in insect: iii.' },
   { id: 'n', level: 10, continuous: true, ipa: 'n', tts: 'nnn', example: 'nest', recordTip: 'Tongue up, hum: nnn.' },
   { id: 'p', level: 11, continuous: false, ipa: 'p', tts: 'p', example: 'pig', recordTip: 'Puff of air, no voice: p.' },
   { id: 'h', level: 12, continuous: false, ipa: 'h', tts: 'h', example: 'hat', recordTip: 'Breathy: h. Like fogging a mirror.' },
@@ -33,7 +33,7 @@ export const GRAPHEMES: Grapheme[] = [
   { id: 'r', level: 19, continuous: true, ipa: 'ɹ', tts: 'rrr', example: 'rat', recordTip: 'English r, growl: rrr. No trill.' },
   { id: 'k', level: 20, continuous: false, ipa: 'k', tts: 'k', example: 'kite', recordTip: 'Short, whispered: k.' },
   // Taught later, but needed now for the oral listening games (dog, sun, bed).
-  { id: 'o', level: 26, continuous: true, ipa: 'ɒ', tts: 'o', example: 'octopus', recordTip: 'The "o" in on/dog: ooo (short, not "oh").' },
+  { id: 'o', level: 26, continuous: true, ipa: 'ɑ', tts: 'o', example: 'octopus', recordTip: 'The "o" in on/dog: ooo (short, not "oh").' },
   { id: 'u', level: 39, continuous: true, ipa: 'ʌ', tts: 'uh', example: 'up', recordTip: 'The "u" in up/sun: uuu (short).' },
   { id: 'e', level: 44, continuous: true, ipa: 'ɛ', tts: 'eh', example: 'egg', recordTip: 'The "e" in egg/bed: eee (short, not "ee").' },
 ];
