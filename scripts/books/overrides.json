@@ -1,0 +1,52 @@
+{
+  "hop-on-pop": {
+    "0": null,
+    "1": null,
+    "5": "ALL\nTALL\nWe all are tall.\nALL\nSMALL\nWe all are small.",
+    "32": "My father\ncan read\nbig words, too\nlike...\nCONSTANTINOPLE\nand\nTIMBUKTU"
+  },
+  "green-eggs-and-ham": {
+    "2": "I am Sam",
+    "3": "Sam I am",
+    "6": "I do not like them,\nSam-I-am.\nI do not like\ngreen eggs and ham.",
+    "9": "Would you like them\nin a house?\nWould you like them\nwith a mouse?",
+    "11": "Would you eat them\nin a box?\nWould you eat them\nwith a fox?",
+    "15": "I would not, could not in a tree.\nNot in a car! You let me be.\nI do not like them in a box.\nI do not like them with a fox.\nI do not like them in a house.\nI do not like them with a mouse.\nI do not like them here or there.\nI do not like them anywhere.\nI do not like green eggs and ham.\nI do not like them, Sam-I-am.",
+    "18": "Say!\nIn the dark?\nHere in the dark!\nWould you, could you,\nin the dark?\nI would not, could not,\nin the dark.",
+    "19": "Would you, could you,\nin the rain?\nI would not, could not, in the rain.\nNot in the dark. Not on a train.\nNot in a car. Not in a tree.\nI do not like them, Sam, you see.\nNot in a house. Not in a box.\nNot with a mouse. Not with a fox.\nI will not eat them here or there.\nI do not like them anywhere!",
+    "20": "You do not like\ngreen eggs and ham?\nI do not\nlike them,\nSam-I-am.",
+    "24": "I do not like\ngreen eggs\nand ham!",
+    "25": "I do not like them,\nSam-I-am.",
+    "26": "You do not like them.\nSo you say.\nTry them! Try them!\nAnd you may.\nTry them and you may, I say.",
+    "29": "I like green eggs and ham!\nI do! I like them, Sam-I-am!\nAnd I would eat them in a boat.\nAnd I would eat them with a goat.",
+    "30": "And I will eat them in the rain.\nAnd in the dark. And on a train.\nAnd in a car. And in a tree.\nThey are so good, so good, you see!\nSo I will eat them in a box.\nAnd I will eat them with a fox.\nAnd I will eat them in a house.\nAnd I will eat them with a mouse.\nAnd I will eat them here and there.\nSay! I will eat them ANYWHERE!"
+  },
+  "fat-cat-on-a-mat": {
+    "5": "The tree bends...\n...and the\nnest drops\noff the end.",
+    "8": "\"Bake a cake with me,\"\nsays Jake Snake.\n\"Not today,\" says Fat Cat on her mat.\n\"Let's run in the sun for fun,\" says Ted.\n\"Not today,\" says Fat Cat on her mat.",
+    "11": "Clever Fat Cat!"
+  },
+  "fox-on-a-box": {
+    "2": "Hungry Fox spots\na box.\nHungry Fox\nhops onto\nthe box.\nHe tries to reach...",
+    "3": "...a peach!\nSPLAT!",
+    "4": "Hungry Fox pushes the box.\n\"Now I'm as tall as\nthe wall!\" calls Fox.",
+    "7": "SPLAT!\nHungry Fox sits on the box.",
+    "9": "But a tug from Duck\nmeans he's out\nof luck.\nSPLAT!\nHungry Fox\nis on the box.",
+    "10": "\"I can reach\nthe cooling\npies!\" cries\nFox.\nBut Pup and\nFat Cat...\n...put a stop to that.",
+    "11": "Hungry Fox falls\ninto the box.\nHe heaves\nhimself out...",
+    "13": "\"I'm back in the box!\"\nshouts Happy Fox.",
+    "12": "...to find\ncream on\nhis snout."
+  },
+  "frog-on-a-log": {
+    "10": "So Big Pig and Pup the dog\nbump into the log...\n...which tips back into the bog...\n...taking with it foolish Frog."
+  },
+  "goose-on-the-loose": {
+    "10": "But Goose has stopped, and feels a fool.\nShe's landed in the penguin pool!"
+  },
+  "sam-sheep-cant-sleep": {
+    "5": "Ted is asleep in his red bed.\nPup barks in the\ndark night...",
+    "9": "\"Can't sleep?\" says Big Pig. \"Then do a jig.\"\n\"That will make you sleep, Sam Sheep.\"\nSo Pup starts to jiggle.\nFat Cat starts\nto wiggle.\nTed does a wriggle.",
+    "10": "...and Big Pig starts to giggle.",
+    "11": "But what about Sam Sheep?\nSam Sheep is asleep!"
+  }
+}

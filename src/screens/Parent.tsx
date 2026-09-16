@@ -10,7 +10,7 @@ import { remove, save } from '../engine/storage';
 import { meter } from '../audio/mic';
 import { LIBRARY, loadBook } from '../content/readaloud';
 import { tokenize, wordLevel } from '../engine/wordLevel';
-import { LocalBooksAdmin } from '../local/LocalBooksAdmin';
+import { BooksAdmin } from '../books/BooksAdmin';
 
 type Tab = 'progress' | 'sounds' | 'books' | 'settings' | 'backup';
 
@@ -147,7 +147,7 @@ function BooksTab() {
   const missing = res ? [...new Set(res.failures.map((f) => f.word.toLowerCase()))] : [];
   return (
     <>
-    <LocalBooksAdmin />
+    <BooksAdmin />
     <ReadAloudCard />
     <div className="card">
       <h2>Book check</h2>

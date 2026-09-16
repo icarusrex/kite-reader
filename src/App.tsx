@@ -5,7 +5,7 @@ import { Session } from './screens/Session';
 import { Parent } from './screens/Parent';
 import { Readiness } from './screens/Readiness';
 import { StoryChair } from './screens/StoryChair';
-import { listBooks } from './local/library';
+import { listBooks } from './books/library';
 import { SessionExtras } from './engine/session';
 import { currentLevel } from './engine/progress';
 import { wordLevel } from './engine/wordLevel';
@@ -51,7 +51,7 @@ function Done({ onHome, onParent }: { onHome: () => void; onParent: () => void }
   );
 }
 
-/** Sentences + pre-teach words from books imported on this machine. */
+/** Sentences + pre-teach words from the family's bundled books. */
 async function localExtras(n: number): Promise<SessionExtras> {
   try {
     const books = await listBooks();

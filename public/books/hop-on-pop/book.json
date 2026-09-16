@@ -1,0 +1,217 @@
+{
+ "id": "hop-on-pop",
+ "title": "Hop on Pop",
+ "author": "Dr. Seuss",
+ "pages": [
+  {
+   "text": "",
+   "image": "00.jpg",
+   "w": 271,
+   "h": 386
+  },
+  {
+   "text": "",
+   "image": "01.jpg",
+   "w": 739,
+   "h": 1033
+  },
+  {
+   "text": "UP\nPUP\nPup is up.",
+   "image": "02.jpg",
+   "w": 739,
+   "h": 1033
+  },
+  {
+   "text": "CUP\nPUP\nPup in cup\nPUP\nCUP\nCup on pup",
+   "image": "03.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "MOUSE\nHOUSE\nMouse on house\nHOUSE\nMOUSE\nHouse on mouse",
+   "image": "04.jpg",
+   "w": 1400,
+   "h": 975
+  },
+  {
+   "text": "ALL\nTALL\nWe all are tall.\nALL\nSMALL\nWe all are small.",
+   "image": "05.jpg",
+   "w": 1400,
+   "h": 974
+  },
+  {
+   "text": "ALL\nBALL\nWe all play ball\nBALL\nWALL\nup on a wall.",
+   "image": "06.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "ALL\nFALL\nFall off the wall",
+   "image": "07.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "DAY\nPLAY\nWe play all day.\nNIGHT\nFIGHT\nWe fight all night.",
+   "image": "08.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "HE\nME\nHe is after me.\nHIM\nJIM\nJim is after him.",
+   "image": "09.jpg",
+   "w": 1400,
+   "h": 975
+  },
+  {
+   "text": "SEE\nBEE\nWe see a bee.\nSEE\nBEE\nTHREE\nNow we\nsee three.",
+   "image": "10.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "THREE\nTREE\nThree fish in a tree\nFish in a tree?\nHow can that be?",
+   "image": "11.jpg",
+   "w": 1400,
+   "h": 971
+  },
+  {
+   "text": "RED\nRED\nThey call me Red.\nRED\nBED\nI am in bed.",
+   "image": "12.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "RED\nNED\nTED\nand\nED\nin\nBED",
+   "image": "13.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "PAT\nPAT\nThey call him Pat.\nPAT\nSAT\nPat sat on hat.",
+   "image": "14.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "PAT\nCAT\nPat sat on cat.\nPAT\nBAT\nPat sat on bat.",
+   "image": "15.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "NO\nPAT\nNO\nDon't sit on that.",
+   "image": "16.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "SAD\nDAD\nBAD\nHAD\nDad is sad\nvery, very sad.\nHe had a bad day.\nWhat a day Dad had!",
+   "image": "17.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "THING\nTHING\nWhat is that thing?\nTHING\nSING\nThat thing can sing!",
+   "image": "18.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "SONG\nLONG\nA long, long song\nGood-by, Thing.\nYou sing too long.",
+   "image": "19.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "WALK\nWALK\nWe like to walk.\nWALK\nTALK\nWe like to talk.",
+   "image": "20.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "HOP\nPOP\nWe like to hop.\nWe like to hop\non top of Pop.\nSTOP\nYou must not\nhop on Pop.",
+   "image": "21.jpg",
+   "w": 1400,
+   "h": 974
+  },
+  {
+   "text": "Mr. BROWN\nMrs. BROWN\nMr. Brown upside down",
+   "image": "22.jpg",
+   "w": 1400,
+   "h": 975
+  },
+  {
+   "text": "Pup up\nBrown down\nPup is down.\nWhere is Brown?",
+   "image": "23.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "WHERE IS BROWN?\nTHERE IS BROWN!\nMr. Brown is out of town.",
+   "image": "24.jpg",
+   "w": 1400,
+   "h": 974
+  },
+  {
+   "text": "BACK\nBLACK\nBrown came back.\nBrown came back\nwith Mr. Black.",
+   "image": "25.jpg",
+   "w": 1400,
+   "h": 974
+  },
+  {
+   "text": "SNACK\nSNACK\nEat a snack.\nEat a snack\nwith Brown and Black.",
+   "image": "26.jpg",
+   "w": 1400,
+   "h": 975
+  },
+  {
+   "text": "JUMP\nBUMP\nHe jumped.\nHe bumped.\nFAST\nPAST\nHe went past fast.\nWENT\nTENT\nSENT\nHe went into the tent.\nI sent him out of the tent.",
+   "image": "27.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "WET\nGET\nTwo dogs get wet.\nHELP\nYELP\nThey yelp for help.",
+   "image": "28.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "HILL\nWILL\nWill went up the hill.\nWILL\nHILL\nSTILL\nWill is\nup the hill still.",
+   "image": "29.jpg",
+   "w": 1400,
+   "h": 975
+  },
+  {
+   "text": "FATHER\nMOTHER\nSISTER\nBROTHER\nThat one is\nmy other brother.",
+   "image": "30.jpg",
+   "w": 1400,
+   "h": 974
+  },
+  {
+   "text": "My brothers read\na little bit.\nLittle\nwords\nlike\nit.\nIf\nand",
+   "image": "31.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "My father\ncan read\nbig words, too\nlike...\nCONSTANTINOPLE\nand\nTIMBUKTU",
+   "image": "32.jpg",
+   "w": 1400,
+   "h": 978
+  },
+  {
+   "text": "SAY\nSAY\nWhat does this say?\nseehemewe\npatpuppop\nhethreetreebee\ntophopstop\nAsk me tomorrow\nbut not today.",
+   "image": "33.jpg",
+   "w": 739,
+   "h": 1033
+  },
+  {
+   "text": "",
+   "image": "34.jpg",
+   "w": 739,
+   "h": 1039
+  }
+ ]
+}

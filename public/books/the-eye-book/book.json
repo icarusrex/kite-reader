@@ -1,0 +1,73 @@
+{
+ "id": "the-eye-book",
+ "title": "The Eye Book",
+ "author": "Theo. LeSieg",
+ "pages": [
+  {
+   "text": "",
+   "image": "00.jpg",
+   "w": 1400,
+   "h": 1894
+  },
+  {
+   "text": "My eyes see.\nHis eyes see.",
+   "image": "01.jpg",
+   "w": 1400,
+   "h": 953
+  },
+  {
+   "text": "I see him.\nAnd he sees me.",
+   "image": "02.jpg",
+   "w": 1400,
+   "h": 956
+  },
+  {
+   "text": "Our eyes see blue.\nOur eyes see red.\nThey see a bird.\nThey see a bed.",
+   "image": "03.jpg",
+   "w": 1400,
+   "h": 962
+  },
+  {
+   "text": "They see the sun.\nThey see the moon.\nThey see a fork\na knife\na spoon.",
+   "image": "04.jpg",
+   "w": 1400,
+   "h": 954
+  },
+  {
+   "text": "They see a girl.\nThey see a man..\na boy\na horse\nan old tin can.",
+   "image": "05.jpg",
+   "w": 1400,
+   "h": 960
+  },
+  {
+   "text": "They look down holes.\nThey look up poles.",
+   "image": "06.jpg",
+   "w": 1400,
+   "h": 954
+  },
+  {
+   "text": "Our eyes see trees.\nThey look at clocks.\nThey look at bees.\nThey look at socks.",
+   "image": "07.jpg",
+   "w": 1400,
+   "h": 967
+  },
+  {
+   "text": "Our eyes see flies.\nOur eyes see ants.\nSometimes they see\npink underpants.",
+   "image": "08.jpg",
+   "w": 1400,
+   "h": 959
+  },
+  {
+   "text": "Our eyes see rings.\nOur eyes see strings.\nThey see\nso many, many things!\nSo many things!\nLike rain\nand pie...",
+   "image": "09.jpg",
+   "w": 1400,
+   "h": 955
+  },
+  {
+   "text": "and dogs\nand airplanes\nin the sky!\nAnd so we say,\n\"Hooray for eyes!\nHooray, hooray, hooray ...\nfor eyes!\"",
+   "image": "10.jpg",
+   "w": 1400,
+   "h": 964
+  }
+ ]
+}

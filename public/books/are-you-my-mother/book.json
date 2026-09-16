@@ -1,0 +1,385 @@
+{
+ "id": "are-you-my-mother",
+ "title": "Are You My Mother?",
+ "author": "P. D. Eastman",
+ "pages": [
+  {
+   "text": "A mother bird sat on her egg.",
+   "image": "00.jpg",
+   "w": 525,
+   "h": 384
+  },
+  {
+   "text": "The egg jumped.",
+   "image": "01.jpg",
+   "w": 525,
+   "h": 450
+  },
+  {
+   "text": "“Oh oh!” said the mother bird. “My baby will be here! He will want to eat.”",
+   "image": "02.jpg",
+   "w": 525,
+   "h": 375
+  },
+  {
+   "text": "“I must get something for my baby bird to eat!” she said. “I will be back!”",
+   "image": "03.jpg",
+   "w": 525,
+   "h": 375
+  },
+  {
+   "text": "So away she went.",
+   "image": "04.jpg",
+   "w": 525,
+   "h": 450
+  },
+  {
+   "text": "The egg jumped. It jumped, and jumped, and jumped!",
+   "image": "05.jpg",
+   "w": 525,
+   "h": 407
+  },
+  {
+   "text": "Out came the baby bird!",
+   "image": "06.jpg",
+   "w": 525,
+   "h": 450
+  },
+  {
+   "text": "“Where is my mother?” he said.",
+   "image": "07.jpg",
+   "w": 525,
+   "h": 450
+  },
+  {
+   "text": "He looked for her.",
+   "image": "08.jpg",
+   "w": 525,
+   "h": 430
+  },
+  {
+   "text": "He looked up. He did not see her.",
+   "image": "09.jpg",
+   "w": 525,
+   "h": 450
+  },
+  {
+   "text": "He looked down. He did not see her.",
+   "image": "10.jpg",
+   "w": 525,
+   "h": 375
+  },
+  {
+   "text": "“I will go and look for her,” he said.",
+   "image": "11.jpg",
+   "w": 525,
+   "h": 450
+  },
+  {
+   "text": "So away he went.",
+   "image": "12.jpg",
+   "w": 525,
+   "h": 450
+  },
+  {
+   "text": "Down, out of the tree he went.",
+   "image": "13.jpg",
+   "w": 525,
+   "h": 375
+  },
+  {
+   "text": "Down, down, down! It was a long way down.",
+   "image": "14.jpg",
+   "w": 525,
+   "h": 375
+  },
+  {
+   "text": "The baby bird could not fly.",
+   "image": "15.jpg",
+   "w": 525,
+   "h": 270
+  },
+  {
+   "text": "He could not fly, but he could walk. “Now I will go and find my mother,” he said.",
+   "image": "16.jpg",
+   "w": 525,
+   "h": 256
+  },
+  {
+   "text": "He did not know what his mother looked like. He went right by her. He did not see her.",
+   "image": "17.jpg",
+   "w": 525,
+   "h": 240
+  },
+  {
+   "text": "He came to a kitten. “Are you my mother?” he said to the kitten.",
+   "image": "18.jpg",
+   "w": 525,
+   "h": 186
+  },
+  {
+   "text": "The kitten just looked and looked. It did not say a thing.",
+   "image": "19.jpg",
+   "w": 525,
+   "h": 407
+  },
+  {
+   "text": "The kitten was not his mother, so he went on.",
+   "image": "20.jpg",
+   "w": 525,
+   "h": 400
+  },
+  {
+   "text": "Then he came to a hen.\n“Are you my mother?” he said to the hen.\n“No,” said the hen.",
+   "image": "21.jpg",
+   "w": 525,
+   "h": 301
+  },
+  {
+   "text": "The kitten was not his mother.",
+   "image": "22.jpg",
+   "w": 525,
+   "h": 400
+  },
+  {
+   "text": "The hen was not his mother.\nSo the baby bird went on.",
+   "image": "23.jpg",
+   "w": 525,
+   "h": 267
+  },
+  {
+   "text": "“I have to find my mother!” he said. “But where? Where is she? Where could she be?”",
+   "image": "24.jpg",
+   "w": 525,
+   "h": 126
+  },
+  {
+   "text": "Then he came to a dog.\n“Are you my mother?” he said to the dog.",
+   "image": "25.jpg",
+   "w": 525,
+   "h": 203
+  },
+  {
+   "text": "“I am not your mother. I am a dog,” said the dog.",
+   "image": "26.jpg",
+   "w": 525,
+   "h": 375
+  },
+  {
+   "text": "The kitten was not his mother.",
+   "image": "27.jpg",
+   "w": 525,
+   "h": 329
+  },
+  {
+   "text": "The hen was not his mother.",
+   "image": "28.jpg",
+   "w": 525,
+   "h": 350
+  },
+  {
+   "text": "The dog was not his mother.",
+   "image": "29.jpg",
+   "w": 525,
+   "h": 357
+  },
+  {
+   "text": "So the baby bird went on. Now he came to a cow.",
+   "image": "30.jpg",
+   "w": 525,
+   "h": 374
+  },
+  {
+   "text": "“Are you my mother?” he said to the cow.",
+   "image": "31.jpg",
+   "w": 525,
+   "h": 368
+  },
+  {
+   "text": "“How could I be your mother?” said the cow. “I am a cow.”",
+   "image": "32.jpg",
+   "w": 525,
+   "h": 375
+  },
+  {
+   "text": "The kitten and the hen were not his mother.",
+   "image": "33.jpg",
+   "w": 525,
+   "h": 400
+  },
+  {
+   "text": "The dog and the cow were not his mother.",
+   "image": "34.jpg",
+   "w": 525,
+   "h": 450
+  },
+  {
+   "text": "Did he have a mother?",
+   "image": "35.jpg",
+   "w": 525,
+   "h": 300
+  },
+  {
+   "text": "“I did have a mother,” said the baby bird. “I know I did. I have to find her. I will. I WILL!”",
+   "image": "36.jpg",
+   "w": 525,
+   "h": 375
+  },
+  {
+   "text": "Now the baby bird did not walk. He ran!",
+   "image": "37.jpg",
+   "w": 525,
+   "h": 450
+  },
+  {
+   "text": "Then he saw a car. Could that old thing be his mother? No, it could not.",
+   "image": "38.jpg",
+   "w": 525,
+   "h": 276
+  },
+  {
+   "text": "The baby bird did not stop. He ran on and on.",
+   "image": "39.jpg",
+   "w": 525,
+   "h": 450
+  },
+  {
+   "text": "Now he looked way, way down.",
+   "image": "40.jpg",
+   "w": 525,
+   "h": 262
+  },
+  {
+   "text": "He saw a boat. “There she is!” said the baby bird.\nHe called to the boat, but the boat did not stop.",
+   "image": "41.jpg",
+   "w": 525,
+   "h": 375
+  },
+  {
+   "text": "The boat went on.",
+   "image": "42.jpg",
+   "w": 525,
+   "h": 283
+  },
+  {
+   "text": "He looked way, way up. He saw a big plane.\n“Here I am, Mother,” he called out.",
+   "image": "43.jpg",
+   "w": 525,
+   "h": 262
+  },
+  {
+   "text": "But the plane did not stop. The plane went on.",
+   "image": "44.jpg",
+   "w": 525,
+   "h": 271
+  },
+  {
+   "text": "Just then, the baby bird saw a big thing. This must be his mother!\n“There she is!” he said. “There is my mother!”",
+   "image": "45.jpg",
+   "w": 525,
+   "h": 204
+  },
+  {
+   "text": "He ran right up to it.\n“Mother, Mother! Here I am, Mother!” he said to the big thing.",
+   "image": "46.jpg",
+   "w": 525,
+   "h": 308
+  },
+  {
+   "text": "But the big thing just said, “Snort.”",
+   "image": "47.jpg",
+   "w": 525,
+   "h": 380
+  },
+  {
+   "text": "“Oh, you are not my mother,” said the baby bird. “You are a Snort. I have to get out of here!”",
+   "image": "48.jpg",
+   "w": 525,
+   "h": 339
+  },
+  {
+   "text": "But the baby bird could not get away. The Snort went up.",
+   "image": "49.jpg",
+   "w": 525,
+   "h": 375
+  },
+  {
+   "text": "It went way, way up.\nAnd up, up, up went the baby bird.",
+   "image": "50.jpg",
+   "w": 525,
+   "h": 325
+  },
+  {
+   "text": "But now, where was the Snort going?",
+   "image": "51.jpg",
+   "w": 525,
+   "h": 330
+  },
+  {
+   "text": "“Oh, oh, oh! What is this Snort going to do to me? Get me out of here!”",
+   "image": "52.jpg",
+   "w": 525,
+   "h": 271
+  },
+  {
+   "text": "Just then, the Snort came to a stop.",
+   "image": "53.jpg",
+   "w": 525,
+   "h": 330
+  },
+  {
+   "text": "“Where am I?” said the baby bird. “I want to go home! I want my mother!”",
+   "image": "54.jpg",
+   "w": 525,
+   "h": 380
+  },
+  {
+   "text": "Then something happened.",
+   "image": "55.jpg",
+   "w": 525,
+   "h": 404
+  },
+  {
+   "text": "The Snort put that baby bird right back in the tree. The baby bird was home!",
+   "image": "56.jpg",
+   "w": 525,
+   "h": 375
+  },
+  {
+   "text": "Just then the mother bird came back to the tree. “Do you know who I am?” she said to her baby.",
+   "image": "57.jpg",
+   "w": 525,
+   "h": 300
+  },
+  {
+   "text": "“Yes, I know who you are,” said the baby bird.",
+   "image": "58.jpg",
+   "w": 525,
+   "h": 336
+  },
+  {
+   "text": "“You are not a kitten.\n“You are not a hen.\n“You are not a dog.\n“You are not a cow.",
+   "image": "59.jpg",
+   "w": 525,
+   "h": 239
+  },
+  {
+   "text": "“You are not a boat,\nor a plane, or a Snort!”",
+   "image": "60.jpg",
+   "w": 525,
+   "h": 371
+  },
+  {
+   "text": "“You are a bird, and you are my mother.”",
+   "image": "61.jpg",
+   "w": 525,
+   "h": 450
+  },
+  {
+   "text": "",
+   "image": "62.jpg",
+   "w": 525,
+   "h": 450
+  }
+ ]
+}

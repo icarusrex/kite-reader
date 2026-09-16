@@ -5,8 +5,8 @@ import { currentLevel, today } from '../engine/progress';
 import { tokenize, wordLevel } from '../engine/wordLevel';
 import { say, stop } from '../audio/speaker';
 import { useTap } from '../ui/components';
-import { LibraryEntry, getImage, listBooks } from '../local/library';
-import { LocalReader } from '../local/LocalReader';
+import { LibraryEntry, imageUrl, listBooks } from '../books/library';
+import { BookReader } from '../books/BookReader';
 
 const PARAS_PER_PAGE = 3;
 const PROMPTS = [
@@ -28,24 +28,18 @@ export function StoryChair({ onClose }: { onClose: () => void }) {
   const [showDecodable, setShowDecodable] = useState(true);
   const [local, setLocal] = useState<LibraryEntry[]>([]);
   const [localId, setLocalId] = useState<string | null>(null);
-  const [covers, setCovers] = useState<Record<string, string>>({});
   const level = currentLevel(progress);
 
   useEffect(() => { loadVocab().then(setVocab); return () => stop(); }, []);
   useEffect(() => {
-    listBooks().then(async (bs) => {
-      setLocal(bs);
-      const c: Record<string, string> = {};
-      for (const b of bs) if (b.cover) { const blob = await getImage(b.cover); if (blob) c[b.id] = URL.createObjectURL(blob); }
-      setCovers(c);
-    });
+    listBooks().then(setLocal);
   }, []);
   useEffect(() => { if (bookId) loadBook(bookId).then(setBook); else setBook(null); }, [bookId]);
 
   const read = (bookId && progress.readAloud?.[bookId]) || [];
   const close = useTap(() => (chapter !== null ? setChapter(null) : bookId ? setBookId(null) : onClose()));
 
-  if (localId) return <LocalReader id={localId} level={level} onBack={() => setLocalId(null)} />;
+  if (localId) return <BookReader id={localId} level={level} onBack={() => setLocalId(null)} />;
 
   // Shelf
   if (!bookId) {
@@ -59,7 +53,7 @@ export function StoryChair({ onClose }: { onClose: () => void }) {
               {local.map((b) => {
                 const a = b.analysis;
                 const ready = a && a.ready95 <= level;
-                return <BookCard key={b.id} cover={covers[b.id] ? '' : '📘'} image={covers[b.id]} color="#FFFFFF" title={b.title}
+                return <BookCard key={b.id} cover={b.cover ? '' : '📘'} image={b.cover && imageUrl(b.id, b.cover)} color="#FFFFFF" title={b.title}
                   sub={ready ? 'You can read this!' : a && a.readyPreteach <= level ? 'Almost! A grown-up helps with a few words' : 'Read it together'}
                   badge={ready} onTap={() => setLocalId(b.id)} />;
               })}

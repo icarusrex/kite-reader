@@ -1,4 +1,5 @@
 /*
+  X-Robots-Tag: noindex, nofollow
   Permissions-Policy: microphone=(self)
   X-Content-Type-Options: nosniff
 /audio/*

@@ -1,0 +1,199 @@
+{
+ "id": "green-eggs-and-ham",
+ "title": "Green Eggs and Ham",
+ "author": "Dr. Seuss",
+ "pages": [
+  {
+   "text": "",
+   "image": "00.jpg",
+   "w": 576,
+   "h": 775
+  },
+  {
+   "text": "",
+   "image": "01.jpg",
+   "w": 576,
+   "h": 815
+  },
+  {
+   "text": "I am Sam",
+   "image": "02.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "Sam I am",
+   "image": "03.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "That Sam-I-am!\nThat Sam-I-am!\nI do not like\nthat Sam-I-am!",
+   "image": "04.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "Do you like\ngreen eggs and ham?",
+   "image": "05.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "I do not like them,\nSam-I-am.\nI do not like\ngreen eggs and ham.",
+   "image": "06.jpg",
+   "w": 576,
+   "h": 411
+  },
+  {
+   "text": "Would you like them\nhere or there?",
+   "image": "07.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "I would not like them\nhere or there.\nI would not like them\nanywhere.\nI do not like\ngreen eggs and ham.\nI do not like them,\nSam-I-am.",
+   "image": "08.jpg",
+   "w": 576,
+   "h": 410
+  },
+  {
+   "text": "Would you like them\nin a house?\nWould you like them\nwith a mouse?",
+   "image": "09.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "I do not like them\nin a house.\nI do not like them\nwith a mouse.\nI do not like them\nhere or there.\nI do not like them\nanywhere.\nI do not like green eggs and ham.\nI do not like them, Sam-I-am.",
+   "image": "10.jpg",
+   "w": 576,
+   "h": 409
+  },
+  {
+   "text": "Would you eat them\nin a box?\nWould you eat them\nwith a fox?",
+   "image": "11.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "Not in a box.\nNot with a fox.\nNot in a house.\nNot with a mouse.\nI would not eat them here or there.\nI would not eat them anywhere.\nI would not eat green eggs and ham.\nI do not like them, Sam-I-am.",
+   "image": "12.jpg",
+   "w": 576,
+   "h": 411
+  },
+  {
+   "text": "Would you? Could you?\nIn a car?\nEat them! Eat them!\nHere they are.\nI would not\ncould not,\nin a car.",
+   "image": "13.jpg",
+   "w": 576,
+   "h": 410
+  },
+  {
+   "text": "You may like them.\nYou will see.\nYou may like them\nin a tree!",
+   "image": "14.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "I would not, could not in a tree.\nNot in a car! You let me be.\nI do not like them in a box.\nI do not like them with a fox.\nI do not like them in a house.\nI do not like them with a mouse.\nI do not like them here or there.\nI do not like them anywhere.\nI do not like green eggs and ham.\nI do not like them, Sam-I-am.",
+   "image": "15.jpg",
+   "w": 576,
+   "h": 410
+  },
+  {
+   "text": "A train! A train!\nA train! A train!\nCould you, would you,\non a train?",
+   "image": "16.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "Not on a train! Not in a tree!\nNot in a car! Sam! Let me be!\nI would not, could not, in a box.\nI could not, would not, with a fox.\nI will not eat them with a mouse.\nI will not eat them in a house.\nI will not eat them here or there.\nI will not eat them anywhere.\nI do not eat green eggs and ham.\nI do not like them, Sam-I-am.",
+   "image": "17.jpg",
+   "w": 576,
+   "h": 409
+  },
+  {
+   "text": "Say!\nIn the dark?\nHere in the dark!\nWould you, could you,\nin the dark?\nI would not, could not,\nin the dark.",
+   "image": "18.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "Would you, could you,\nin the rain?\nI would not, could not, in the rain.\nNot in the dark. Not on a train.\nNot in a car. Not in a tree.\nI do not like them, Sam, you see.\nNot in a house. Not in a box.\nNot with a mouse. Not with a fox.\nI will not eat them here or there.\nI do not like them anywhere!",
+   "image": "19.jpg",
+   "w": 576,
+   "h": 410
+  },
+  {
+   "text": "You do not like\ngreen eggs and ham?\nI do not\nlike them,\nSam-I-am.",
+   "image": "20.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "Could you, would you,\nwith a goat?\nI would not.\ncould not,\nwith a goat!",
+   "image": "21.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "Would you, could you,\non a boat?",
+   "image": "22.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "I could not, would not, on a boat.\nI will not, will not, with a goat.\nI will not eat them in the rain.\nI will not eat them on a train.\nNot in the dark! Not in a tree!\nNot in a car! You let me be!\nI do not like them in a box.\nI do not like them with a fox.\nI will not eat them in a house.\nI do not like them with a mouse.\nI do not like them here or there.\nI do not like them ANYWHERE!",
+   "image": "23.jpg",
+   "w": 576,
+   "h": 409
+  },
+  {
+   "text": "I do not like\ngreen eggs\nand ham!",
+   "image": "24.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "I do not like them,\nSam-I-am.",
+   "image": "25.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "You do not like them.\nSo you say.\nTry them! Try them!\nAnd you may.\nTry them and you may, I say.",
+   "image": "26.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "Sam!\nIf you will let me be,\nI will try them.\nYou will see.",
+   "image": "27.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "",
+   "image": "28.jpg",
+   "w": 576,
+   "h": 408
+  },
+  {
+   "text": "I like green eggs and ham!\nI do! I like them, Sam-I-am!\nAnd I would eat them in a boat.\nAnd I would eat them with a goat.",
+   "image": "29.jpg",
+   "w": 576,
+   "h": 411
+  },
+  {
+   "text": "And I will eat them in the rain.\nAnd in the dark. And on a train.\nAnd in a car. And in a tree.\nThey are so good, so good, you see!\nSo I will eat them in a box.\nAnd I will eat them with a fox.\nAnd I will eat them in a house.\nAnd I will eat them with a mouse.\nAnd I will eat them here and there.\nSay! I will eat them ANYWHERE!",
+   "image": "30.jpg",
+   "w": 576,
+   "h": 409
+  },
+  {
+   "text": "I do so like\ngreen eggs and ham!\nThank you!\nThank you,\nSam-I-am!",
+   "image": "31.jpg",
+   "w": 576,
+   "h": 804
+  }
+ ]
+}

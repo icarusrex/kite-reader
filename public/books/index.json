@@ -1,0 +1,2061 @@
+[
+ {
+  "id": "green-eggs-and-ham",
+  "title": "Green Eggs and Ham",
+  "author": "Dr. Seuss",
+  "pages": 29,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 808,
+   "unique": 50,
+   "ready95": 98,
+   "readyPreteach": 97,
+   "preteach": [
+    "would",
+    "anywhere",
+    "house",
+    "mouse",
+    "could",
+    "good"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "That Sam-I-am!",
+     "level": 97,
+     "page": 4
+    },
+    {
+     "text": "That Sam-I-am!",
+     "level": 97,
+     "page": 4
+    },
+    {
+     "text": "I do not like that Sam-I-am!",
+     "level": 97,
+     "page": 4
+    },
+    {
+     "text": "Do you like green eggs and ham?",
+     "level": 85,
+     "page": 5
+    },
+    {
+     "text": "I do not like them, Sam-I-am.",
+     "level": 97,
+     "page": 6
+    },
+    {
+     "text": "I do not like green eggs and ham.",
+     "level": 71,
+     "page": 6
+    },
+    {
+     "text": "Would you like them here or there?",
+     "level": 98,
+     "page": 7
+    },
+    {
+     "text": "I would not like them here or there.",
+     "level": 98,
+     "page": 8
+    },
+    {
+     "text": "I would not like them anywhere.",
+     "level": 100,
+     "page": 8
+    },
+    {
+     "text": "I do not like green eggs and ham.",
+     "level": 71,
+     "page": 8
+    },
+    {
+     "text": "I do not like them, Sam-I-am.",
+     "level": 97,
+     "page": 8
+    },
+    {
+     "text": "Would you like them in a house?",
+     "level": 104,
+     "page": 9
+    },
+    {
+     "text": "Would you like them with a mouse?",
+     "level": 104,
+     "page": 9
+    },
+    {
+     "text": "I do not like them in a house.",
+     "level": 104,
+     "page": 10
+    },
+    {
+     "text": "I do not like them with a mouse.",
+     "level": 104,
+     "page": 10
+    },
+    {
+     "text": "I do not like them here or there.",
+     "level": 97,
+     "page": 10
+    },
+    {
+     "text": "I do not like them anywhere.",
+     "level": 100,
+     "page": 10
+    },
+    {
+     "text": "I do not like green eggs and ham.",
+     "level": 71,
+     "page": 10
+    },
+    {
+     "text": "I do not like them, Sam-I-am.",
+     "level": 97,
+     "page": 10
+    },
+    {
+     "text": "Would you eat them in a box?",
+     "level": 98,
+     "page": 11
+    },
+    {
+     "text": "Would you eat them with a fox?",
+     "level": 98,
+     "page": 11
+    },
+    {
+     "text": "Not in a box.",
+     "level": 89,
+     "page": 12
+    },
+    {
+     "text": "Not with a fox.",
+     "level": 89,
+     "page": 12
+    },
+    {
+     "text": "Not in a house.",
+     "level": 104,
+     "page": 12
+    },
+    {
+     "text": "Not with a mouse.",
+     "level": 104,
+     "page": 12
+    },
+    {
+     "text": "I would not eat them here or there.",
+     "level": 98,
+     "page": 12
+    },
+    {
+     "text": "I would not eat them anywhere.",
+     "level": 100,
+     "page": 12
+    },
+    {
+     "text": "I would not eat green eggs and ham.",
+     "level": 98,
+     "page": 12
+    },
+    {
+     "text": "I do not like them, Sam-I-am.",
+     "level": 97,
+     "page": 12
+    },
+    {
+     "text": "Would you?",
+     "level": 98,
+     "page": 13
+    },
+    {
+     "text": "Could you?",
+     "level": 98,
+     "page": 13
+    },
+    {
+     "text": "In a car?",
+     "level": 62,
+     "page": 13
+    },
+    {
+     "text": "Eat them!",
+     "level": 97,
+     "page": 13
+    },
+    {
+     "text": "Eat them!",
+     "level": 97,
+     "page": 13
+    },
+    {
+     "text": "Here they are.",
+     "level": 96,
+     "page": 13
+    },
+    {
+     "text": "I would not could not, in a car.",
+     "level": 98,
+     "page": 13
+    },
+    {
+     "text": "You may like them.",
+     "level": 97,
+     "page": 14
+    },
+    {
+     "text": "You will see.",
+     "level": 85,
+     "page": 14
+    },
+    {
+     "text": "You may like them in a tree!",
+     "level": 97,
+     "page": 14
+    },
+    {
+     "text": "I would not, could not in a tree.",
+     "level": 98,
+     "page": 15
+    },
+    {
+     "text": "Not in a car!",
+     "level": 62,
+     "page": 15
+    },
+    {
+     "text": "You let me be.",
+     "level": 85,
+     "page": 15
+    },
+    {
+     "text": "I do not like them in a box.",
+     "level": 97,
+     "page": 15
+    },
+    {
+     "text": "I do not like them with a fox.",
+     "level": 97,
+     "page": 15
+    },
+    {
+     "text": "I do not like them in a house.",
+     "level": 104,
+     "page": 15
+    },
+    {
+     "text": "I do not like them with a mouse.",
+     "level": 104,
+     "page": 15
+    },
+    {
+     "text": "I do not like them here or there.",
+     "level": 97,
+     "page": 15
+    },
+    {
+     "text": "I do not like them anywhere.",
+     "level": 100,
+     "page": 15
+    },
+    {
+     "text": "I do not like green eggs and ham.",
+     "level": 71,
+     "page": 15
+    },
+    {
+     "text": "I do not like them, Sam-I-am.",
+     "level": 97,
+     "page": 15
+    },
+    {
+     "text": "A train!",
+     "level": 73,
+     "page": 16
+    },
+    {
+     "text": "A train!",
+     "level": 73,
+     "page": 16
+    },
+    {
+     "text": "A train!",
+     "level": 73,
+     "page": 16
+    },
+    {
+     "text": "A train!",
+     "level": 73,
+     "page": 16
+    },
+    {
+     "text": "Could you, would you, on a train?",
+     "level": 98,
+     "page": 16
+    },
+    {
+     "text": "Not on a train!",
+     "level": 73,
+     "page": 17
+    },
+    {
+     "text": "Not in a tree!",
+     "level": 59,
+     "page": 17
+    },
+    {
+     "text": "Not in a car!",
+     "level": 62,
+     "page": 17
+    },
+    {
+     "text": "Let me be!",
+     "level": 82,
+     "page": 17
+    },
+    {
+     "text": "I would not, could not, in a box.",
+     "level": 98,
+     "page": 17
+    },
+    {
+     "text": "I could not, would not, with a fox.",
+     "level": 98,
+     "page": 17
+    },
+    {
+     "text": "I will not eat them with a mouse.",
+     "level": 104,
+     "page": 17
+    },
+    {
+     "text": "I will not eat them in a house.",
+     "level": 104,
+     "page": 17
+    },
+    {
+     "text": "I will not eat them here or there.",
+     "level": 97,
+     "page": 17
+    },
+    {
+     "text": "I will not eat them anywhere.",
+     "level": 100,
+     "page": 17
+    },
+    {
+     "text": "I do not eat green eggs and ham.",
+     "level": 75,
+     "page": 17
+    },
+    {
+     "text": "I do not like them, Sam-I-am.",
+     "level": 97,
+     "page": 17
+    },
+    {
+     "text": "In the dark?",
+     "level": 62,
+     "page": 18
+    },
+    {
+     "text": "Here in the dark!",
+     "level": 96,
+     "page": 18
+    },
+    {
+     "text": "Would you, could you, in the dark?",
+     "level": 98,
+     "page": 18
+    },
+    {
+     "text": "I would not, could not, in the dark.",
+     "level": 98,
+     "page": 18
+    },
+    {
+     "text": "Would you, could you, in the rain?",
+     "level": 98,
+     "page": 19
+    },
+    {
+     "text": "I would not, could not, in the rain.",
+     "level": 98,
+     "page": 19
+    },
+    {
+     "text": "Not in the dark.",
+     "level": 62,
+     "page": 19
+    },
+    {
+     "text": "Not on a train.",
+     "level": 73,
+     "page": 19
+    },
+    {
+     "text": "Not in a car.",
+     "level": 62,
+     "page": 19
+    },
+    {
+     "text": "Not in a tree.",
+     "level": 59,
+     "page": 19
+    },
+    {
+     "text": "I do not like them, Sam, you see.",
+     "level": 97,
+     "page": 19
+    },
+    {
+     "text": "Not in a house.",
+     "level": 104,
+     "page": 19
+    },
+    {
+     "text": "Not in a box.",
+     "level": 89,
+     "page": 19
+    },
+    {
+     "text": "Not with a mouse.",
+     "level": 104,
+     "page": 19
+    },
+    {
+     "text": "Not with a fox.",
+     "level": 89,
+     "page": 19
+    },
+    {
+     "text": "I will not eat them here or there.",
+     "level": 97,
+     "page": 19
+    },
+    {
+     "text": "I do not like them anywhere!",
+     "level": 100,
+     "page": 19
+    },
+    {
+     "text": "You do not like green eggs and ham?",
+     "level": 85,
+     "page": 20
+    },
+    {
+     "text": "I do not like them, Sam-I-am.",
+     "level": 97,
+     "page": 20
+    },
+    {
+     "text": "Could you, would you, with a goat?",
+     "level": 98,
+     "page": 21
+    },
+    {
+     "text": "I would not.",
+     "level": 98,
+     "page": 21
+    },
+    {
+     "text": "Would you, could you, on a boat?",
+     "level": 98,
+     "page": 22
+    },
+    {
+     "text": "I could not, would not, on a boat.",
+     "level": 98,
+     "page": 23
+    },
+    {
+     "text": "I will not, will not, with a goat.",
+     "level": 76,
+     "page": 23
+    },
+    {
+     "text": "I will not eat them in the rain.",
+     "level": 97,
+     "page": 23
+    },
+    {
+     "text": "I will not eat them on a train.",
+     "level": 97,
+     "page": 23
+    },
+    {
+     "text": "Not in the dark!",
+     "level": 62,
+     "page": 23
+    },
+    {
+     "text": "Not in a tree!",
+     "level": 59,
+     "page": 23
+    },
+    {
+     "text": "Not in a car!",
+     "level": 62,
+     "page": 23
+    },
+    {
+     "text": "You let me be!",
+     "level": 85,
+     "page": 23
+    },
+    {
+     "text": "I do not like them in a box.",
+     "level": 97,
+     "page": 23
+    },
+    {
+     "text": "I do not like them with a fox.",
+     "level": 97,
+     "page": 23
+    },
+    {
+     "text": "I will not eat them in a house.",
+     "level": 104,
+     "page": 23
+    },
+    {
+     "text": "I do not like them with a mouse.",
+     "level": 104,
+     "page": 23
+    },
+    {
+     "text": "I do not like them here or there.",
+     "level": 97,
+     "page": 23
+    },
+    {
+     "text": "I do not like them ANYWHERE!",
+     "level": 100,
+     "page": 23
+    },
+    {
+     "text": "I do not like green eggs and ham!",
+     "level": 71,
+     "page": 24
+    },
+    {
+     "text": "I do not like them, Sam-I-am.",
+     "level": 97,
+     "page": 25
+    },
+    {
+     "text": "You do not like them.",
+     "level": 97,
+     "page": 26
+    },
+    {
+     "text": "So you say.",
+     "level": 85,
+     "page": 26
+    },
+    {
+     "text": "Try them!",
+     "level": 97,
+     "page": 26
+    },
+    {
+     "text": "Try them!",
+     "level": 97,
+     "page": 26
+    },
+    {
+     "text": "And you may.",
+     "level": 85,
+     "page": 26
+    },
+    {
+     "text": "Try them and you may, I say.",
+     "level": 97,
+     "page": 26
+    },
+    {
+     "text": "If you will let me be, I will try them.",
+     "level": 97,
+     "page": 27
+    },
+    {
+     "text": "You will see.",
+     "level": 85,
+     "page": 27
+    },
+    {
+     "text": "I like green eggs and ham!",
+     "level": 70,
+     "page": 29
+    },
+    {
+     "text": "I do!",
+     "level": 71,
+     "page": 29
+    },
+    {
+     "text": "I like them, Sam-I-am!",
+     "level": 97,
+     "page": 29
+    },
+    {
+     "text": "And I would eat them in a boat.",
+     "level": 98,
+     "page": 29
+    },
+    {
+     "text": "And I would eat them with a goat.",
+     "level": 98,
+     "page": 29
+    },
+    {
+     "text": "And I will eat them in the rain.",
+     "level": 97,
+     "page": 30
+    },
+    {
+     "text": "And in the dark.",
+     "level": 62,
+     "page": 30
+    },
+    {
+     "text": "And on a train.",
+     "level": 73,
+     "page": 30
+    },
+    {
+     "text": "And in a car.",
+     "level": 62,
+     "page": 30
+    },
+    {
+     "text": "And in a tree.",
+     "level": 59,
+     "page": 30
+    },
+    {
+     "text": "They are so good, so good, you see!",
+     "level": 102,
+     "page": 30
+    },
+    {
+     "text": "So I will eat them in a box.",
+     "level": 97,
+     "page": 30
+    },
+    {
+     "text": "And I will eat them with a fox.",
+     "level": 97,
+     "page": 30
+    },
+    {
+     "text": "And I will eat them in a house.",
+     "level": 104,
+     "page": 30
+    },
+    {
+     "text": "And I will eat them with a mouse.",
+     "level": 104,
+     "page": 30
+    },
+    {
+     "text": "And I will eat them here and there.",
+     "level": 97,
+     "page": 30
+    },
+    {
+     "text": "I will eat them ANYWHERE!",
+     "level": 100,
+     "page": 30
+    },
+    {
+     "text": "I do so like green eggs and ham!",
+     "level": 83,
+     "page": 31
+    },
+    {
+     "text": "Thank you!",
+     "level": 85,
+     "page": 31
+    },
+    {
+     "text": "Thank you, Sam-I-am!",
+     "level": 85,
+     "page": 31
+    }
+   ]
+  }
+ },
+ {
+  "id": "goose-on-the-loose",
+  "title": "Goose on the Loose",
+  "author": "Phil Roxbee Cox",
+  "pages": 9,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 135,
+   "unique": 78,
+   "ready95": 121,
+   "readyPreteach": 102,
+   "preteach": [
+    "can't",
+    "she's",
+    "almost",
+    "behind",
+    "watch",
+    "heavy",
+    "heading",
+    "stopped",
+    "landed",
+    "penguin"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Goose is on a scooter.",
+     "level": 101,
+     "page": 2
+    },
+    {
+     "text": "Get out of my way!",
+     "level": 96,
+     "page": 2
+    },
+    {
+     "text": "Get out of my way!",
+     "level": 96,
+     "page": 3
+    },
+    {
+     "text": "Ted ends up in his flower bed.",
+     "level": 77,
+     "page": 5
+    },
+    {
+     "text": "Look out!",
+     "level": 102,
+     "page": 8
+    },
+    {
+     "text": "Goose is on the loose.",
+     "level": 101,
+     "page": 8
+    },
+    {
+     "text": "Goose must be stopped!",
+     "level": 105,
+     "page": 9
+    },
+    {
+     "text": "What shall we do?",
+     "level": 96,
+     "page": 9
+    },
+    {
+     "text": "But Goose has stopped, and feels a fool.",
+     "level": 105,
+     "page": 10
+    }
+   ]
+  }
+ },
+ {
+  "id": "frog-on-a-log",
+  "title": "Frog on a Log",
+  "author": "Phil Roxbee Cox",
+  "pages": 9,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 168,
+   "unique": 77,
+   "ready95": 116,
+   "readyPreteach": 105,
+   "preteach": [
+    "one",
+    "i'm",
+    "can't",
+    "silly",
+    "sunny",
+    "funny",
+    "your",
+    "away",
+    "taking"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Frog sits on his log by the bog.",
+     "level": 93,
+     "page": 2
+    },
+    {
+     "text": "With one big hop, he jumps over the bog.",
+     "level": 118,
+     "page": 2
+    },
+    {
+     "text": "Off he goes!",
+     "level": 83,
+     "page": 3
+    },
+    {
+     "text": "Frog likes to jog.",
+     "level": 71,
+     "page": 3
+    },
+    {
+     "text": "Frog's jogging has ended.",
+     "level": 105,
+     "page": 4
+    },
+    {
+     "text": "Out of the fog runs Pup the dog.",
+     "level": 96,
+     "page": 4
+    },
+    {
+     "text": "He bumps into Frog's log.",
+     "level": 82,
+     "page": 4
+    },
+    {
+     "text": "Frog falls off into the bog.",
+     "level": 92,
+     "page": 5
+    },
+    {
+     "text": "You silly dog!",
+     "level": 116,
+     "page": 5
+    },
+    {
+     "text": "Frog is back up on his log.",
+     "level": 39,
+     "page": 6
+    },
+    {
+     "text": "Pig is looking for Pup the dog.",
+     "level": 101,
+     "page": 6
+    },
+    {
+     "text": "Now he bumps into Frog's log...",
+     "level": 82,
+     "page": 6
+    },
+    {
+     "text": "You silly hog!",
+     "level": 116,
+     "page": 7
+    },
+    {
+     "text": "Next day, it is sunny.",
+     "level": 116,
+     "page": 8
+    },
+    {
+     "text": "Bump into my log!",
+     "level": 93,
+     "page": 8
+    },
+    {
+     "text": "Is Frog trying to be funny?",
+     "level": 116,
+     "page": 8
+    },
+    {
+     "text": "Bump your log!",
+     "level": 110,
+     "page": 9
+    },
+    {
+     "text": "You will not call us silly dog and hog?",
+     "level": 116,
+     "page": 9
+    },
+    {
+     "text": "No, bump away!",
+     "level": 117,
+     "page": 9
+    },
+    {
+     "text": "I cannot fall off.",
+     "level": 92,
+     "page": 9
+    }
+   ]
+  }
+ },
+ {
+  "id": "sam-sheep-cant-sleep",
+  "title": "Sam Sheep Can’t Sleep",
+  "author": "Phil Roxbee Cox",
+  "pages": 10,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 171,
+   "unique": 67,
+   "ready95": 121,
+   "readyPreteach": 107,
+   "preteach": [
+    "can't",
+    "it's",
+    "sorry",
+    "let's",
+    "don't",
+    "does",
+    "giggle"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Sam Sheep gets up.",
+     "level": 59,
+     "page": 2
+    },
+    {
+     "text": "Sam Sheep wakes up Pup.",
+     "level": 59,
+     "page": 2
+    },
+    {
+     "text": "Go to sleep, Sam Sheep!",
+     "level": 83,
+     "page": 3
+    },
+    {
+     "text": "I need to see Fat Cat.",
+     "level": 71,
+     "page": 3
+    },
+    {
+     "text": "Fat Cat can sleep for weeks and weeks!",
+     "level": 64,
+     "page": 3
+    },
+    {
+     "text": "Fat Cat's on her sleeping mat in the park.",
+     "level": 65,
+     "page": 4
+    },
+    {
+     "text": "Go to sleep!",
+     "level": 83,
+     "page": 4
+    },
+    {
+     "text": "You need to see Ted in his red bed.",
+     "level": 85,
+     "page": 4
+    },
+    {
+     "text": "Ted is asleep in his red bed.",
+     "level": 65,
+     "page": 5
+    },
+    {
+     "text": "Ted wakes up.",
+     "level": 56,
+     "page": 6
+    },
+    {
+     "text": "On goes the light.",
+     "level": 107,
+     "page": 6
+    },
+    {
+     "text": "You gave me a fright!",
+     "level": 107,
+     "page": 7
+    },
+    {
+     "text": "That will make you sleep, Sam Sheep.",
+     "level": 97,
+     "page": 9
+    },
+    {
+     "text": "But what about Sam Sheep?",
+     "level": 96,
+     "page": 11
+    },
+    {
+     "text": "Sam Sheep is asleep!",
+     "level": 65,
+     "page": 11
+    }
+   ]
+  }
+ },
+ {
+  "id": "hop-on-pop",
+  "title": "Hop on Pop",
+  "author": "Dr. Seuss",
+  "pages": 32,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 380,
+   "unique": 136,
+   "ready95": 108,
+   "readyPreteach": 108,
+   "preteach": [
+    "don't",
+    "very",
+    "walk",
+    "talk",
+    "mrs",
+    "two",
+    "father",
+    "one",
+    "constantinople",
+    "does",
+    "tomorrow",
+    "today"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "UP PUP Pup is up.",
+     "level": 39,
+     "page": 2
+    },
+    {
+     "text": "ALL TALL We all are tall.",
+     "level": 92,
+     "page": 5
+    },
+    {
+     "text": "ALL SMALL We all are small.",
+     "level": 92,
+     "page": 5
+    },
+    {
+     "text": "DAY PLAY We play all day.",
+     "level": 92,
+     "page": 8
+    },
+    {
+     "text": "NIGHT FIGHT We fight all night.",
+     "level": 107,
+     "page": 8
+    },
+    {
+     "text": "HE ME He is after me.",
+     "level": 82,
+     "page": 9
+    },
+    {
+     "text": "HIM JIM Jim is after him.",
+     "level": 65,
+     "page": 9
+    },
+    {
+     "text": "SEE BEE We see a bee.",
+     "level": 82,
+     "page": 10
+    },
+    {
+     "text": "SEE BEE THREE Now we see three.",
+     "level": 82,
+     "page": 10
+    },
+    {
+     "text": "How can that be?",
+     "level": 97,
+     "page": 11
+    },
+    {
+     "text": "RED RED They call me Red.",
+     "level": 92,
+     "page": 12
+    },
+    {
+     "text": "RED BED I am in bed.",
+     "level": 70,
+     "page": 12
+    },
+    {
+     "text": "PAT PAT They call him Pat.",
+     "level": 92,
+     "page": 14
+    },
+    {
+     "text": "PAT SAT Pat sat on hat.",
+     "level": 26,
+     "page": 14
+    },
+    {
+     "text": "PAT CAT Pat sat on cat.",
+     "level": 26,
+     "page": 15
+    },
+    {
+     "text": "PAT BAT Pat sat on bat.",
+     "level": 26,
+     "page": 15
+    },
+    {
+     "text": "SAD DAD BAD HAD Dad is sad very, very sad.",
+     "level": 116,
+     "page": 17
+    },
+    {
+     "text": "He had a bad day.",
+     "level": 82,
+     "page": 17
+    },
+    {
+     "text": "What a day Dad had!",
+     "level": 96,
+     "page": 17
+    },
+    {
+     "text": "THING THING What is that thing?",
+     "level": 97,
+     "page": 18
+    },
+    {
+     "text": "THING SING That thing can sing!",
+     "level": 97,
+     "page": 18
+    },
+    {
+     "text": "SONG LONG A long, long song Good-by, Thing.",
+     "level": 102,
+     "page": 19
+    },
+    {
+     "text": "You sing too long.",
+     "level": 101,
+     "page": 19
+    },
+    {
+     "text": "HOP POP We like to hop.",
+     "level": 82,
+     "page": 21
+    },
+    {
+     "text": "We like to hop on top of Pop.",
+     "level": 96,
+     "page": 21
+    },
+    {
+     "text": "STOP You must not hop on Pop.",
+     "level": 85,
+     "page": 21
+    },
+    {
+     "text": "Pup up Brown down Pup is down.",
+     "level": 77,
+     "page": 23
+    },
+    {
+     "text": "Where is Brown?",
+     "level": 96,
+     "page": 23
+    },
+    {
+     "text": "WHERE IS BROWN?",
+     "level": 96,
+     "page": 24
+    },
+    {
+     "text": "THERE IS BROWN!",
+     "level": 96,
+     "page": 24
+    },
+    {
+     "text": "Brown is out of town.",
+     "level": 96,
+     "page": 24
+    },
+    {
+     "text": "BACK BLACK Brown came back.",
+     "level": 77,
+     "page": 25
+    },
+    {
+     "text": "SNACK SNACK Eat a snack.",
+     "level": 75,
+     "page": 26
+    },
+    {
+     "text": "Eat a snack with Brown and Black.",
+     "level": 77,
+     "page": 26
+    },
+    {
+     "text": "JUMP BUMP He jumped.",
+     "level": 105,
+     "page": 27
+    },
+    {
+     "text": "He bumped.",
+     "level": 105,
+     "page": 27
+    },
+    {
+     "text": "FAST PAST He went past fast.",
+     "level": 82,
+     "page": 27
+    },
+    {
+     "text": "WENT TENT SENT He went into the tent.",
+     "level": 82,
+     "page": 27
+    },
+    {
+     "text": "I sent him out of the tent.",
+     "level": 96,
+     "page": 27
+    },
+    {
+     "text": "HILL WILL Will went up the hill.",
+     "level": 50,
+     "page": 29
+    },
+    {
+     "text": "WILL HILL STILL Will is up the hill still.",
+     "level": 39,
+     "page": 29
+    },
+    {
+     "text": "FATHER MOTHER SISTER BROTHER That one is my other brother.",
+     "level": 118,
+     "page": 30
+    },
+    {
+     "text": "My brothers read a little bit.",
+     "level": 108,
+     "page": 31
+    },
+    {
+     "text": "Little words like it.",
+     "level": 108,
+     "page": 31
+    },
+    {
+     "text": "My father can read big words, too like...",
+     "level": 109,
+     "page": 32
+    }
+   ]
+  }
+ },
+ {
+  "id": "fat-cat-on-a-mat",
+  "title": "Fat Cat on a Mat",
+  "author": "Phil Roxbee Cox",
+  "pages": 10,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 202,
+   "unique": 82,
+   "ready95": 117,
+   "readyPreteach": 111,
+   "preteach": [
+    "don't",
+    "catch",
+    "sandy",
+    "patch",
+    "hatch",
+    "let's",
+    "lazy",
+    "crazy",
+    "away",
+    "it's"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Fat Cat sees a bee.",
+     "level": 59,
+     "page": 2
+    },
+    {
+     "text": "Are you stuck?",
+     "level": 85,
+     "page": 3
+    },
+    {
+     "text": "Bad luck!",
+     "level": 39,
+     "page": 3
+    },
+    {
+     "text": "I am stuck.",
+     "level": 70,
+     "page": 4
+    },
+    {
+     "text": "The tree bends....",
+     "level": 59,
+     "page": 4
+    },
+    {
+     "text": "The tree bends...",
+     "level": 59,
+     "page": 5
+    },
+    {
+     "text": "Like my new hat, Fat Cat?",
+     "level": 111,
+     "page": 6
+    },
+    {
+     "text": "Next day, Fat Cat will not play.",
+     "level": 89,
+     "page": 7
+    },
+    {
+     "text": "Play with me!",
+     "level": 82,
+     "page": 7
+    },
+    {
+     "text": "Not today, says Fat Cat on her mat.",
+     "level": 109,
+     "page": 7
+    },
+    {
+     "text": "Bake a cake with me, says Jake Snake.",
+     "level": 82,
+     "page": 8
+    },
+    {
+     "text": "Not today, says Fat Cat on her mat.",
+     "level": 109,
+     "page": 8
+    },
+    {
+     "text": "Not today, says Fat Cat on her mat.",
+     "level": 109,
+     "page": 8
+    },
+    {
+     "text": "You are lazy, says Big Pig.",
+     "level": 116,
+     "page": 9
+    },
+    {
+     "text": "You are crazy, says Jake Snake.",
+     "level": 116,
+     "page": 9
+    },
+    {
+     "text": "You are no fun, says Ted.",
+     "level": 85,
+     "page": 9
+    },
+    {
+     "text": "Stay away, says Fat Cat.",
+     "level": 117,
+     "page": 9
+    },
+    {
+     "text": "She hops up off her mat.",
+     "level": 82,
+     "page": 10
+    },
+    {
+     "text": "Clever Fat Cat!",
+     "level": 65,
+     "page": 11
+    }
+   ]
+  }
+ },
+ {
+  "id": "the-eye-book",
+  "title": "The Eye Book",
+  "author": "Theo. LeSieg",
+  "pages": 10,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 137,
+   "unique": 61,
+   "ready95": 115,
+   "readyPreteach": 115,
+   "preteach": [
+    "old"
+   ],
+   "names": [
+    "hooray"
+   ],
+   "sentences": [
+    {
+     "text": "My eyes see.",
+     "level": 115,
+     "page": 1
+    },
+    {
+     "text": "His eyes see.",
+     "level": 115,
+     "page": 1
+    },
+    {
+     "text": "I see him.",
+     "level": 70,
+     "page": 2
+    },
+    {
+     "text": "And he sees me.",
+     "level": 82,
+     "page": 2
+    },
+    {
+     "text": "Our eyes see blue.",
+     "level": 115,
+     "page": 3
+    },
+    {
+     "text": "Our eyes see red.",
+     "level": 115,
+     "page": 3
+    },
+    {
+     "text": "They see a bird.",
+     "level": 66,
+     "page": 3
+    },
+    {
+     "text": "They see a bed.",
+     "level": 59,
+     "page": 3
+    },
+    {
+     "text": "They see the sun.",
+     "level": 59,
+     "page": 4
+    },
+    {
+     "text": "They see the moon.",
+     "level": 101,
+     "page": 4
+    },
+    {
+     "text": "They see a fork a knife a spoon.",
+     "level": 114,
+     "page": 4
+    },
+    {
+     "text": "They see a girl.",
+     "level": 66,
+     "page": 5
+    },
+    {
+     "text": "They see a man..",
+     "level": 59,
+     "page": 5
+    },
+    {
+     "text": "They look down holes.",
+     "level": 102,
+     "page": 6
+    },
+    {
+     "text": "They look up poles.",
+     "level": 102,
+     "page": 6
+    },
+    {
+     "text": "Our eyes see trees.",
+     "level": 115,
+     "page": 7
+    },
+    {
+     "text": "They look at clocks.",
+     "level": 102,
+     "page": 7
+    },
+    {
+     "text": "They look at bees.",
+     "level": 102,
+     "page": 7
+    },
+    {
+     "text": "They look at socks.",
+     "level": 102,
+     "page": 7
+    },
+    {
+     "text": "Our eyes see flies.",
+     "level": 115,
+     "page": 8
+    },
+    {
+     "text": "Our eyes see ants.",
+     "level": 115,
+     "page": 8
+    },
+    {
+     "text": "Our eyes see rings.",
+     "level": 115,
+     "page": 9
+    },
+    {
+     "text": "Our eyes see strings.",
+     "level": 115,
+     "page": 9
+    },
+    {
+     "text": "They see so many, many things!",
+     "level": 100,
+     "page": 9
+    },
+    {
+     "text": "So many things!",
+     "level": 100,
+     "page": 9
+    },
+    {
+     "text": "Like rain and pie...",
+     "level": 73,
+     "page": 9
+    }
+   ]
+  }
+ },
+ {
+  "id": "are-you-my-mother",
+  "title": "Are You My Mother?",
+  "author": "P. D. Eastman",
+  "pages": 62,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 699,
+   "unique": 100,
+   "ready95": 116,
+   "readyPreteach": 116,
+   "preteach": [
+    "oh",
+    "something",
+    "away",
+    "was",
+    "walk",
+    "find",
+    "have",
+    "old",
+    "put",
+    "who"
+   ],
+   "names": [
+    "snort"
+   ],
+   "sentences": [
+    {
+     "text": "A mother bird sat on her egg.",
+     "level": 97,
+     "page": 0
+    },
+    {
+     "text": "The egg jumped.",
+     "level": 105,
+     "page": 1
+    },
+    {
+     "text": "Oh oh!",
+     "level": 117,
+     "page": 2
+    },
+    {
+     "text": "My baby will be here!",
+     "level": 116,
+     "page": 2
+    },
+    {
+     "text": "He will want to eat.",
+     "level": 82,
+     "page": 2
+    },
+    {
+     "text": "I will be back!",
+     "level": 82,
+     "page": 3
+    },
+    {
+     "text": "So away she went.",
+     "level": 117,
+     "page": 4
+    },
+    {
+     "text": "The egg jumped.",
+     "level": 105,
+     "page": 5
+    },
+    {
+     "text": "It jumped, and jumped, and jumped!",
+     "level": 105,
+     "page": 5
+    },
+    {
+     "text": "Out came the baby bird!",
+     "level": 116,
+     "page": 6
+    },
+    {
+     "text": "Where is my mother?",
+     "level": 97,
+     "page": 7
+    },
+    {
+     "text": "He looked for her.",
+     "level": 105,
+     "page": 8
+    },
+    {
+     "text": "He looked up.",
+     "level": 105,
+     "page": 9
+    },
+    {
+     "text": "He did not see her.",
+     "level": 82,
+     "page": 9
+    },
+    {
+     "text": "He looked down.",
+     "level": 105,
+     "page": 10
+    },
+    {
+     "text": "He did not see her.",
+     "level": 82,
+     "page": 10
+    },
+    {
+     "text": "I will go and look for her, he said.",
+     "level": 102,
+     "page": 11
+    },
+    {
+     "text": "So away he went.",
+     "level": 117,
+     "page": 12
+    },
+    {
+     "text": "Down, out of the tree he went.",
+     "level": 96,
+     "page": 13
+    },
+    {
+     "text": "Down, down, down!",
+     "level": 77,
+     "page": 14
+    },
+    {
+     "text": "The baby bird could not fly.",
+     "level": 116,
+     "page": 15
+    },
+    {
+     "text": "He did not know what his mother looked like.",
+     "level": 114,
+     "page": 17
+    },
+    {
+     "text": "He went right by her.",
+     "level": 107,
+     "page": 17
+    },
+    {
+     "text": "He did not see her.",
+     "level": 82,
+     "page": 17
+    },
+    {
+     "text": "He came to a kitten.",
+     "level": 82,
+     "page": 18
+    },
+    {
+     "text": "Are you my mother?",
+     "level": 97,
+     "page": 18
+    },
+    {
+     "text": "The kitten just looked and looked.",
+     "level": 105,
+     "page": 19
+    },
+    {
+     "text": "It did not say a thing.",
+     "level": 72,
+     "page": 19
+    },
+    {
+     "text": "Then he came to a hen.",
+     "level": 97,
+     "page": 21
+    },
+    {
+     "text": "Are you my mother?",
+     "level": 97,
+     "page": 21
+    },
+    {
+     "text": "No, said the hen.",
+     "level": 86,
+     "page": 21
+    },
+    {
+     "text": "So the baby bird went on.",
+     "level": 116,
+     "page": 23
+    },
+    {
+     "text": "But where?",
+     "level": 96,
+     "page": 24
+    },
+    {
+     "text": "Where is she?",
+     "level": 96,
+     "page": 24
+    },
+    {
+     "text": "Where could she be?",
+     "level": 98,
+     "page": 24
+    },
+    {
+     "text": "Then he came to a dog.",
+     "level": 97,
+     "page": 25
+    },
+    {
+     "text": "Are you my mother?",
+     "level": 97,
+     "page": 25
+    },
+    {
+     "text": "I am not your mother.",
+     "level": 110,
+     "page": 26
+    },
+    {
+     "text": "I am a dog, said the dog.",
+     "level": 86,
+     "page": 26
+    },
+    {
+     "text": "So the baby bird went on.",
+     "level": 116,
+     "page": 30
+    },
+    {
+     "text": "Now he came to a cow.",
+     "level": 82,
+     "page": 30
+    },
+    {
+     "text": "Are you my mother?",
+     "level": 97,
+     "page": 31
+    },
+    {
+     "text": "How could I be your mother?",
+     "level": 110,
+     "page": 32
+    },
+    {
+     "text": "I am a cow.",
+     "level": 77,
+     "page": 32
+    },
+    {
+     "text": "The kitten and the hen were not his mother.",
+     "level": 112,
+     "page": 33
+    },
+    {
+     "text": "The dog and the cow were not his mother.",
+     "level": 112,
+     "page": 34
+    },
+    {
+     "text": "Did he have a mother?",
+     "level": 117,
+     "page": 35
+    },
+    {
+     "text": "I did have a mother, said the baby bird.",
+     "level": 117,
+     "page": 36
+    },
+    {
+     "text": "I know I did.",
+     "level": 114,
+     "page": 36
+    },
+    {
+     "text": "I will.",
+     "level": 70,
+     "page": 36
+    },
+    {
+     "text": "I WILL!",
+     "level": 70,
+     "page": 36
+    },
+    {
+     "text": "He ran!",
+     "level": 82,
+     "page": 37
+    },
+    {
+     "text": "Then he saw a car.",
+     "level": 97,
+     "page": 38
+    },
+    {
+     "text": "No, it could not.",
+     "level": 98,
+     "page": 38
+    },
+    {
+     "text": "The baby bird did not stop.",
+     "level": 116,
+     "page": 39
+    },
+    {
+     "text": "He ran on and on.",
+     "level": 82,
+     "page": 39
+    },
+    {
+     "text": "Now he looked way, way down.",
+     "level": 105,
+     "page": 40
+    },
+    {
+     "text": "He saw a boat.",
+     "level": 91,
+     "page": 41
+    },
+    {
+     "text": "There she is!",
+     "level": 96,
+     "page": 41
+    },
+    {
+     "text": "The boat went on.",
+     "level": 76,
+     "page": 42
+    },
+    {
+     "text": "He looked way, way up.",
+     "level": 105,
+     "page": 43
+    },
+    {
+     "text": "He saw a big plane.",
+     "level": 91,
+     "page": 43
+    },
+    {
+     "text": "Here I am, Mother, he called out.",
+     "level": 97,
+     "page": 43
+    },
+    {
+     "text": "But the plane did not stop.",
+     "level": 56,
+     "page": 44
+    },
+    {
+     "text": "The plane went on.",
+     "level": 56,
+     "page": 44
+    },
+    {
+     "text": "Just then, the baby bird saw a big thing.",
+     "level": 116,
+     "page": 45
+    },
+    {
+     "text": "This must be his mother!",
+     "level": 97,
+     "page": 45
+    },
+    {
+     "text": "There she is!",
+     "level": 96,
+     "page": 45
+    },
+    {
+     "text": "There is my mother!",
+     "level": 97,
+     "page": 45
+    },
+    {
+     "text": "He ran right up to it.",
+     "level": 107,
+     "page": 46
+    },
+    {
+     "text": "Mother, Mother!",
+     "level": 97,
+     "page": 46
+    },
+    {
+     "text": "Here I am, Mother!",
+     "level": 97,
+     "page": 46
+    },
+    {
+     "text": "Oh, you are not my mother, said the baby bird.",
+     "level": 117,
+     "page": 48
+    },
+    {
+     "text": "I have to get out of here!",
+     "level": 117,
+     "page": 48
+    },
+    {
+     "text": "But the baby bird could not get away.",
+     "level": 117,
+     "page": 49
+    },
+    {
+     "text": "It went way, way up.",
+     "level": 72,
+     "page": 50
+    },
+    {
+     "text": "And up, up, up went the baby bird.",
+     "level": 116,
+     "page": 50
+    },
+    {
+     "text": "Oh, oh, oh!",
+     "level": 117,
+     "page": 52
+    },
+    {
+     "text": "Get me out of here!",
+     "level": 96,
+     "page": 52
+    },
+    {
+     "text": "Where am I?",
+     "level": 96,
+     "page": 54
+    },
+    {
+     "text": "I want to go home!",
+     "level": 83,
+     "page": 54
+    },
+    {
+     "text": "I want my mother!",
+     "level": 97,
+     "page": 54
+    },
+    {
+     "text": "Just then the mother bird came back to the tree.",
+     "level": 97,
+     "page": 57
+    },
+    {
+     "text": "You are not a kitten.",
+     "level": 85,
+     "page": 59
+    },
+    {
+     "text": "You are not a hen.",
+     "level": 85,
+     "page": 59
+    },
+    {
+     "text": "You are not a dog.",
+     "level": 85,
+     "page": 59
+    },
+    {
+     "text": "You are not a cow.",
+     "level": 85,
+     "page": 59
+    },
+    {
+     "text": "You are a bird, and you are my mother.",
+     "level": 97,
+     "page": 61
+    }
+   ]
+  }
+ },
+ {
+  "id": "fox-on-a-box",
+  "title": "Fox on a Box",
+  "author": "Phil Roxbee Cox",
+  "pages": 12,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 112,
+   "unique": 61,
+   "ready95": 121,
+   "readyPreteach": 116,
+   "preteach": [
+    "tries",
+    "pushes",
+    "i'm",
+    "honey",
+    "he's",
+    "cries",
+    "put",
+    "find"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Hungry Fox spots a box.",
+     "level": 116,
+     "page": 2
+    },
+    {
+     "text": "Hungry Fox hops onto the box.",
+     "level": 116,
+     "page": 2
+    },
+    {
+     "text": "He tries to reach...",
+     "level": 119,
+     "page": 2
+    },
+    {
+     "text": "Hungry Fox sits on the box.",
+     "level": 116,
+     "page": 7
+    },
+    {
+     "text": "I want fishes, wishes Fox.",
+     "level": 89,
+     "page": 8
+    },
+    {
+     "text": "Hungry Fox is on the box.",
+     "level": 116,
+     "page": 9
+    },
+    {
+     "text": "I can reach the cooling pies!",
+     "level": 101,
+     "page": 10
+    },
+    {
+     "text": "But Pup and Fat Cat...",
+     "level": 39,
+     "page": 10
+    },
+    {
+     "text": "Hungry Fox falls into the box.",
+     "level": 116,
+     "page": 11
+    }
+   ]
+  }
+ }
+]

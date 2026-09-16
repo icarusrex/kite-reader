@@ -1,6 +1,6 @@
 # Kite Reader
 
-A private, home-built early-reading tutor (Mentava-style systematic phonics, Direct Instruction delivery) for one 4-year-old. Runs locally on the family computer.
+A private, home-built early-reading tutor (Mentava-style systematic phonics, Direct Instruction delivery) for one 4-year-old. Private web app behind Cloudflare Access; works offline once loaded.
 
 Curriculum spec: `Curriculum v1.md` in the Obsidian vault (`04-personal/Mentava Clone`).
 
@@ -26,8 +26,6 @@ What they power:
 - **Readability** per level in Grown-ups → Books.
 
 `src/engine/wordLevel.ts` estimates the curriculum level (1–120) for any English word; `src/content/common-words.txt` enables compound splitting in scripts.
-
-Owned books under copyright (Seuss, Eastman, Usborne Phonics Readers) are handled only through the local import below; nothing from them is in this repository.
 
 ## Run locally
 
@@ -57,28 +55,23 @@ No API keys are used at runtime.
 
 ## Running it
 
-Local (family computer):
+Web: https://reader.viableplanet.eu, a Cloudflare Worker (`kite-reader`) **behind Cloudflare Access**, so only allowed emails can open it. It must stay behind Access and this repo must stay private: the site bundles the family's own copies of picture books (and *Winnie-the-Pooh*, under EU copyright until 2027) for private, non-commercial use only.
+
+Deploy: `npm run build && npx wrangler deploy` (or push to `main` once the Cloudflare secrets are set). Local: `npm run local` → http://127.0.0.1:5173.
+
+## My books (family's own copies)
+
+Picture books from `~/Documents/eBooks` are bundled into `public/books/` (page pictures, text, readability):
 
 ```bash
-npm install        # also copies the offline OCR engine into public/ocr
-npm run local      # builds and serves http://127.0.0.1:5173
+npm run books                      # rebuild all (macOS: PDFKit + Apple Vision OCR)
+npm run books -- green-eggs-and-ham  # just one
 ```
 
-Web: https://reader.viableplanet.eu, a Cloudflare Worker (`kite-reader`) **behind Cloudflare Access**, so only allowed emails can open it. It must stay behind Access: *Winnie-the-Pooh* is under copyright in the EU until 1 Jan 2027. Pushing to `main` of the private repo `icarusrex/kite-reader` runs tests and deploys. Manual: `npm run build && npx wrangler deploy`.
-
-## My books (owned books, local only)
-
-Grown-ups → Books → **Import books…** and pick EPUB/PDF files from `~/Documents/eBooks`.
-
-- Text is extracted in the browser: EPUB text directly; scanned picture books via on-device OCR (tesseract.js, bundled; no network).
-- Page text and page images are stored **only in this browser’s IndexedDB** on this computer. They are not in the code, the build, git, or any export.
-- **Review text** once per book to fix OCR mistakes and blank out non-story pages.
-- The app works out each book’s level: *readable at* (≥95% of words decodable) and *with pre-teaching* (≥90%, ≤10 words). It then:
-  - puts the book on the child’s **My books** shelf (picture + text, decodable words highlighted, tap a word to hear it), marked **★ Ready** when he can read it;
-  - adds the book’s pre-teach words as **heart words** in sessions once the book is within 10 levels;
-  - uses decodable sentences from his own books in sentence practice.
-
-Clearing browser data deletes imported books; re-import from the original files.
+- Books are listed in `scripts/books/build.ts`. OCR mistakes are fixed in `scripts/books/overrides.json` (page index → text, `null` hides a page), so fixes survive rebuilds.
+- Each book gets *readable at* (≥95% of words decodable) and *with pre-teaching* (≥90%, ≤10 words). The app puts it on the child's **My books** shelf (decodable words highlighted, tap a word to hear it), marks it **★ Ready** when he can read it, adds its pre-teach words as **heart words** once it's within 10 levels, and uses its decodable sentences in practice.
+- Pages are precached by the service worker, so books work offline on the tablet.
+- Not bundled: *Teach Your Child to Read in 100 Easy Lessons* (a parent's manual, not a reader), and the Oz/Pooh EPUBs (already in `src/content/readaloud/`).
 
 ## Adding levels
 
