@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { meter, MeterFrame } from '../audio/mic';
-import { pictureFor } from '../content/pictures';
+import { pictureFor, pictureUrl } from '../content/pictures';
 
 const lastTap = { x: -1, y: -1, t: 0 };
 
@@ -34,7 +34,9 @@ export function PictureTile(props: { word: string; onTap?: () => void; state?: '
   const tap = useTap(() => props.onTap?.());
   return (
     <button className={`tile ${props.state ?? ''}`} onPointerDown={tap} aria-label={props.word} data-c={props.correct ? '1' : undefined}>
-      <span className="picture">{pictureFor(props.word) ?? '❓'}</span>
+      {pictureUrl(props.word)
+        ? <img className="picture-img" src={pictureUrl(props.word)} alt="" draggable={false} />
+        : <span className="picture">{pictureFor(props.word) ?? '❓'}</span>}
     </button>
   );
 }

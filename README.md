@@ -9,6 +9,7 @@ Curriculum spec: `Curriculum v1.md` in the Obsidian vault (`04-personal/Mentava 
 - Readiness check (dogfish/fishdog directionality + oral blending, using only unambiguous pictures)
 - Levels 1–20 (Stage 1): a, m, s, t, review, f, d, g, i, n, p, h, b, l, j, c, v, w, r, k
 - Activities: Ear Game (rhyme, onset-rime, blending, first and final sound), Sound Reveal, Hear & Tap (+ confusable pairs b/d, f/v, r/w), See & Say, Hold It, Glide Blend + Say It Fast, Alien Names, Read & Match, Which Word, Build It, Sentence Read, **Story** (levels 5–20), Heart Word (modelled first, then read cold; tricky part marked)
+- Watercolour illustrations for every picture word and story (`npm run pictures`, Gemini with approved character sheets)
 - Themed stories remixed from public-domain characters: Pooh and Pig (Winnie-the-Pooh), Tin Man (Oz). Vocabulary cues from *Teach Your Child to Read in 100 Easy Lessons*; no text copied.
 - Mastery engine: in-session re-injection of misses, Leitner spaced review, 10-item level checkout + next-day cold check, fatigue stop, active-time session cap, level-complete celebration
 - DI error correction: My turn → Together → Your turn. No points/streaks/currency
@@ -61,7 +62,7 @@ No API keys are used at runtime.
 
 Web: https://reader.viableplanet.eu, a Cloudflare Worker (`kite-reader`) **behind Cloudflare Access**, so only allowed emails can open it. Private family app.
 
-Deploy: `npm run build && npx wrangler deploy` (or push to `main` once the Cloudflare secrets are set). Local: `npm run local` → http://127.0.0.1:5173.
+Deploy: `npm run build && npx wrangler deploy` from the Mac. GitHub only runs the tests. Local: `npm run local` → http://127.0.0.1:5173.
 
 ## My books (family's own copies)
 

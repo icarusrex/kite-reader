@@ -395,9 +395,14 @@ export function Banner({ step, onDone }: ActivityProps) {
   return (
     <div className="stage" onPointerDown={b === 'story_time' ? undefined : tap}>
       {b === 'level_done' && <div className="burst" aria-hidden>{Array.from({ length: 14 }, (_, i) => <span key={i} style={{ '--i': i } as React.CSSProperties} />)}</div>}
-      <div style={{ fontSize: story ? '12vmin' : '26vmin' }}>{icon}</div>
+      {!step.image && <div style={{ fontSize: story ? '12vmin' : '26vmin' }}>{icon}</div>}
       <h1 className="title">{text}</h1>
-      {story && <div className="story">{story.map((l, i) => <p key={i}>{l}</p>)}</div>}
+      {story && (
+        <div className="story-layout">
+          {step.image && <img className="story-picture" src={step.image} alt="" />}
+          <div className="story">{story.map((l, i) => <p key={i}>{l}</p>)}</div>
+        </div>
+      )}
       {b === 'story_time' && <button className="primary soft" onPointerDown={tap}>We read it ✓</button>}
     </div>
   );
@@ -444,10 +449,13 @@ export function Story({ step, ctx, onDone, setNeutral }: ActivityProps) {
   });
   return (
     <div className="stage">
-      <div className="story">
-        {lines.map((_, li) => (
-          <p key={li}>{words.map((x, i) => x.li === li && <SentenceChip key={i} w={x.w} state={i < next ? 'done' : i === next ? 'next' : ''} onTap={() => i === next && setNext(next + 1)} />)}</p>
-        ))}
+      <div className="story-layout">
+        {step.image && <img className="story-picture" src={step.image} alt="" />}
+        <div className="story">
+          {lines.map((_, li) => (
+            <p key={li}>{words.map((x, i) => x.li === li && <SentenceChip key={i} w={x.w} state={i < next ? 'done' : i === next ? 'next' : ''} onTap={() => i === next && setNext(next + 1)} />)}</p>
+          ))}
+        </div>
       </div>
       {strip}
     </div>

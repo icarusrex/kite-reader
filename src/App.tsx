@@ -21,19 +21,22 @@ function Shell() {
   const [view, setView] = useState<View>('home');
   const [extra, setExtra] = useState(false);
   const [extras, setExtras] = useState<SessionExtras | undefined>();
+  const [practice, setPractice] = useState<number | undefined>();
   useEffect(() => { initAudio(); requestPersistence(); meter.sensitivity = progress.settings.micSensitivity; /* eslint-disable-next-line */ }, []);
 
   const start = async () => {
     await meter.start(); // must be inside the tap for iOS
     if (progress.settings.readinessPassed === null) return setView('readiness');
     setExtras(await localExtras(currentLevel(progress)));
+    setPractice(undefined);
     setView('session');
   };
 
-  if (view === 'parent') return <Parent onClose={() => setView('home')} onReadiness={async () => { await meter.start(); setView('readiness'); }} onExtraSession={() => { setExtra(true); setView('home'); }} />;
+  if (view === 'parent') return <Parent onClose={() => setView('home')} onReadiness={async () => { await meter.start(); setView('readiness'); }} onExtraSession={() => { setExtra(true); setView('home'); }}
+    onPractice={async (n) => { await meter.start(); setExtras(await localExtras(n)); setPractice(n); setView('session'); }} />;
   if (view === 'stories') return <StoryChair onClose={() => setView('home')} />;
   if (view === 'readiness') return <Readiness onDone={() => setView('home')} />;
-  if (view === 'session') return <Session extras={extras} onParent={() => setView('parent')} onExit={() => { setExtra(false); setView('done'); }} />;
+  if (view === 'session') return <Session key={practice ?? 'main'} extras={extras} practiceLevel={practice} onParent={() => setView('parent')} onExit={() => { setExtra(false); if (practice) { setPractice(undefined); setView('parent'); } else setView('done'); }} />;
   if (view === 'done') return <Done onHome={() => setView('home')} onParent={() => setView('parent')} />;
   return <Home onStart={start} onParent={() => setView('parent')} onStories={() => setView('stories')} extraAllowed={extra} />;
 }

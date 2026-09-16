@@ -4,7 +4,8 @@ import { say, stop } from '../audio/speaker';
 import { levelByN } from '../content/levels';
 import { Banner, Build, Ear, Glide, HearTap, HeartWord, Hold, ReadMatch, Reveal, SeeSay, Sentence, Story, WhichWord } from '../activities/Activities';
 import { ActivityProps } from '../activities/types';
-import { PASS_RATIO, SessionExtras, Step, StepKind, buildCheckout, buildMain, storyFor } from '../engine/session';
+import { PASS_RATIO, SessionExtras, Step, StepKind, buildCheckout, buildMain, storyFor, storyLevel } from '../engine/session';
+import { storyPictureUrl } from '../content/pictures';
 import { SessionLog, coldCheckDue, currentLevel, failCold, passCheckout, passCold, recordAnswer, today } from '../engine/progress';
 import { useStore } from '../app/store';
 import { ParentCorner } from '../ui/components';
@@ -16,15 +17,15 @@ const VIEWS: Record<StepKind, (p: ActivityProps) => JSX.Element> = {
 
 interface Tally { answered: number; correct: number }
 
-export function Session({ onExit, onParent, extras }: { onExit: (log: SessionLog) => void; onParent: () => void; extras?: SessionExtras }) {
+export function Session({ onExit, onParent, extras, practiceLevel }: { onExit: (log: SessionLog) => void; onParent: () => void; extras?: SessionExtras; practiceLevel?: number }) {
   const { progress, update } = useStore();
   const progressRef = useRef(progress);
   progressRef.current = progress;
 
-  const startLevel = useRef(currentLevel(progress)).current;
+  const startLevel = useRef(practiceLevel ?? currentLevel(progress)).current;
   const [level, setLevel] = useState(startLevel);
   const [queue, setQueue] = useState<Step[]>(() =>
-    coldCheckDue(progress, startLevel) ? buildCheckout(startLevel, 'cold') : buildMain(progress, startLevel, extras));
+    !practiceLevel && coldCheckDue(progress, startLevel) ? buildCheckout(startLevel, 'cold') : buildMain(progress, startLevel, extras));
   const [index, setIndex] = useState(0);
   const [neutral, setNeutral] = useState(false);
   const tallies = useRef<Record<Step['phase'], Tally>>({ main: { answered: 0, correct: 0 }, checkout: { answered: 0, correct: 0 }, cold: { answered: 0, correct: 0 } });
@@ -53,18 +54,18 @@ export function Session({ onExit, onParent, extras }: { onExit: (log: SessionLog
     ended.current = true;
     const n = levelRef.current;
     const t = tallies.current;
-    if (ranMain.current) {
+    if (ranMain.current && !practiceLevel) {
       update((p) => ({ ...p, levels: { ...p.levels, [n]: { ...p.levels[n], sessions: (p.levels[n]?.sessions ?? 0) + 1 } } }));
     }
     const log: SessionLog = {
-      date: today(), level: n, activeSeconds: active.current, endedBy,
+      date: today(), level: n, activeSeconds: active.current, endedBy, ...(practiceLevel ? { practice: true } : {}),
       answered: t.main.answered + t.checkout.answered + t.cold.answered,
       correct: t.main.correct + t.checkout.correct + t.cold.correct,
     };
     update((p) => ({ ...p, sessions: [...p.sessions, log] }));
     if (endedBy === 'fatigue') await say({ p: 'rest' });
     if (storyTime) {
-      setQueue((q) => [...q.slice(0, index + 1), { uid: 'story', kind: 'banner', banner: 'story_time', lines: storyFor(n), phase: 'main' }]);
+      setQueue((q) => [...q.slice(0, index + 1), { uid: 'story', kind: 'banner', banner: 'story_time', lines: storyFor(n), image: storyLevel(n) && storyPictureUrl(storyLevel(n)!.n), phase: 'main' }]);
       setIndex((i) => i + 1);
       pendingExit.current = log;
       return;
@@ -76,7 +77,7 @@ export function Session({ onExit, onParent, extras }: { onExit: (log: SessionLog
   const wantsStoryTime = () => {
     const n = levelRef.current;
     const sessionsSoFar = progressRef.current.sessions.length + 1;
-    return !!storyFor(n) && sessionsSoFar % 3 === 0;
+    return !practiceLevel && !!storyFor(n) && sessionsSoFar % 3 === 0;
   };
 
   /** Called when the queue runs out: decide what comes next. */
@@ -97,6 +98,7 @@ export function Session({ onExit, onParent, extras }: { onExit: (log: SessionLog
     }
     if (phase === 'main') {
       ranMain.current = true;
+      if (practiceLevel) return finish('complete');
       const sessions = progressRef.current.levels[n]?.sessions ?? 0;
       const status = progressRef.current.levels[n]?.status;
       const confident = t.answered >= 8 && ratio >= 0.9;

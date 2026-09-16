@@ -6,29 +6,34 @@ import { PROMPTS } from '../content/prompts';
 import { checkText } from '../engine/decodable';
 import { currentLevel, freshProgress, jumpTo, Progress, today } from '../engine/progress';
 import { hasManifest, hasRecording, refreshRecordings, say } from '../audio/speaker';
-import { remove, save } from '../engine/storage';
+import { remove } from '../engine/storage';
 import { meter } from '../audio/mic';
-import { exportSounds } from '../audio/exportSounds';
 import { LIBRARY, loadBook } from '../content/readaloud';
 import { tokenize, wordLevel } from '../engine/wordLevel';
 import { BooksAdmin } from '../books/BooksAdmin';
+import { StatusTab } from './parent/StatusTab';
+import { LessonsTab } from './parent/LessonsTab';
+import { RecordWizard } from './parent/RecordWizard';
+import { useRecorder } from '../audio/useRecorder';
 
-type Tab = 'progress' | 'sounds' | 'books' | 'settings' | 'backup';
+type Tab = 'status' | 'progress' | 'lessons' | 'sounds' | 'books' | 'settings' | 'backup';
 
-export function Parent({ onClose, onReadiness, onExtraSession }: { onClose: () => void; onReadiness: () => void; onExtraSession: () => void }) {
-  const [tab, setTab] = useState<Tab>('progress');
+export function Parent({ onClose, onReadiness, onExtraSession, onPractice }: { onClose: () => void; onReadiness: () => void; onExtraSession: () => void; onPractice: (level: number) => void }) {
+  const [tab, setTab] = useState<Tab>('status');
   return (
     <div className="parent">
       <header>
         <h1>Grown-ups</h1>
-        {(['progress', 'sounds', 'books', 'settings', 'backup'] as Tab[]).map((t) => (
+        {(['status', 'progress', 'lessons', 'sounds', 'books', 'settings', 'backup'] as Tab[]).map((t) => (
           <button key={t} className={`tab ${tab === t ? 'on' : ''}`} onClick={() => setTab(t)}>{t[0].toUpperCase() + t.slice(1)}</button>
         ))}
         <span style={{ flex: 1 }} />
         <button className="btn" onClick={onClose}>Back to child</button>
       </header>
       <main>
+        {tab === 'status' && <StatusTab go={setTab} />}
         {tab === 'progress' && <ProgressTab />}
+        {tab === 'lessons' && <LessonsTab onPractice={onPractice} />}
         {tab === 'sounds' && <SoundsTab />}
         {tab === 'books' && <BooksTab />}
         {tab === 'settings' && <SettingsTab onReadiness={onReadiness} onExtraSession={onExtraSession} />}
@@ -73,7 +78,7 @@ function ProgressTab() {
       <div className="card">
         <h2>Recent sessions</h2>
         <table><thead><tr><th>Date</th><th>Level</th><th>Minutes</th><th>Accuracy</th><th>Ended</th></tr></thead><tbody>
-          {last14.map((s, i) => <tr key={i}><td>{s.date}</td><td>{s.level}</td><td>{(s.activeSeconds / 60).toFixed(1)}</td><td>{s.answered ? Math.round((100 * s.correct) / s.answered) + '%' : '–'}</td><td>{s.endedBy}</td></tr>)}
+          {last14.map((s, i) => <tr key={i}><td>{s.date}</td><td>{s.level}</td><td>{(s.activeSeconds / 60).toFixed(1)}</td><td>{s.answered ? Math.round((100 * s.correct) / s.answered) + '%' : '–'}</td><td>{s.practice ? 'practice' : s.endedBy}</td></tr>)}
         </tbody></table>
       </div>
     </>
@@ -82,39 +87,15 @@ function ProgressTab() {
 
 function SoundsTab() {
   const [, force] = useState(0);
-  const [recording, setRecording] = useState<string | null>(null);
-  const [exporting, setExporting] = useState(false);
-  const rec = useRef<MediaRecorder | null>(null);
-  const chunks = useRef<Blob[]>([]);
-  const stream = useRef<MediaStream | null>(null);
-  useEffect(() => () => stream.current?.getTracks().forEach((t) => t.stop()), []);
-
-  const start = async (g: string) => {
-    if (!stream.current) stream.current = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: true } });
-    chunks.current = [];
-    const r = new MediaRecorder(stream.current);
-    r.ondataavailable = (e) => chunks.current.push(e.data);
-    r.onstop = async () => {
-      const blob = new Blob(chunks.current, { type: r.mimeType });
-      await save(`rec:g:${g}`, blob);
-      await refreshRecordings();
-      setRecording(null); force((n) => n + 1);
-      say({ g });
-    };
-    rec.current = r;
-    r.start();
-    setRecording(g);
-  };
-  const stopRec = () => rec.current?.state === 'recording' && rec.current.stop();
+  const { recording, start, stop: stopRec } = useRecorder(() => force((n) => n + 1));
 
   const recorded = GRAPHEMES.filter((g) => hasRecording(g.id)).length;
   return (
     <>
+      <RecordWizard onChange={() => force((n) => n + 1)} />
       <div className="card">
-        <h2>Record the pure sounds ({recorded}/{GRAPHEMES.length})</h2>
-        <p>Press and hold <b>Record</b>, say the sound, release. Keep it pure: “mmm”, not “muh”. Stop sounds (t, d, g, p, b, k) should be short and nearly whispered. Recordings on this device override the app’s built-in sounds.</p>
-        <p>When all sounds are recorded, <b>export them for the app</b> so every device gets them (steps in <code>MANUAL-TASKS.md</code>).</p>
-        <button className="btn" disabled={!recorded || exporting} onClick={async () => { setExporting(true); try { await exportSounds(); } finally { setExporting(false); } }}>{exporting ? 'Exporting…' : `Export ${recorded} sound${recorded === 1 ? "" : "s"} for the app`}</button>
+        <h2>All sounds ({recorded}/{GRAPHEMES.length} recorded)</h2>
+        <p style={{ fontSize: 14 }}>Your recordings replace the built-in sounds on this device straight away. Hold <b>Record</b>, say the sound, release, or use the step-by-step recorder above.</p>
       </div>
       <div className="card">
         <table><thead><tr><th>Sound</th><th>Level</th><th>Key word</th><th>Tip</th><th /></tr></thead><tbody>
@@ -128,7 +109,7 @@ function SoundsTab() {
                 <button className={`btn rec ${recording === g.id ? 'on' : ''}`} onPointerDown={() => start(g.id)} onPointerUp={stopRec} onPointerLeave={stopRec}>{recording === g.id ? 'Recording…' : 'Hold to record'}</button>{' '}
                 <button className="btn light" onClick={() => say({ g: g.id })}>▶</button>{' '}
                 {hasRecording(g.id) ? <span className="pill good">recorded here</span> : hasManifest(`phoneme:${g.id}`) ? <span className="pill good">built in</span> : <span className="pill warn">device voice</span>}
-                {hasRecording(g.id) && <button className="btn light" style={{ marginLeft: 6 }} onClick={async () => { await remove(`rec:g:${g.id}`); await refreshRecordings(); force((n) => n + 1); }}>✕</button>}
+                {hasRecording(g.id) && <button className="btn light" style={{ marginLeft: 6 }} onClick={async () => { await remove(`rec:g:${g.id}`); await refreshRecordings(); force((n) => n + 1); }} aria-label="Delete recording">✕</button>}
               </td>
             </tr>
           ))}

@@ -41,7 +41,11 @@ Voice: **Liam** (American man) on ElevenLabs' newest model, chosen 2026-09-16. T
 ## Content you may want to edit
 - **Stories and sentences for levels 5–20** are in `src/content/levels.ts` (`sentences:` and `story:`). Characters: **Pig** (Piglet), **Pooh** (heart word from level 11: the "ooh" is learned by sight), **Tin Man** (Oz). Rewrite freely, then run `npm run validate`. It rejects any word that uses letters or patterns not taught yet (e.g. "the" before level 25, "and" before level 27).
 - **Themes your child likes** (dinosaurs, a pet's name, family names): **(tell Claude)**. Names made only of taught letters (Sam, Dan, Kim, Jill) can be used right away; others become heart words.
-- **Pictures** for Read & Match are emoji in `src/content/pictures.ts`. The listening games only use the `CLEAR_WORDS` list; keep it to things a child names exactly that way.
+- **Pictures** are watercolour illustrations in `public/pictures/` (Gemini, about $0.05 each, key in `.env`). Characters: our own teddy bear (Pooh, yellow scarf), piglet (Pig, blue dungarees), the Tin Man (from Denslow's Oz design), Sam and Dad. Their approved model sheets are in `scripts/pictures/characters/` and keep them consistent in every scene.
+  - A picture you don't like: **(tell Claude)** which one, or edit its description in `scripts/pictures/generate.ts` and run `npm run pictures -- <name>` (e.g. `npm run pictures -- hat story-12`).
+  - New levels: **(tell Claude)** and the new words and stories get pictures in the same style.
+  - The listening games only use the `CLEAR_WORDS` list in `src/content/pictures.ts`; keep it to things a child names exactly that way.
+  - Google's image filter blocks prompts that name or copy the book characters' designs, so the bear and piglet are described in words as our own designs.
 
 ## Weekly (≈2 min)
 - **Grown-ups → Progress:** look at the session log. If several sessions ended with **fatigue**, the app stopped because your child missed the same item three times. **(tell Claude)**: the plan is to drop back to easy review instead of ending the session.
@@ -61,5 +65,6 @@ Voice: **Liam** (American man) on ElevenLabs' newest model, chosen 2026-09-16. T
 | `npm run audio` | ElevenLabs audio for new words/prompts (skips existing) |
 | `npm run sounds -- <file>` | Builds exported pure-sound recordings into the app |
 | `npm run books` | Rebuilds bundled books from `~/Documents/eBooks` |
+| `npm run pictures` | Generates missing illustrations (Gemini); `-- <name>` regenerates one |
 | `npm run build && npx wrangler deploy` | Publishes to reader.viableplanet.eu |
 | `CHANNEL=chrome node tests/smoke.mjs` | Plays a full simulated session (needs `npx vite preview --port 4173`) |

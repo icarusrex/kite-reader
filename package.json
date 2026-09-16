@@ -13,7 +13,8 @@
     "mine": "tsx scripts/mine-books.ts",
     "local": "vite build && vite preview --host 127.0.0.1 --port 5173 --strictPort",
     "books": "tsx scripts/books/build.ts",
-    "sounds": "tsx scripts/import-sounds.ts"
+    "sounds": "tsx scripts/import-sounds.ts",
+    "pictures": "tsx scripts/pictures/generate.ts"
   },
   "dependencies": {
     "@fontsource/andika": "^5.3.0",

@@ -1,6 +1,6 @@
 import { LEVELS, Level, knownGraphemes, levelByN } from '../content/levels';
 import { GRAPHEMES, GRAPHEME_BY_ID } from '../content/phonemes';
-import { CLEAR_WORDS, PICTURES } from '../content/pictures';
+import { CLEAR_WORDS, PICTURES, storyPictureUrl } from '../content/pictures';
 import { checkText, segment } from './decodable';
 import BOOK_SENTENCES from '../content/bookSentences.json';
 import { wordLevel } from './wordLevel';
@@ -17,6 +17,7 @@ export interface Step {
   word?: string;
   text?: string;
   lines?: string[];         // story sentences
+  image?: string;           // story illustration
   options?: string[];
   ear?: { mode: 'blend' | 'onset' | 'rhyme' | 'first' | 'last'; target: string; options: string[] };
   banner?: 'checkout' | 'cold' | 'story_time' | 'new_sound' | 'level_done';
@@ -204,7 +205,7 @@ export function buildMain(p: Progress, n: number, extras?: SessionExtras): Step[
   const fromBooks = [...bookSentencesFor(n).map((b) => ({ text: b.text, source: BOOK_TITLES[b.book] ?? b.book })), ...local];
   const sessionsHere = p.levels[n]?.sessions ?? 0;
   if (level.story && sessionsHere % 2 === 1) {
-    steps.push({ uid: uid(), kind: 'story', lines: level.story, phase: 'main' });
+    steps.push({ uid: uid(), kind: 'story', lines: level.story, image: storyPictureUrl(n), phase: 'main' });
   } else if (fromBooks.length && Math.random() < 0.5) {
     const b = pick(fromBooks, 1)[0];
     steps.push({ uid: uid(), kind: 'sentence', text: b.text, source: b.source, phase: 'main' });
@@ -254,5 +255,6 @@ export const PASS_RATIO = { checkout: 0.9, cold: 0.8 } as const;
 
 /** Story for "go find someone": the level's story, else the latest earlier one. */
 export function storyFor(n: number): string[] | undefined {
-  return [...LEVELS].reverse().find((l) => l.n <= n && l.story)?.story;
+  return storyLevel(n)?.story;
 }
+export const storyLevel = (n: number) => [...LEVELS].reverse().find((l) => l.n <= n && l.story);

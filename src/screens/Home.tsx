@@ -6,7 +6,7 @@ import { Kite, ParentCorner, useTap } from '../ui/components';
 export function Home({ onStart, onParent, onStories, extraAllowed }: { onStart: () => void; onParent: () => void; onStories: () => void; extraAllowed: boolean }) {
   const { progress } = useStore();
   const cur = currentLevel(progress);
-  const usedToday = progress.sessions.filter((s) => s.date === today()).reduce((a, s) => a + s.activeSeconds, 0);
+  const usedToday = progress.sessions.filter((s) => s.date === today() && !s.practice).reduce((a, s) => a + s.activeSeconds, 0);
   const resting = usedToday >= progress.settings.capMinutes * 60 && !extraAllowed;
   const start = useTap(() => !resting && onStart());
   const name = progress.settings.childName;

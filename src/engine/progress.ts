@@ -31,6 +31,7 @@ export interface SessionLog {
   answered: number;
   correct: number;
   endedBy: 'cap' | 'complete' | 'fatigue' | 'parent';
+  practice?: boolean;    // grown-up replayed a level: doesn't move progress or count toward the daily cap
 }
 
 export interface Settings {
