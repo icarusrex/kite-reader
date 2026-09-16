@@ -30,7 +30,7 @@ export function Readiness({ onDone }: { onDone: () => void }) {
     if (!t) return;
     setLocked(true);
     if (t.kind === 'dir') await say({ p: t.answer === 'dogfish' ? 'tap_dogfish' : 'tap_fishdog' });
-    else { await say({ p: 'ear_listen' }, { pause: 300 }); await saySegmented(segment(t.answer)!, 500); }
+    else { await say({ p: 'ear_listen' }, { pause: 300 }); await saySegmented(segment(t.answer)!, 180); }
     setLocked(false);
   };
   useEffect(() => { if (i === 0) say({ p: 'ready_intro' }).then(prompt); else prompt(); /* eslint-disable-next-line */ }, [i]);

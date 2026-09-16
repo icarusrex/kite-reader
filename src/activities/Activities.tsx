@@ -306,7 +306,7 @@ export function Build({ step, onDone, setNeutral }: ActivityProps) {
     erred.current = true;
     setLocked(true);
     setNeutral(true);
-    await saySegmented(segs, 250);
+    await saySegmented(segs, 120);
     await say({ pause: 200 }, { g: segs[filled] });
     setNeutral(false);
     setHint(true); setLocked(false);
@@ -354,7 +354,7 @@ export function Ear({ step, onDone, setNeutral }: ActivityProps) {
   const segsOf = (w: string) => segment(w) ?? [];
   const intro = async () => {
     switch (e.mode) {
-      case 'blend': await say({ p: 'ear_listen' }, { pause: 300 }); await saySegmented(segsOf(e.target), 500); break;
+      case 'blend': await say({ p: 'ear_listen' }, { pause: 300 }); await saySegmented(segsOf(e.target), 180); break;
       case 'onset': { const s = segsOf(e.target); await say({ p: 'ear_listen' }, { pause: 300 }, { g: s[0] }, { pause: 500 }, { w: e.target.slice(1) }); break; }
       case 'rhyme': await say({ p: 'ear_rhyme' }, { pause: 150 }, { w: e.target }); break;
       case 'first': await say({ p: 'ear_first' }, { pause: 150 }, { g: e.target }); break;
@@ -367,7 +367,7 @@ export function Ear({ step, onDone, setNeutral }: ActivityProps) {
       await say({ p: 'my_turn' }, { pause: 150 });
       if (e.mode === 'rhyme') await say({ w: e.target }, { pause: 200 }, { w: answer });
       else if (e.mode === 'first' || e.mode === 'last') await say({ g: e.target }, { pause: 200 }, { w: answer });
-      else { await saySegmented(segsOf(answer), 350); await say({ pause: 200 }, { w: answer }); }
+      else { await saySegmented(segsOf(answer), 150); await say({ pause: 200 }, { w: answer }); }
     },
   });
   return (

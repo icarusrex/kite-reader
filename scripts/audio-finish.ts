@@ -32,7 +32,7 @@ export function finishClip(mp3: string, wavOut: string, cutAtGap = false) {
   const fadeIn = Math.round(rate * 0.01), fadeOut = Math.min(body.length, Math.round(rate * 0.12));
   for (let i = 0; i < fadeIn; i++) body[i] *= i / fadeIn;
   for (let i = 0; i < fadeOut; i++) body[body.length - 1 - i] *= Math.sin((i / fadeOut) * Math.PI / 2);
-  const out = new Float32Array(body.length + Math.round(rate * 0.2));
+  const out = new Float32Array(body.length + Math.round(rate * 0.03));
   out.set(body);
   const data = Buffer.alloc(out.length * 2);
   out.forEach((s, i) => data.writeInt16LE(Math.round(Math.max(-1, Math.min(1, s)) * 32767), i * 2));

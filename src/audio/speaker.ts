@@ -105,7 +105,7 @@ export async function say(...parts: Utter[]) {
 }
 
 /** Oral blending: sounds with gaps, e.g. /f/ … /a/ … /n/ */
-export async function saySegmented(graphemes: string[], gapMs = 450) {
+export async function saySegmented(graphemes: string[], gapMs = 180) {
   const parts: Utter[] = [];
   graphemes.forEach((g, i) => { if (i) parts.push({ pause: gapMs }); parts.push({ g }); });
   return say(...parts);
