@@ -27,12 +27,17 @@ const OUT = 'public/audio';
 const manifestPath = join(OUT, 'manifest.json');
 const manifest: Record<string, string> = existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath, 'utf8')) : {};
 
-async function tts(text: string, file: string, settings = { stability: 0.6, similarity_boost: 0.8, style: 0.15, speed: 0.9 }) {
+async function tts(text: string, file: string, settings = { stability: 0.6, similarity_boost: 0.8, style: 0.15, speed: 0.9 }, attempt = 0): Promise<void> {
   const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE}?output_format=mp3_44100_128`, {
     method: 'POST',
     headers: { 'xi-api-key': KEY!, 'Content-Type': 'application/json', Accept: 'audio/mpeg' },
     body: JSON.stringify({ text, model_id: MODEL, voice_settings: settings }),
   });
+  if (res.status === 429 && attempt < 8) {
+    // Free tier gets "system_busy" under load; back off and retry.
+    await new Promise((r) => setTimeout(r, 2000 * 2 ** attempt));
+    return tts(text, file, settings, attempt + 1);
+  }
   if (!res.ok) throw new Error(`${res.status} ${await res.text()}`);
   writeFileSync(file, Buffer.from(await res.arrayBuffer()));
 }
