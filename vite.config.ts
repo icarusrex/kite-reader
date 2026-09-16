@@ -7,6 +7,8 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      // Site sits behind Cloudflare Access; the manifest fetch must carry the auth cookie.
+      useCredentials: true,
       includeAssets: ['icon.svg'],
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,woff2,json,mp3}'],

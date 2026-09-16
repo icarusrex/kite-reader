@@ -55,16 +55,16 @@ git add public/audio && git commit -m "audio" && git push
 
 No API keys are used at runtime.
 
-## Local only
+## Running it
 
-This app runs on **localhost on the family computer** and is never published, deployed or pushed to a public repository.
+Local (family computer):
 
 ```bash
 npm install        # also copies the offline OCR engine into public/ocr
 npm run local      # builds and serves http://127.0.0.1:5173
 ```
 
-Open it in Chrome or Safari on the same computer (the microphone works on localhost without HTTPS).
+Web: https://reader.viableplanet.eu, a Cloudflare Worker (`kite-reader`) **behind Cloudflare Access**, so only allowed emails can open it. It must stay behind Access: *Winnie-the-Pooh* is under copyright in the EU until 1 Jan 2027. Pushing to `main` of the private repo `icarusrex/kite-reader` runs tests and deploys. Manual: `npm run build && npx wrangler deploy`.
 
 ## My books (owned books, local only)
 
