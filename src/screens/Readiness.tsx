@@ -66,11 +66,11 @@ export function Readiness({ onDone }: { onDone: () => void }) {
       <div className="stage">
         <ReplayButton onTap={prompt} />
         {t.kind === 'dir' ? (
-          <div className="row">
+          <div className={`row ${locked ? 'waiting' : ''}`}>
             {(t.left === 'dogfish' ? ['dogfish', 'fishdog'] : ['fishdog', 'dogfish']).map((c) => <DirCard key={c} which={c} correct={c === t.answer} onTap={() => answer(c)} />)}
           </div>
         ) : (
-          <div className="row">{t.options.map((o) => <PictureTile key={o} word={o} correct={o === t.answer} onTap={() => answer(o)} />)}</div>
+          <div className={`row ${locked ? 'waiting' : ''}`}>{t.options.map((o) => <PictureTile key={o} word={o} correct={o === t.answer} onTap={() => answer(o)} />)}</div>
         )}
       </div>
     </div>

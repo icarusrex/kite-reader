@@ -8,6 +8,7 @@ let manifest: Manifest = {};
 const recordings = new Map<string, string>(); // key -> object URL
 let current: HTMLAudioElement | null = null;
 let playing = false;
+let finishCurrent: (() => void) | null = null;
 let cancelToken = 0;
 
 export const isPlaying = () => playing;
@@ -32,55 +33,42 @@ export async function refreshRecordings() {
 export const hasRecording = (g: string) => recordings.has(`phoneme:${g}`);
 export const hasManifest = (key: string) => key in manifest;
 
-function playUrl(url: string, token: number): Promise<void> {
+/** Resolves true when the clip played, false if it couldn't load (e.g. offline). */
+function playUrl(url: string, token: number): Promise<boolean> {
   return new Promise((resolve) => {
-    if (token !== cancelToken) return resolve();
+    if (token !== cancelToken) return resolve(true);
     const a = new Audio(url);
     current = a;
     playing = true;
-    const done = () => { playing = false; resolve(); };
-    a.onended = done;
-    a.onerror = done;
-    a.play().catch(done);
-  });
-}
-
-let voice: SpeechSynthesisVoice | null = null;
-function pickVoice() {
-  if (voice || typeof speechSynthesis === 'undefined') return voice;
-  const vs = speechSynthesis.getVoices();
-  voice = vs.find((v) => /en-(GB|US)/.test(v.lang) && /Samantha|Daniel|Karen|Google/.test(v.name)) ?? vs.find((v) => v.lang.startsWith('en')) ?? null;
-  return voice;
-}
-
-function speakTts(text: string, token: number, rate = 0.9): Promise<void> {
-  return new Promise((resolve) => {
-    if (token !== cancelToken || typeof speechSynthesis === 'undefined') return resolve();
-    const u = new SpeechSynthesisUtterance(text);
-    const v = pickVoice();
-    if (v) u.voice = v;
-    u.lang = v?.lang ?? 'en-US';
-    u.rate = rate;
-    playing = true;
-    const done = () => { playing = false; resolve(); };
-    u.onend = done;
-    u.onerror = done;
-    speechSynthesis.speak(u);
-    setTimeout(done, 6000); // safety for iOS
+    let settled = false;
+    // Watchdog: a clip that stalls (network hiccup) or never reports "ended" must not freeze the activity.
+    let watchdog = window.setTimeout(() => done(false)(), 12000);
+    a.onloadedmetadata = () => { clearTimeout(watchdog); watchdog = window.setTimeout(() => done(true)(), (a.duration || 10) * 1000 + 1500); };
+    const done = (ok: boolean) => () => { if (settled) return; settled = true; clearTimeout(watchdog); if (current === a) { playing = false; finishCurrent = null; } resolve(ok); };
+    finishCurrent = done(true);
+    a.onended = done(true);
+    a.onerror = done(false);
+    a.play().catch((e: Error) => done(e?.name === 'NotAllowedError')());
   });
 }
 
 export function stop() {
   cancelToken++;
   if (current) { current.pause(); current = null; }
-  try { speechSynthesis.cancel(); } catch { /* ignore */ }
+  finishCurrent?.(); // let the interrupted say() finish right away
+  finishCurrent = null;
   playing = false;
 }
 
-async function playKey(key: string, fallback: string, token: number, rate?: number) {
+/**
+ * Everything is spoken in the ElevenLabs voice, never the device voice:
+ * the grown-up's recording → a pre-made clip → the same voice generated once on the server (worker/index.ts,
+ * cached on the device afterwards, see vite.config.ts). Offline with nothing cached: silence.
+ */
+async function playKey(key: string, text: string, token: number) {
   const url = recordings.get(key) ?? (manifest[key] ? `/audio/${manifest[key]}` : undefined);
-  if (url) return playUrl(url, token);
-  return speakTts(fallback, token, rate);
+  if (url && await playUrl(url, token)) return;
+  if (!key.startsWith('phoneme:')) await playUrl(`/api/say?text=${encodeURIComponent(text)}`, token);
 }
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -98,8 +86,8 @@ export async function say(...parts: Utter[]) {
   for (const part of parts) {
     if (token !== cancelToken) return;
     if ('p' in part) await playKey(`prompt:${part.p}`, PROMPTS[part.p], token);
-    else if ('g' in part) await playKey(`phoneme:${part.g}`, GRAPHEME_BY_ID[part.g]?.tts ?? part.g, token, 0.7);
-    else if ('w' in part) await playKey(`word:${part.w.toLowerCase()}`, part.w, token, 0.85);
+    else if ('g' in part) await playKey(`phoneme:${part.g}`, GRAPHEME_BY_ID[part.g]?.tts ?? part.g, token);
+    else if ('w' in part) await playKey(`word:${part.w.toLowerCase()}`, part.w, token);
     else await wait(part.pause);
   }
 }

@@ -8,7 +8,8 @@
  * Phonemes use IPA phoneme tags (see PHONEME_MODEL) so there's no schwa ("muh"). A grown-up's recording
  * (Parent > Sounds) still overrides any sound that isn't right.
  */
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tokenize } from '../src/engine/wordLevel';
 import { finishClip } from './audio-finish';
 import { join } from 'node:path';
 import { PROMPTS } from '../src/content/prompts';
@@ -78,6 +79,11 @@ for (const l of LEVELS) {
   [...l.sentences, ...(l.story ?? [])].forEach((s) => s.split(/\s+/).forEach((w) => words.add(w.replace(/[^A-Za-z]/g, '').toLowerCase())));
 }
 Object.keys(PICTURES).forEach((w) => words.add(w));
+// Every word in the bundled picture books, so tapping a word in the book reader uses this voice (and works offline)
+for (const d of readdirSync('public/books', { withFileTypes: true }).filter((e) => e.isDirectory())) {
+  const book = JSON.parse(readFileSync(join('public/books', d.name, 'book.json'), 'utf8'));
+  for (const p of book.pages) for (const t of tokenize(p.text)) words.add(t.toLowerCase());
+}
 // onset-rime pieces used by the ear game
 Object.keys(PICTURES).forEach((w) => words.add(w.slice(1)));
 ['dogfish', 'fishdog'].forEach((w) => words.add(w));

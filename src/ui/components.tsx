@@ -8,7 +8,8 @@ const lastTap = { x: -1, y: -1, t: 0 };
 export function useTap(fn: () => void) {
   return (e: React.PointerEvent) => {
     const now = performance.now();
-    if (Math.abs(e.clientX - lastTap.x) < 12 && Math.abs(e.clientY - lastTap.y) < 12 && now - lastTap.t < 500) return;
+    // Holdover filter against resting palms and double taps on touch screens; mouse clicks always count.
+    if (e.pointerType !== 'mouse' && Math.abs(e.clientX - lastTap.x) < 12 && Math.abs(e.clientY - lastTap.y) < 12 && now - lastTap.t < 350) return;
     lastTap.x = e.clientX; lastTap.y = e.clientY; lastTap.t = now;
     fn();
   };

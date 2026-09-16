@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { meter } from '../audio/mic';
-import { Utter, say, saySegmented, sayYes } from '../audio/speaker';
+import { Utter, say, saySegmented, sayYes, stop } from '../audio/speaker';
 import { GRAPHEME_BY_ID } from '../content/phonemes';
 import { displayChunks, segment, trickyParts } from '../engine/decodable';
 import { Caption, Kite, PictureTile, ReplayButton, Tile, Waveform, useTap } from '../ui/components';
@@ -57,10 +57,13 @@ function useTapChoice(opts: {
   const [wrong, setWrong] = useState<string[]>([]);
   const [hint, setHint] = useState(false);
   const [good, setGood] = useState<string | null>(null);
-  const [locked, setLocked] = useState(true);
-  useEffect(() => { opts.intro().then(() => setLocked(false)); /* eslint-disable-next-line */ }, []);
+  // Answers are live straight away: tapping while the instruction is still playing cuts it off (a grown-up is
+  // sitting alongside). Only the correction and the "yes" lock the tiles.
+  const [locked, setLocked] = useState(false);
+  useEffect(() => { opts.intro(); /* eslint-disable-next-line */ }, []);
   const choose = async (o: string) => {
     if (locked || good) return;
+    stop();
     if (o === opts.answer) {
       setGood(o); setLocked(true);
       await sayYes();
@@ -289,12 +292,13 @@ export function Build({ step, onDone, setNeutral }: ActivityProps) {
   const tiles = [...new Set(step.options!)];
   const [filled, setFilled] = useState(0);
   const [hint, setHint] = useState(false);
-  const [locked, setLocked] = useState(true);
+  const [locked, setLocked] = useState(false);
   const erred = useRef(false);
   const intro = () => say({ p: 'build_it' }, { pause: 150 }, { w: word });
-  useEffect(() => { intro().then(() => setLocked(false)); /* eslint-disable-next-line */ }, []);
+  useEffect(() => { intro(); /* eslint-disable-next-line */ }, []);
   const choose = async (t: string) => {
     if (locked) return;
+    stop();
     if (t === segs[filled]) {
       setHint(false);
       const n = filled + 1;
