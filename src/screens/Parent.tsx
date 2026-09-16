@@ -8,6 +8,9 @@ import { currentLevel, freshProgress, jumpTo, Progress, today } from '../engine/
 import { hasManifest, hasRecording, refreshRecordings, say } from '../audio/speaker';
 import { remove, save } from '../engine/storage';
 import { meter } from '../audio/mic';
+import { LIBRARY, loadBook } from '../content/readaloud';
+import { tokenize, wordLevel } from '../engine/wordLevel';
+import { LocalBooksAdmin } from '../local/LocalBooksAdmin';
 
 type Tab = 'progress' | 'sounds' | 'books' | 'settings' | 'backup';
 
@@ -143,6 +146,9 @@ function BooksTab() {
   const res = text.trim() ? checkText(text, level, heart) : null;
   const missing = res ? [...new Set(res.failures.map((f) => f.word.toLowerCase()))] : [];
   return (
+    <>
+    <LocalBooksAdmin />
+    <ReadAloudCard />
     <div className="card">
       <h2>Book check</h2>
       <p>Paste a book’s text (typed or OCR’d from a photo). Shows how much he can decode at a level. Aim for ≥ 95%; pre-teach the rest.</p>
@@ -154,6 +160,41 @@ function BooksTab() {
           {missing.length > 0 && <p style={{ fontSize: 14 }}>Not yet decodable: {missing.slice(0, 80).join(', ')}</p>}
         </>
       )}
+    </div>
+    </>
+  );
+}
+
+const NAMES = new Set(['dorothy', 'toto', 'oz', 'pooh', 'piglet', 'eeyore', 'kanga', 'roo', 'christopher', 'robin']);
+
+function ReadAloudCard() {
+  const { progress } = useStore();
+  const level = currentLevel(progress);
+  const [pct, setPct] = useState<Record<string, number>>({});
+  useEffect(() => {
+    (async () => {
+      const out: Record<string, number> = {};
+      for (const b of LIBRARY) {
+        const book = await loadBook(b.id);
+        let total = 0, ok = 0;
+        for (const c of book.chapters) for (const para of c.paragraphs) for (const w of tokenize(para)) {
+          total++; if (!NAMES.has(w.toLowerCase()) && wordLevel(w).level <= level) ok++;
+        }
+        out[b.id] = Math.round((100 * ok) / Math.max(1, total));
+      }
+      setPct(out);
+    })();
+  }, [level]);
+  return (
+    <div className="card">
+      <h2>Read-aloud library (Story chair 📚 on the home screen)</h2>
+      <table><thead><tr><th>Book</th><th>Chapters read</th><th>Words he could decode now (L{level})</th><th>Public domain</th></tr></thead><tbody>
+        {LIBRARY.map((b) => (
+          <tr key={b.id}><td>{b.title}</td><td>{progress.readAloud?.[b.id]?.length ?? 0}</td><td>{pct[b.id] ?? '…'}%</td>
+            <td style={{ fontSize: 13 }}>{b.id === 'wizard-of-oz' ? 'Yes (1900)' : 'US yes; EU/PT from 1 Jan 2027'}</td></tr>
+        ))}
+      </tbody></table>
+      <p style={{ fontSize: 14 }}>Read 10–15 min a day, above his reading level. Highlighted green words are ones he can decode: pause and let him read them. Orange words are the chapter’s vocabulary. Real sentences from these books start appearing in his sessions once they’re decodable (from about Level 12; many more from Level 70).</p>
     </div>
   );
 }

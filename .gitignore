@@ -2,3 +2,7 @@ node_modules
 dist
 .env
 *.log
+public/ocr
+# Locally imported books never leave the browser's storage; keep any exports out of git too.
+local-library/
+*.kitebook.json

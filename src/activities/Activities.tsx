@@ -326,6 +326,7 @@ export function Sentence({ step, ctx, onDone, setNeutral }: ActivityProps) {
   });
   return (
     <div className="stage">
+      {step.source && <div className="subtitle">📖 From <i>{step.source}</i></div>}
       <div className="sentence">
         {words.map((w, i) => (
           <SentenceChip key={i} w={w} state={i < next ? 'done' : i === next ? 'next' : ''} onTap={() => i === next && setNext(next + 1)} />
@@ -389,6 +390,26 @@ export function Banner({ step, onDone }: ActivityProps) {
       <div style={{ fontSize: '26vmin' }}>{icon}</div>
       <h1 className="title">{text}</h1>
       {b === 'story_time' && <button className="primary soft" onPointerDown={tap}>We read it ✓</button>}
+    </div>
+  );
+}
+
+/* ---------- A11 Heart Word (irregular words from books he owns) ---------- */
+export function HeartWord({ step, ctx, onDone, setNeutral }: ActivityProps) {
+  const word = step.word!;
+  const [ready, setReady] = useState(false);
+  useEffect(() => { say({ p: 'heart_word' }, { pause: 200 }, { w: word }, { pause: 400 }, { p: 'your_turn' }).then(() => setReady(true)); /* eslint-disable-next-line */ }, []);
+  const { strip } = useSpokenScore({
+    enabled: ready, parentScoring: ctx.settings.parentScoring, onDone, setNeutral,
+    correction: () => say({ p: 'my_turn' }, { pause: 150 }, { w: word }, { pause: 400 }, { p: 'your_turn' }),
+  });
+  return (
+    <div className="stage">
+      <div style={{ fontSize: '8vmin' }}>❤️</div>
+      <div className="prompt-word">{word}</div>
+      {step.source && <div className="subtitle">for <i>{step.source}</i></div>}
+      <Waveform />
+      {strip}
     </div>
   );
 }

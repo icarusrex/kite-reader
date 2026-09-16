@@ -4,20 +4,27 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",
-    "preview": "vite preview --host",
+    "preview": "vite preview --host 127.0.0.1",
     "test": "vitest run",
     "validate": "tsx scripts/validate-content.ts",
-    "audio": "tsx scripts/gen-audio.ts"
+    "audio": "tsx scripts/gen-audio.ts",
+    "mine": "tsx scripts/mine-books.ts",
+    "postinstall": "node scripts/copy-ocr-assets.mjs",
+    "local": "vite build && vite preview --host 127.0.0.1 --port 5173 --strictPort"
   },
   "dependencies": {
     "@fontsource/andika": "^5.3.0",
     "idb-keyval": "^6.3.0",
+    "jszip": "^3.10.2",
+    "pdfjs-dist": "^4.10.38",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "tesseract.js": "^5.1.1"
   },
   "devDependencies": {
+    "@tesseract.js-data/eng": "^1.0.0",
     "@types/node": "^22.0.0",
     "@types/react": "^18.3.31",
     "@types/react-dom": "^18.3.7",

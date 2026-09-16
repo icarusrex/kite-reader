@@ -48,6 +48,7 @@ export interface Progress {
   items: Record<string, ItemState>;
   sessions: SessionLog[];
   errors: Record<string, number>; // trouble spots, e.g. "g:d" -> count
+  readAloud: Record<string, { chapter: number; date: string }[]>; // bookId -> chapters read
 }
 
 export const today = (d = new Date()) => {
@@ -71,6 +72,7 @@ export function freshProgress(): Progress {
     items: {},
     sessions: [],
     errors: {},
+    readAloud: {},
   };
 }
 

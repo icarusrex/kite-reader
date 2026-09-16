@@ -1,6 +1,6 @@
 # Kite Reader
 
-A private, home-built early-reading tutor (Mentava-style systematic phonics, Direct Instruction delivery) for one 4-year-old. Offline-capable PWA for iPad.
+A private, home-built early-reading tutor (Mentava-style systematic phonics, Direct Instruction delivery) for one 4-year-old. Runs locally on the family computer.
 
 Curriculum spec: `Curriculum v1.md` in the Obsidian vault (`04-personal/Mentava Clone`).
 
@@ -13,18 +13,33 @@ Curriculum spec: `Curriculum v1.md` in the Obsidian vault (`04-personal/Mentava 
 - Neutral error correction (My turn → Your turn), no points/streaks/currency
 - Grown-ups area (press and hold 🔒 top-left 1.5 s): progress, trouble spots, **record pure sounds**, book decodability check, settings, backup/export
 
+## Books
+
+Public-domain read-aloud books from the family library live in `src/content/readaloud/` (text only, lazy-loaded):
+
+- *The Wonderful Wizard of Oz* (Baum, 1900): 24 chapters. Source ebook was an OCR scan; auto-corrected, and a few typos may remain. Swap in a clean copy (e.g. Project Gutenberg #55) and re-run the extraction if needed.
+- *Winnie-the-Pooh* (Milne, 1926): introduction + 10 chapters. Public domain in the US; in the EU/Portugal from 1 Jan 2027.
+
+What they power:
+- **Story chair** (📚 on home): grown-up reads aloud; words he can already decode are highlighted, 3 vocabulary words per chapter, discussion prompts, chapters-read log.
+- **Real-book sentences** in sessions once decodable (`npm run mine` → `src/content/bookSentences.json`).
+- **Readability** per level in Grown-ups → Books.
+
+`src/engine/wordLevel.ts` estimates the curriculum level (1–120) for any English word; `src/content/common-words.txt` enables compound splitting in scripts.
+
+Owned books under copyright (Seuss, Eastman, Usborne Phonics Readers) are handled only through the local import below; nothing from them is in this repository.
+
 ## Run locally
 
 ```bash
 npm install
-npm run dev          # http://localhost:5173 (mic works on localhost)
+npm run dev          # http://127.0.0.1:5173 (mic works on localhost)
 npm test             # unit tests (decoder, spaced repetition)
 npm run validate     # every word/sentence decodable at its level
 npm run build && npm run preview
 node tests/smoke.mjs # end-to-end session with simulated voice (needs preview on :4173)
 ```
 
-On the iPad: open the deployed HTTPS URL in Safari → Share → **Add to Home Screen** (fullscreen, offline, storage less likely to be evicted).
 
 ## Audio
 
@@ -40,20 +55,30 @@ git add public/audio && git commit -m "audio" && git push
 
 No API keys are used at runtime.
 
-## Deploy
+## Local only
 
-### Cloudflare Pages (now)
-1. Cloudflare dashboard → Workers & Pages → Create → Pages → Connect to Git → this repo.
-2. Framework: Vite · Build command `npm run build` · Output `dist`.
-3. Optional privacy: Zero Trust → Access → Applications → add the `*.pages.dev` domain, policy = your email (one-time PIN).
+This app runs on **localhost on the family computer** and is never published, deployed or pushed to a public repository.
 
-Every push to `main` redeploys.
-
-### Home server (later)
 ```bash
-docker compose up -d --build   # serves on :8080
+npm install        # also copies the offline OCR engine into public/ocr
+npm run local      # builds and serves http://127.0.0.1:5173
 ```
-Put it behind Cloudflare Tunnel or Tailscale for HTTPS (the mic requires HTTPS).
+
+Open it in Chrome or Safari on the same computer (the microphone works on localhost without HTTPS).
+
+## My books (owned books, local only)
+
+Grown-ups → Books → **Import books…** and pick EPUB/PDF files from `~/Documents/eBooks`.
+
+- Text is extracted in the browser: EPUB text directly; scanned picture books via on-device OCR (tesseract.js, bundled; no network).
+- Page text and page images are stored **only in this browser’s IndexedDB** on this computer. They are not in the code, the build, git, or any export.
+- **Review text** once per book to fix OCR mistakes and blank out non-story pages.
+- The app works out each book’s level: *readable at* (≥95% of words decodable) and *with pre-teaching* (≥90%, ≤10 words). It then:
+  - puts the book on the child’s **My books** shelf (picture + text, decodable words highlighted, tap a word to hear it), marked **★ Ready** when he can read it;
+  - adds the book’s pre-teach words as **heart words** in sessions once the book is within 10 levels;
+  - uses decodable sentences from his own books in sentence practice.
+
+Clearing browser data deletes imported books; re-import from the original files.
 
 ## Adding levels
 

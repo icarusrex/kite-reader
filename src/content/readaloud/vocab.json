@@ -1,0 +1,601 @@
+{
+ "wizard-of-oz": {
+  "1": [
+   {
+    "word": "cyclone",
+    "meaning": "a giant spinning storm of wind",
+    "example": "“There’s a cyclone coming, Em,”"
+   },
+   {
+    "word": "whirled",
+    "meaning": "spun around and around fast",
+    "example": "The house whirled around two or three times and rose slowly through the air."
+   },
+   {
+    "word": "twinkled",
+    "meaning": "sparkled with little flashes of light",
+    "example": "Toto was not gray; he was a little black dog, with long, silky hair and small black eyes that twinkled merrily on either side of his funny, wee nose."
+   }
+  ],
+  "2": [
+   {
+    "word": "glistened",
+    "meaning": "shone because it was wet or shiny",
+    "example": "…in plaits from her shoulders; over it were sprinkled little stars that glistened in the sun like diamonds. The men were dressed in blue, of the…"
+   },
+   {
+    "word": "enquired",
+    "meaning": "asked",
+    "example": "enquired Dorothy."
+   },
+   {
+    "word": "witch",
+    "meaning": "a magic person in stories",
+    "example": "We are so grateful to you for having killed the wicked Witch of the East, and for setting our people free from bondage.”"
+   }
+  ],
+  "3": [
+   {
+    "word": "gingham",
+    "meaning": "cloth with a checked pattern, like a picnic blanket",
+    "example": "It was gingham, with checks of white and blue and although the blue was somewhat faded with many washings, it was still a pretty frock."
+   },
+   {
+    "word": "gazed",
+    "meaning": "looked for a long time",
+    "example": "Dorothy leaned her chin upon her hand and gazed thoughtfully at the Scarecrow."
+   },
+   {
+    "word": "wagged",
+    "meaning": "moved from side to side, like a happy dog’s tail",
+    "example": "And Toto looked up into her face with his little black eyes and wagged his tail to show he knew what she meant."
+   }
+  ],
+  "4": [
+   {
+    "word": "dreary",
+    "meaning": "dull and sad",
+    "example": "“No matter how dreary and gray our homes are, we people of flesh and blood would rather live there than in any other country, be it ever so beautiful."
+   },
+   {
+    "word": "lonesome",
+    "meaning": "lonely, all by yourself",
+    "example": "There were fewer houses and fewer fruit trees, and the farther they went the more dismal and lonesome the country became."
+   },
+   {
+    "word": "fastened",
+    "meaning": "tied or stuck so it stays",
+    "example": "…fun of watching them make my body and my arms and legs; and when they fastened on my head, at last, I felt very proud, for I thought I was…"
+   }
+  ],
+  "5": [
+   {
+    "word": "rusted",
+    "meaning": "got orange and stiff from water, like old metal",
+    "example": "“They are rusted so badly that I cannot move them at all; if I am well oiled I shall soon be all right again."
+   },
+   {
+    "word": "oiled",
+    "meaning": "put oil on so it moves easily",
+    "example": "“They are rusted so badly that I cannot move them at all; if I am well oiled I shall soon be all right again."
+   },
+   {
+    "word": "groan",
+    "meaning": "a long, low “ohhh” sound",
+    "example": "When she had finished her meal, and was about to go back to the road of yellow brick, she was startled to hear a deep groan near by."
+   }
+  ],
+  "6": [
+   {
+    "word": "coward",
+    "meaning": "someone who is scared to be brave",
+    "example": "“You are nothing but a big coward.”"
+   },
+   {
+    "word": "roared",
+    "meaning": "made a very loud, deep sound",
+    "example": "I learned that if I roared very loudly every living thing was frightened and got out of my way."
+   },
+   {
+    "word": "heedless",
+    "meaning": "not being careful",
+    "example": "…mouth to bite the dog, when Dorothy, fearing Toto would be killed, and heedless of danger, rushed forward and slapped the Lion upon his nose…"
+   }
+  ],
+  "7": [
+   {
+    "word": "beasts",
+    "meaning": "big wild animals",
+    "example": "“They are monstrous beasts with bodies like bears and heads like tigers,”"
+   },
+   {
+    "word": "panted",
+    "meaning": "breathed fast after running",
+    "example": "…chance to rest, for his great leaps had made his breath short, and he panted like a big dog that has been running too long."
+   },
+   {
+    "word": "snarling",
+    "meaning": "growling and showing teeth",
+    "example": "…nearly across, the tree fell with a crash into the gulf, carrying the ugly, snarling brutes with it, and both were dashed to pieces on the sharp…"
+   }
+  ],
+  "8": [
+   {
+    "word": "poppies",
+    "meaning": "bright red flowers",
+    "example": "Her eyes closed in spite of herself and she forgot where she was and fell among the poppies, fast asleep."
+   },
+   {
+    "word": "perched",
+    "meaning": "sat up high, like a bird on a branch",
+    "example": "Then they all looked at the river and saw the Scarecrow perched upon his pole in the middle of the water, looking very lonely and sad."
+   },
+   {
+    "word": "waken",
+    "meaning": "wake up",
+    "example": "…they laid her gently on the soft grass and waited for the fresh breeze to waken her."
+   }
+  ],
+  "9": [
+   {
+    "word": "scampered",
+    "meaning": "ran quickly with little steps",
+    "example": "Then the mice were unharnessed from the truck and scampered away through the grass to their homes."
+   },
+   {
+    "word": "shrill",
+    "meaning": "high and loud, like a whistle",
+    "example": "cried all the mice, in a shrill chorus."
+   },
+   {
+    "word": "harnessed",
+    "meaning": "tied up with straps to pull something",
+    "example": "…than any of the mice who were to draw it; but when all the mice had been harnessed they were able to pull it quite easily. Even the Scarecrow and…"
+   }
+  ],
+  "10": [
+   {
+    "word": "spectacles",
+    "meaning": "glasses for your eyes",
+    "example": "But first you must put on the spectacles.”"
+   },
+   {
+    "word": "porridge",
+    "meaning": "warm, soft oats for breakfast",
+    "example": "The Lion ate some of the porridge, but did not care for it, saying it was made from oats and oats were food for horses, not for lions."
+   },
+   {
+    "word": "errand",
+    "meaning": "a little job you go out to do",
+    "example": "“But it is not a foolish errand, nor an idle one,”"
+   }
+  ],
+  "11": [
+   {
+    "word": "emeralds",
+    "meaning": "shiny green jewels",
+    "example": "The streets were lined with beautiful houses all built of green marble and studded everywhere with sparkling emeralds."
+   },
+   {
+    "word": "sparkled",
+    "meaning": "shone with tiny flashes of light",
+    "example": "It was shaped like a chair and sparkled with gems, as did everything else."
+   },
+   {
+    "word": "purred",
+    "meaning": "made a soft happy rumble, like a cat",
+    "example": "…worry him, so he sprang upon the bed and rolled himself up like a cat and purred himself asleep in a minute."
+   }
+  ],
+  "12": [
+   {
+    "word": "chattering",
+    "meaning": "talking fast about little things",
+    "example": "said the leader; and then, with a great deal of chattering and noise, the Winged Monkeys flew away to the place where Dorothy and her friends were walking."
+   },
+   {
+    "word": "obeyed",
+    "meaning": "did what they were told",
+    "example": "“Your commands shall be obeyed,”"
+   },
+   {
+    "word": "heaps",
+    "meaning": "big piles",
+    "example": "And as bees cannot live when their stings are broken that was the end of the black bees, and they lay scattered thick about the Woodman, like little heaps of fine coal."
+   }
+  ],
+  "13": [
+   {
+    "word": "ached",
+    "meaning": "hurt in a dull way",
+    "example": "Every one of the travellers made the Winkies a pretty speech in return, and all shook hands with them until their arms ached."
+   },
+   {
+    "word": "dents",
+    "meaning": "little pushed-in spots in metal",
+    "example": "“Can you straighten out those dents in the Tin Woodman, and bend him back into shape again, and solder him together where he is broken?”"
+   },
+   {
+    "word": "burnished",
+    "meaning": "polished until shiny",
+    "example": "Others polished the blade until all the rust was removed and it glistened like burnished silver."
+   }
+  ],
+  "14": [
+   {
+    "word": "tramping",
+    "meaning": "walking with heavy steps",
+    "example": "said the Cowardly Lion, with a whimper, “I haven’t the courage to keep tramping forever, without getting anywhere at all.”"
+   },
+   {
+    "word": "bowed",
+    "meaning": "bent forward to be polite",
+    "example": "The King bowed low before Dorothy, and asked,"
+   },
+   {
+    "word": "buttercups",
+    "meaning": "small yellow flowers",
+    "example": "It was much harder to find their way back through the big fields of buttercups and yellow daisies than it was being carried."
+   }
+  ],
+  "15": [
+   {
+    "word": "humbug",
+    "meaning": "someone who pretends to be something they are not",
+    "example": "said the Scarecrow, in a grieved tone; “you’re a humbug.”b"
+   },
+   {
+    "word": "exclaimed",
+    "meaning": "said something suddenly and loudly",
+    "example": "exclaimed the man, and he bowed very low indeed before her."
+   },
+   {
+    "word": "ventriloquist",
+    "meaning": "someone who makes their voice seem to come from somewhere else",
+    "example": "“Oh, I am a ventriloquist,”"
+   }
+  ],
+  "16": [
+   {
+    "word": "sawdust",
+    "meaning": "tiny bits of wood left after sawing",
+    "example": "Then, going to a chest of drawers, he took out a pretty heart, made entirely of silk and stuffed with sawdust."
+   },
+   {
+    "word": "shears",
+    "meaning": "big scissors",
+    "example": "So Oz brought a pair of tinners’ shears and cut a small, square hole in the left side of the Tin Woodman’s breast."
+   },
+   {
+    "word": "sniffed",
+    "meaning": "breathed in through the nose",
+    "example": "Placing this before the Cowardly Lion, who sniffed at it as if he did not like it, the Wizard said,"
+   }
+  ],
+  "17": [
+   {
+    "word": "grieved",
+    "meaning": "felt very sad",
+    "example": "Still, for many days they grieved over the loss of the Wonderful Wizard, and would not be comforted."
+   },
+   {
+    "word": "vexed",
+    "meaning": "annoyed and cross",
+    "example": "If I should go out of this Palace my people would soon discover I am not a Wizard, and then they would be vexed with me for having deceived them."
+   },
+   {
+    "word": "silken",
+    "meaning": "soft and smooth, like silk",
+    "example": "…the fire so that the hot air that arose from it would be caught in the silken bag. Gradually the balloon swelled out and rose into the air,…"
+   }
+  ],
+  "18": [
+   {
+    "word": "contented",
+    "meaning": "happy with what you have",
+    "example": "“If Dorothy would only be contented to live in the Emerald City,”"
+   },
+   {
+    "word": "braver",
+    "meaning": "more brave",
+    "example": "“For my part, I am content in knowing I am as brave as any beast that ever lived, if not braver,”"
+   },
+   {
+    "word": "bulged",
+    "meaning": "puffed out",
+    "example": "The Scarecrow was thinking again, and his head bulged out so horribly that Dorothy feared it would burst."
+   }
+  ],
+  "19": [
+   {
+    "word": "howled",
+    "meaning": "made a long, loud cry",
+    "example": "They all ran forward and passed under the tree without injury, except Toto, who was caught by a small branch and shaken until he howled."
+   },
+   {
+    "word": "headlong",
+    "meaning": "head first, very fast",
+    "example": "…around him, and the next minute he was raised from the ground and flung headlong among his fellow travellers."
+   },
+   {
+    "word": "steeples",
+    "meaning": "tall pointy tops of buildings",
+    "example": "All they could see was a mass of towers and steeples behind the green walls, and high up above everything the spires and dome of the Palace of Oz."
+   }
+  ],
+  "20": [
+   {
+    "word": "mended",
+    "meaning": "fixed",
+    "example": "“But couldn’t you be mended?”"
+   },
+   {
+    "word": "dainty",
+    "meaning": "small and delicate",
+    "example": "The Dainty China Country"
+   },
+   {
+    "word": "strangest",
+    "meaning": "most unusual",
+    "example": "But the strangest of all were the people who lived in this queer country."
+   }
+  ],
+  "21": [
+   {
+    "word": "whimpered",
+    "meaning": "made small crying sounds",
+    "example": "…they heard a low rumble, as of the growling of many wild animals. Toto whimpered a little but none of the others was frightened and they kept…"
+   },
+   {
+    "word": "growling",
+    "meaning": "making a low angry sound",
+    "example": "Before they had gone far they heard a low rumble, as of the growling of many wild animals."
+   },
+   {
+    "word": "underbrush",
+    "meaning": "bushes and small plants under trees",
+    "example": "…seemed wilder than ever, and after a long and tiresome walk through the underbrush they entered another forest, where the trees were bigger and…"
+   }
+  ],
+  "22": [
+   {
+    "word": "vexation",
+    "meaning": "feeling cross and annoyed",
+    "example": "…away with them. As they passed over the hill the Hammer-Heads yelled with vexation, and shot their heads high in the air; but they could not reach…"
+   },
+   {
+    "word": "rippling",
+    "meaning": "moving in little waves",
+    "example": "There was field upon field of ripening grain, with well-paved roads running between, and pretty rippling brooks with strong bridges across them."
+   },
+   {
+    "word": "ripening",
+    "meaning": "getting ready to eat, like fruit",
+    "example": "There was field upon field of ripening grain, with well-paved roads running between, and pretty rippling brooks with strong bridges across them."
+   }
+  ],
+  "23": [
+   {
+    "word": "ringlets",
+    "meaning": "curly locks of hair",
+    "example": "Her hair was a rich red in color and fell in flowing ringlets over her shoulders."
+   },
+   {
+    "word": "barnyard",
+    "meaning": "the yard around a farm barn",
+    "example": "Uncle Henry was milking the cows in the barnyard, and Toto had jumped out of her arms and was running toward the barn, barking joyously."
+   },
+   {
+    "word": "evermore",
+    "meaning": "forever",
+    "example": "Then, having used up the powers of the Golden Cap, I shall give it to the King of the Monkeys, that he and his band may thereafter be free for evermore.”"
+   }
+  ],
+  "24": [
+   {
+    "word": "cabbages",
+    "meaning": "round leafy vegetables",
+    "example": "Aunt Em had just come out of the house to water the cabbages when she looked up and saw Dorothy running toward her."
+   },
+   {
+    "word": "folding",
+    "meaning": "bending something over itself",
+    "example": "she cried, folding the little girl in her arms and covering her face with kisses; “where in the world did you come from?”"
+   },
+   {
+    "word": "fifteenth",
+    "meaning": "number fifteen in a row",
+    "example": "Hill Company, completing it on the fifteenth day of May, in the year nineteen hundred."
+   }
+  ]
+ },
+ "winnie-the-pooh": {
+  "1": [
+   {
+    "word": "furry",
+    "meaning": "covered in soft fur",
+    "example": "…special cage, and the cage is opened, and out trots something brown and furry, and with a happy cry of “Oh, Bear!” Christopher Robin rushes…"
+   },
+   {
+    "word": "squeaked",
+    "meaning": "made a tiny high sound",
+    "example": "he squeaked."
+   },
+   {
+    "word": "nicest",
+    "meaning": "the most nice",
+    "example": "…they can past every cage until they get to the one called WAYOUT, but the nicest people go straight to the animal they love the most, and stay…"
+   }
+  ],
+  "2": [
+   {
+    "word": "buzzing",
+    "meaning": "the “bzzz” sound bees make",
+    "example": "First of all he said to himself: “That buzzing-noise means something."
+   },
+   {
+    "word": "balloons",
+    "meaning": "bags of air that float or bounce",
+    "example": "“But you don’t get honey with balloons!”"
+   },
+   {
+    "word": "slithered",
+    "meaning": "slid along like a snake",
+    "example": "he admitted, as he slithered very quickly through the next six branches."
+   }
+  ],
+  "3": [
+   {
+    "word": "larder",
+    "meaning": "a cupboard where food is kept",
+    "example": "and he tried very hard to look in the direction of the larder."
+   },
+   {
+    "word": "mouthful",
+    "meaning": "as much as fits in your mouth",
+    "example": "What about a mouthful of something?”"
+   },
+   {
+    "word": "whiskers",
+    "meaning": "long hairs on an animal’s face",
+    "example": "Rabbit scratched his whiskers thoughtfully, and pointed out that, when once Pooh was pushed…"
+   }
+  ],
+  "4": [
+   {
+    "word": "scratched",
+    "meaning": "rubbed with claws or nails",
+    "example": "Piglet scratched his ear in a nice sort of way, and said that he had nothing to do until Friday, and would be delighted to come, in case it really was a Woozle."
+   },
+   {
+    "word": "trotted",
+    "meaning": "walked quickly with little bouncy steps",
+    "example": "and he trotted off home as quickly as he could, very glad to be Out of All Danger again."
+   },
+   {
+    "word": "licked",
+    "meaning": "touched with the tongue",
+    "example": "said Piglet, when he had licked the tip of his nose too, and found that it brought very little comfort, “I think that I have just remembered something."
+   }
+  ],
+  "5": [
+   {
+    "word": "sneezed",
+    "meaning": "went “achoo!”",
+    "example": "You sneezed just as you were going to tell me.”"
+   },
+   {
+    "word": "knocker",
+    "meaning": "a metal handle you bang on a door",
+    "example": "Underneath the knocker there was a notice which said:"
+   },
+   {
+    "word": "unhooked",
+    "meaning": "took off a hook",
+    "example": "So with these words he unhooked it, and carried it back to Eeyore; and when Christopher Robin…"
+   }
+  ],
+  "6": [
+   {
+    "word": "acorns",
+    "meaning": "little nuts from oak trees",
+    "example": "I should think acorns, shouldn’t you?"
+   },
+   {
+    "word": "prickles",
+    "meaning": "sharp little points",
+    "example": "They sighed and got up; and when they had taken a few gorse prickles out of themselves they sat down again; and all the time Pooh…"
+   },
+   {
+    "word": "stumped",
+    "meaning": "stuck, not knowing what to do",
+    "example": "said Pooh, and he stumped off."
+   }
+  ],
+  "7": [
+   {
+    "word": "splashed",
+    "meaning": "made water fly everywhere",
+    "example": "He turned and walked slowly down the stream for twenty yards, splashed across it, and walked slowly back on the other side."
+   },
+   {
+    "word": "hummed",
+    "meaning": "sang with your mouth closed",
+    "example": "Eeyore still said nothing at all, so Pooh hummed the third verse quietly to himself:"
+   },
+   {
+    "word": "nodded",
+    "meaning": "moved your head up and down for “yes”",
+    "example": "Piglet nodded."
+   }
+  ],
+  "8": [
+   {
+    "word": "fidgeting",
+    "meaning": "wiggling and not sitting still",
+    "example": "said Piglet, fidgeting a bit."
+   },
+   {
+    "word": "wriggled",
+    "meaning": "twisted and wiggled",
+    "example": "And just when it was decided, Henry Pootel wriggled out of Kanga’s arms and jumped to the ground."
+   },
+   {
+    "word": "spluttered",
+    "meaning": "talked in a messy, spitty way",
+    "example": "spluttered Piglet, as soon as he could speak again…and then accidentally had another mouthful of lathery flannel."
+   }
+  ],
+  "9": [
+   {
+    "word": "hurried",
+    "meaning": "went fast",
+    "example": "He left Rabbit and hurried down to Piglet’s house."
+   },
+   {
+    "word": "swished",
+    "meaning": "moved with a soft “swish” sound",
+    "example": "Eeyore took his tail out of the water, and swished it from side to side."
+   },
+   {
+    "word": "squeaked",
+    "meaning": "made a tiny high sound",
+    "example": "squeaked Roo from the middle of his pool, and was hurried down a waterfall into the next pool."
+   }
+  ],
+  "10": [
+   {
+    "word": "wobbled",
+    "meaning": "shook from side to side",
+    "example": "It floated but wobbled."
+   },
+   {
+    "word": "nibbled",
+    "meaning": "took tiny bites",
+    "example": "And Wild Woozles, such as inhabit the East Pole, came and nibbled all the fur off his legs to make nests for their Young."
+   },
+   {
+    "word": "dangling",
+    "meaning": "hanging loosely",
+    "example": "Two days later, there was Pooh, sitting on his branch, dangling his legs, and there, beside him, were four pots of honey…."
+   }
+  ],
+  "11": [
+   {
+    "word": "pencils",
+    "meaning": "sticks you draw and write with",
+    "example": "There were pencils in it marked “B”"
+   },
+   {
+    "word": "tinkling",
+    "meaning": "little ringing sounds, like a bell",
+    "example": "…bringing with it the scent of May, and all the streams of the Forest were tinkling happily to find themselves their own pretty shape again, and…"
+   },
+   {
+    "word": "whispered",
+    "meaning": "spoke very quietly",
+    "example": "Then he felt about a little and whispered, “Where is it?”"
+   }
+  ]
+ }
+}

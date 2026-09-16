@@ -1,7 +1,7 @@
 // End-to-end smoke test: node tests/smoke.mjs (needs `npm run preview` on :4173)
 // Simulates a child voice with tests/voice.wav and a grown-up tapping ✓.
 import { chromium } from 'playwright';
-const BASE = process.env.BASE ?? 'http://localhost:4173';
+const BASE = process.env.BASE ?? 'http://127.0.0.1:4173';
 const SHOTS = process.env.SHOTS ?? '/tmp/kite-shots';
 import { mkdirSync } from 'node:fs';
 mkdirSync(SHOTS, { recursive: true });

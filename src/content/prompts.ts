@@ -33,6 +33,8 @@ export const PROMPTS = {
   tap_dogfish: 'Tap dogfish.',
   tap_fishdog: 'Tap fishdog.',
   ready_intro: 'Let’s play a little game.',
+  heart_word: 'This is a heart word. We learn it by heart. It says',
+  book_ready: 'You can read a new book!',
 } as const;
 
 export type PromptId = keyof typeof PROMPTS;

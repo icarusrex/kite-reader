@@ -1,0 +1,426 @@
+{
+ "wizard-of-oz": [
+  {
+   "chapter": 1,
+   "title": "The Cyclone",
+   "words": 1151,
+   "pctDecodable": {
+    "20": 12,
+    "50": 39,
+    "71": 56,
+    "103": 78,
+    "120": 90
+   }
+  },
+  {
+   "chapter": 2,
+   "title": "The Council with The Munchkins",
+   "words": 2014,
+   "pctDecodable": {
+    "20": 10,
+    "50": 34,
+    "71": 55,
+    "103": 76,
+    "120": 88
+   }
+  },
+  {
+   "chapter": 3,
+   "title": "How Dorothy Saved the Scarecrow",
+   "words": 1973,
+   "pctDecodable": {
+    "20": 12,
+    "50": 35,
+    "71": 56,
+    "103": 77,
+    "120": 89
+   }
+  },
+  {
+   "chapter": 4,
+   "title": "The Road Through the Forest",
+   "words": 1444,
+   "pctDecodable": {
+    "20": 10,
+    "50": 31,
+    "71": 52,
+    "103": 80,
+    "120": 90
+   }
+  },
+  {
+   "chapter": 5,
+   "title": "The Rescue of the Tin Woodman",
+   "words": 2070,
+   "pctDecodable": {
+    "20": 11,
+    "50": 33,
+    "71": 54,
+    "103": 80,
+    "120": 90
+   }
+  },
+  {
+   "chapter": 6,
+   "title": "The Cowardly Lion",
+   "words": 1506,
+   "pctDecodable": {
+    "20": 11,
+    "50": 34,
+    "71": 53,
+    "103": 80,
+    "120": 90
+   }
+  },
+  {
+   "chapter": 7,
+   "title": "The Journey to The Great Oz",
+   "words": 1809,
+   "pctDecodable": {
+    "20": 10,
+    "50": 38,
+    "71": 58,
+    "103": 82,
+    "120": 90
+   }
+  },
+  {
+   "chapter": 8,
+   "title": "The Deadly Poppy Field",
+   "words": 1937,
+   "pctDecodable": {
+    "20": 9,
+    "50": 40,
+    "71": 59,
+    "103": 83,
+    "120": 93
+   }
+  },
+  {
+   "chapter": 9,
+   "title": "The Queen of the Field Mice",
+   "words": 1399,
+   "pctDecodable": {
+    "20": 9,
+    "50": 34,
+    "71": 52,
+    "103": 78,
+    "120": 90
+   }
+  },
+  {
+   "chapter": 10,
+   "title": "The Guardian of the Gates",
+   "words": 1961,
+   "pctDecodable": {
+    "20": 11,
+    "50": 36,
+    "71": 55,
+    "103": 79,
+    "120": 89
+   }
+  },
+  {
+   "chapter": 11,
+   "title": "The Wonderful City of Oz",
+   "words": 3619,
+   "pctDecodable": {
+    "20": 11,
+    "50": 34,
+    "71": 55,
+    "103": 80,
+    "120": 90
+   }
+  },
+  {
+   "chapter": 12,
+   "title": "The Search for the Wicked Witch",
+   "words": 3703,
+   "pctDecodable": {
+    "20": 8,
+    "50": 33,
+    "71": 55,
+    "103": 80,
+    "120": 91
+   }
+  },
+  {
+   "chapter": 13,
+   "title": "The Rescue",
+   "words": 1202,
+   "pctDecodable": {
+    "20": 10,
+    "50": 38,
+    "71": 58,
+    "103": 81,
+    "120": 92
+   }
+  },
+  {
+   "chapter": 14,
+   "title": "The Winged Monkeys",
+   "words": 1907,
+   "pctDecodable": {
+    "20": 9,
+    "50": 34,
+    "71": 54,
+    "103": 78,
+    "120": 89
+   }
+  },
+  {
+   "chapter": 15,
+   "title": "The Discovery of Oz, the Terrible",
+   "words": 2775,
+   "pctDecodable": {
+    "20": 11,
+    "50": 32,
+    "71": 52,
+    "103": 77,
+    "120": 87
+   }
+  },
+  {
+   "chapter": 16,
+   "title": "The Magic Art of the Great Humbug",
+   "words": 932,
+   "pctDecodable": {
+    "20": 13,
+    "50": 34,
+    "71": 51,
+    "103": 78,
+    "120": 90
+   }
+  },
+  {
+   "chapter": 17,
+   "title": "How the Balloon Was Launched",
+   "words": 1157,
+   "pctDecodable": {
+    "20": 12,
+    "50": 35,
+    "71": 55,
+    "103": 81,
+    "120": 90
+   }
+  },
+  {
+   "chapter": 18,
+   "title": "Away to the South",
+   "words": 1175,
+   "pctDecodable": {
+    "20": 10,
+    "50": 33,
+    "71": 55,
+    "103": 81,
+    "120": 89
+   }
+  },
+  {
+   "chapter": 19,
+   "title": "Attacked by the Fighting Trees",
+   "words": 1022,
+   "pctDecodable": {
+    "20": 10,
+    "50": 37,
+    "71": 59,
+    "103": 83,
+    "120": 92
+   }
+  },
+  {
+   "chapter": 20,
+   "title": "The Dainty China Country",
+   "words": 1497,
+   "pctDecodable": {
+    "20": 8,
+    "50": 33,
+    "71": 52,
+    "103": 78,
+    "120": 90
+   }
+  },
+  {
+   "chapter": 21,
+   "title": "The Lion Becomes The King of Beasts",
+   "words": 894,
+   "pctDecodable": {
+    "20": 9,
+    "50": 36,
+    "71": 56,
+    "103": 79,
+    "120": 90
+   }
+  },
+  {
+   "chapter": 22,
+   "title": "The Country of the Quadlings",
+   "words": 946,
+   "pctDecodable": {
+    "20": 10,
+    "50": 41,
+    "71": 58,
+    "103": 80,
+    "120": 91
+   }
+  },
+  {
+   "chapter": 23,
+   "title": "The Good Witch Grants Dorothy’s Wish",
+   "words": 1263,
+   "pctDecodable": {
+    "20": 10,
+    "50": 32,
+    "71": 57,
+    "103": 81,
+    "120": 91
+   }
+  },
+  {
+   "chapter": 24,
+   "title": "Home Again",
+   "words": 145,
+   "pctDecodable": {
+    "20": 13,
+    "50": 38,
+    "71": 54,
+    "103": 77,
+    "120": 88
+   }
+  }
+ ],
+ "winnie-the-pooh": [
+  {
+   "chapter": 1,
+   "title": "Introduction",
+   "words": 489,
+   "pctDecodable": {
+    "20": 13,
+    "50": 38,
+    "71": 55,
+    "103": 82,
+    "120": 90
+   }
+  },
+  {
+   "chapter": 2,
+   "title": "In Which We Are Introduced to Winnie-the-Pooh and Some Bees, and the Stories Begin",
+   "words": 2130,
+   "pctDecodable": {
+    "20": 12,
+    "50": 34,
+    "71": 53,
+    "103": 82,
+    "120": 91
+   }
+  },
+  {
+   "chapter": 3,
+   "title": "In Which Pooh Goes Visiting and Gets Into a Tight Place",
+   "words": 1467,
+   "pctDecodable": {
+    "20": 13,
+    "50": 35,
+    "71": 51,
+    "103": 80,
+    "120": 89
+   }
+  },
+  {
+   "chapter": 4,
+   "title": "In Which Pooh and Piglet Go Hunting and Nearly Catch a Woozle",
+   "words": 1258,
+   "pctDecodable": {
+    "20": 16,
+    "50": 36,
+    "71": 53,
+    "103": 80,
+    "120": 89
+   }
+  },
+  {
+   "chapter": 5,
+   "title": "In Which Eeyore Loses a Tail and Pooh Finds One",
+   "words": 1430,
+   "pctDecodable": {
+    "20": 15,
+    "50": 34,
+    "71": 52,
+    "103": 77,
+    "120": 89
+   }
+  },
+  {
+   "chapter": 6,
+   "title": "In Which Piglet Meets a Heffalump",
+   "words": 2637,
+   "pctDecodable": {
+    "20": 15,
+    "50": 36,
+    "71": 54,
+    "103": 81,
+    "120": 88
+   }
+  },
+  {
+   "chapter": 7,
+   "title": "In Which Eeyore Has a Birthday and Gets Two Presents",
+   "words": 2568,
+   "pctDecodable": {
+    "20": 16,
+    "50": 35,
+    "71": 49,
+    "103": 80,
+    "120": 89
+   }
+  },
+  {
+   "chapter": 8,
+   "title": "In Which Kanga and Baby Roo Come to the Forest, and Piglet Has a Bath",
+   "words": 2578,
+   "pctDecodable": {
+    "20": 19,
+    "50": 35,
+    "71": 51,
+    "103": 80,
+    "120": 88
+   }
+  },
+  {
+   "chapter": 9,
+   "title": "In Which Christopher Robin Leads an Expotition to the North Pole",
+   "words": 2885,
+   "pctDecodable": {
+    "20": 17,
+    "50": 36,
+    "71": 55,
+    "103": 82,
+    "120": 88
+   }
+  },
+  {
+   "chapter": 10,
+   "title": "In Which Piglet Is Entirely Surrounded by Water",
+   "words": 2653,
+   "pctDecodable": {
+    "20": 16,
+    "50": 37,
+    "71": 54,
+    "103": 80,
+    "120": 89
+   }
+  },
+  {
+   "chapter": 11,
+   "title": "In Which Christopher Robin Gives Pooh a Party, and We Say Good-bye",
+   "words": 1753,
+   "pctDecodable": {
+    "20": 19,
+    "50": 37,
+    "71": 54,
+    "103": 79,
+    "120": 88
+   }
+  }
+ ]
+}

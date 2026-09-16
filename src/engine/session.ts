@@ -1,12 +1,14 @@
 import { LEVELS, Level, knownGraphemes, levelByN } from '../content/levels';
 import { GRAPHEMES, GRAPHEME_BY_ID } from '../content/phonemes';
 import { PICTURES } from '../content/pictures';
-import { segment } from './decodable';
+import { checkText, segment } from './decodable';
+import BOOK_SENTENCES from '../content/bookSentences.json';
+import { wordLevel } from './wordLevel';
 import { Progress, dueItems } from './progress';
 
 export type StepKind =
   | 'ear' | 'reveal' | 'hearTap' | 'seeSay' | 'hold' | 'glide' | 'alien'
-  | 'readMatch' | 'build' | 'whichWord' | 'sentence' | 'banner';
+  | 'readMatch' | 'build' | 'whichWord' | 'sentence' | 'banner' | 'heart';
 
 export interface Step {
   uid: string;
@@ -21,6 +23,7 @@ export interface Step {
   itemKind?: 'grapheme' | 'word';
   phase: 'main' | 'checkout' | 'cold';
   reinjected?: boolean;
+  source?: string;          // book title for real-book sentences
 }
 
 let uidN = 0;
@@ -91,6 +94,7 @@ function reviewStep(itemId: string, level: number): Step | null {
       : { uid: uid(), kind: 'seeSay', g: value, itemId, itemKind: 'grapheme', phase: 'main' };
   }
   if (type === 'w') return { uid: uid(), kind: 'glide', word: value, itemId, itemKind: 'word', phase: 'main' };
+  if (type === 'h') return { uid: uid(), kind: 'heart', word: value, itemId, itemKind: 'word', phase: 'main' };
   return null;
 }
 
@@ -113,7 +117,14 @@ function buildStep(word: string, level: number): Step {
   return { ...wStep('build', word.toLowerCase()), options: shuffle([...parts, ...decoys]) };
 }
 
-export function buildMain(p: Progress, n: number): Step[] {
+export interface SessionExtras {
+  /** Decodable sentences from locally imported books. */
+  sentences: { text: string; source: string }[];
+  /** Words to pre-teach for books that are coming within reach. */
+  heart: { word: string; source: string }[];
+}
+
+export function buildMain(p: Progress, n: number, extras?: SessionExtras): Step[] {
   const level = levelByN(n);
   const steps: Step[] = [];
   const firstSession = (p.levels[n]?.sessions ?? 0) === 0;
@@ -167,7 +178,16 @@ export function buildMain(p: Progress, n: number): Step[] {
   if (n >= 4) pick(level.words.filter((w) => w.length <= 4), 3).forEach((w) => steps.push(buildStep(w, n)));
 
   // 8. Sentence
-  if (level.sentences.length) {
+  // Pre-teach heart words for owned books coming within reach (max 2 new per session)
+  const newHeart = (extras?.heart ?? []).filter((h) => !p.items[`h:${h.word}`]).slice(0, 2);
+  for (const h of newHeart) steps.push({ uid: uid(), kind: 'heart', word: h.word, source: h.source, itemId: `h:${h.word}`, itemKind: 'word', phase: 'main' });
+
+  const local = (extras?.sentences ?? []).filter((x) => n > LEVELS.length || checkText(x.text, n, heartUpTo(n)).ratio === 1);
+  const fromBooks = [...bookSentencesFor(n).map((b) => ({ text: b.text, source: BOOK_TITLES[b.book] ?? b.book })), ...local];
+  if (fromBooks.length && Math.random() < 0.5) {
+    const b = pick(fromBooks, 1)[0];
+    steps.push({ uid: uid(), kind: 'sentence', text: b.text, source: b.source, phase: 'main' });
+  } else if (level.sentences.length) {
     pick(level.sentences, 1).forEach((t) => steps.push({ uid: uid(), kind: 'sentence', text: t, phase: 'main' }));
   }
 
@@ -195,6 +215,18 @@ export function buildCheckout(n: number, phase: 'checkout' | 'cold' = 'checkout'
   while (pool.length < count) pool.push(gStep(pool.length % 2 ? 'hearTap' : 'seeSay', pick(known, 1)[0], n, phase));
   const chosen = phase === 'cold' ? [pool[0], pool[1], ...shuffle(pool.slice(2)).slice(0, 3)] : shuffle(pool).slice(0, count);
   return [...steps, ...chosen];
+}
+
+const BOOK_TITLES: Record<string, string> = { 'wizard-of-oz': 'The Wonderful Wizard of Oz', 'winnie-the-pooh': 'Winnie-the-Pooh' };
+const heartUpTo = (n: number) => LEVELS.filter((l) => l.n <= n).flatMap((l) => l.heartWords);
+
+/** Real sentences from the read-aloud books that are decodable now (strict check where levels are defined in detail). */
+export function bookSentencesFor(n: number) {
+  return (BOOK_SENTENCES as { book: string; chapter: number; text: string; level: number }[]).filter((b) => {
+    if (b.level > n) return false;
+    if (n <= LEVELS.length) return checkText(b.text, n, heartUpTo(n)).ratio === 1;
+    return b.text.split(/\s+/).every((w) => wordLevel(w).level <= n);
+  });
 }
 
 export const PASS_RATIO = { checkout: 0.9, cold: 0.8 } as const;

@@ -2,21 +2,21 @@ import { useEffect, useRef, useState } from 'react';
 import { meter } from '../audio/mic';
 import { say, stop } from '../audio/speaker';
 import { levelByN } from '../content/levels';
-import { Banner, Build, Ear, Glide, HearTap, Hold, ReadMatch, Reveal, SeeSay, Sentence, WhichWord } from '../activities/Activities';
+import { Banner, Build, Ear, Glide, HearTap, HeartWord, Hold, ReadMatch, Reveal, SeeSay, Sentence, WhichWord } from '../activities/Activities';
 import { ActivityProps } from '../activities/types';
-import { PASS_RATIO, Step, StepKind, buildCheckout, buildMain } from '../engine/session';
+import { PASS_RATIO, SessionExtras, Step, StepKind, buildCheckout, buildMain } from '../engine/session';
 import { SessionLog, coldCheckDue, currentLevel, failCold, passCheckout, passCold, recordAnswer, today } from '../engine/progress';
 import { useStore } from '../app/store';
 import { ParentCorner } from '../ui/components';
 
 const VIEWS: Record<StepKind, (p: ActivityProps) => JSX.Element> = {
   ear: Ear, reveal: Reveal, hearTap: HearTap, seeSay: SeeSay, hold: Hold, glide: Glide, alien: Glide,
-  readMatch: ReadMatch, build: Build, whichWord: WhichWord, sentence: Sentence, banner: Banner,
+  readMatch: ReadMatch, build: Build, whichWord: WhichWord, sentence: Sentence, banner: Banner, heart: HeartWord,
 };
 
 interface Tally { answered: number; correct: number }
 
-export function Session({ onExit, onParent }: { onExit: (log: SessionLog) => void; onParent: () => void }) {
+export function Session({ onExit, onParent, extras }: { onExit: (log: SessionLog) => void; onParent: () => void; extras?: SessionExtras }) {
   const { progress, update } = useStore();
   const progressRef = useRef(progress);
   progressRef.current = progress;
@@ -24,7 +24,7 @@ export function Session({ onExit, onParent }: { onExit: (log: SessionLog) => voi
   const startLevel = useRef(currentLevel(progress)).current;
   const [level, setLevel] = useState(startLevel);
   const [queue, setQueue] = useState<Step[]>(() =>
-    coldCheckDue(progress, startLevel) ? buildCheckout(startLevel, 'cold') : buildMain(progress, startLevel));
+    coldCheckDue(progress, startLevel) ? buildCheckout(startLevel, 'cold') : buildMain(progress, startLevel, extras));
   const [index, setIndex] = useState(0);
   const [neutral, setNeutral] = useState(false);
   const tallies = useRef<Record<Step['phase'], Tally>>({ main: { answered: 0, correct: 0 }, checkout: { answered: 0, correct: 0 }, cold: { answered: 0, correct: 0 } });
@@ -91,10 +91,10 @@ export function Session({ onExit, onParent }: { onExit: (log: SessionLog) => voi
         const next = currentLevel(nextP);
         say({ p: 'level_done' });
         setLevel(next);
-        return appendSteps(buildMain(nextP, next));
+        return appendSteps(buildMain(nextP, next, extras));
       }
       update((p) => failCold(p, n));
-      return appendSteps(buildMain(progressRef.current, n));
+      return appendSteps(buildMain(progressRef.current, n, extras));
     }
     if (phase === 'main') {
       ranMain.current = true;

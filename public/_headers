@@ -1,5 +1,0 @@
-/*
-  Permissions-Policy: microphone=(self)
-  X-Content-Type-Options: nosniff
-/audio/*
-  Cache-Control: public, max-age=31536000

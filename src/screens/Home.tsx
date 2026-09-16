@@ -3,13 +3,14 @@ import { currentLevel, today } from '../engine/progress';
 import { useStore } from '../app/store';
 import { Kite, ParentCorner, useTap } from '../ui/components';
 
-export function Home({ onStart, onParent, extraAllowed }: { onStart: () => void; onParent: () => void; extraAllowed: boolean }) {
+export function Home({ onStart, onParent, onStories, extraAllowed }: { onStart: () => void; onParent: () => void; onStories: () => void; extraAllowed: boolean }) {
   const { progress } = useStore();
   const cur = currentLevel(progress);
   const usedToday = progress.sessions.filter((s) => s.date === today()).reduce((a, s) => a + s.activeSeconds, 0);
   const resting = usedToday >= progress.settings.capMinutes * 60 && !extraAllowed;
   const start = useTap(() => !resting && onStart());
   const name = progress.settings.childName;
+  const stories = useTap(onStories);
 
   return (
     <div className="screen">
@@ -29,6 +30,7 @@ export function Home({ onStart, onParent, extraAllowed }: { onStart: () => void;
         {!resting && <button className="primary" onPointerDown={start} aria-label="Start">▶</button>}
         {resting && <p className="subtitle">Your brain worked hard today.</p>}
       </div>
+      <button className="home-books" onPointerDown={stories} aria-label="Story chair">📚</button>
     </div>
   );
 }

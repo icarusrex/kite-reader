@@ -132,3 +132,30 @@ button { font-family: inherit; color: inherit; border: 0; background: none; curs
 .pill.warn { background: var(--accent-soft); }
 
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* Story chair (read-aloud) */
+.topbar-title { font-size: 24px; font-weight: 700; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bookcard { width: min(40vmin, 320px); min-height: min(48vmin, 380px); border-radius: var(--radius); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 20px; box-shadow: 0 6px 0 var(--line); text-align: center; }
+.bookcard b { font-size: 26px; }
+.bookcard small { font-size: 18px; color: var(--muted); }
+.chapters { overflow: auto; padding: 8px 24px 32px; display: grid; gap: 10px; max-width: 900px; width: 100%; margin: 0 auto; }
+.chapter { display: flex; gap: 14px; align-items: center; text-align: left; background: var(--card); border-radius: 18px; padding: 16px 20px; font-size: 22px; box-shadow: 0 3px 0 var(--line); min-height: 64px; }
+.chapter.done span:first-child { color: var(--sage-deep); }
+.wordcard { flex-direction: column; display: flex; gap: 8px; padding: 18px 22px; height: auto; min-height: 150px; max-width: 280px; font-size: 40px; }
+.wordcard small { font-size: 18px; color: var(--muted); line-height: 1.3; }
+.reader { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.reader-text { flex: 1; overflow: auto; padding: 8px max(24px, 6vw) 16px; font-size: clamp(22px, 3.2vmin, 32px); line-height: 1.65; user-select: text; -webkit-user-select: text; max-width: 1000px; margin: 0 auto; }
+.reader-text .cr { background: #CFE6C8; border-radius: 6px; box-shadow: 0 0 0 2px #CFE6C8; }
+.reader-text .vw { background: var(--accent-soft); border-radius: 6px; font-weight: 700; }
+.reader-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px 18px; }
+.toggle { font-size: 16px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+.muted { color: var(--muted); font-size: 18px; }
+.prompts { font-size: 24px; max-width: 760px; text-align: left; }
+.prompts p { margin: 8px 0; }
+.home-books { position: absolute; right: 20px; bottom: 20px; width: 84px; height: 84px; border-radius: 26px; background: var(--card); box-shadow: 0 4px 0 var(--line); font-size: 44px; }
+.local-page { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; padding: 0 20px; align-items: center; }
+.local-page img { width: 100%; max-height: 100%; object-fit: contain; border-radius: 16px; }
+.local-text { font-size: clamp(28px, 4.5vmin, 48px); line-height: 1.5; }
+@media (max-aspect-ratio: 1/1) { .local-page { grid-template-columns: 1fr; } }
+.shelf-label { font-size: 22px; color: var(--muted); margin: 8px 0 0; }
+.bookcard .badge { background: var(--sage-deep); color: white; border-radius: 99px; padding: 2px 10px; font-size: 16px; }
