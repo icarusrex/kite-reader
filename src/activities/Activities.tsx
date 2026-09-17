@@ -335,7 +335,7 @@ export function Sentence({ step, ctx, onDone, setNeutral }: ActivityProps) {
   const [next, setNext] = useState(0);
   useEffect(() => { say({ p: 'sentence' }); }, []);
   const { strip } = useSpokenScore({
-    enabled: next >= words.length, parentScoring: ctx.settings.parentScoring, setNeutral, onDone,
+    enabled: next >= words.length, parentScoring: ctx.settings.parentScoring, setNeutral, onDone, acceptWhenEnabled: true,
     correction: async () => { await say({ p: 'my_turn' }); for (const w of words) await say({ w: w.replace(/[^A-Za-z]/g, '') }); await say({ p: 'your_turn' }); setNext(0); },
   });
   return (
@@ -447,6 +447,7 @@ export function HeartWord({ step, ctx, onDone, setNeutral }: ActivityProps) {
     // eslint-disable-next-line
   }, []);
   const next = useTap(() => onDone(null));
+  useUtterance(meter.ready && ready && !!step.model, () => sayYes().then(() => onDone(null)), 600);
   const { strip } = useSpokenScore({
     enabled: ready && !step.model, parentScoring: ctx.settings.parentScoring, onDone, setNeutral,
     correction: () => correctSpoken({ w: word }),
@@ -457,7 +458,7 @@ export function HeartWord({ step, ctx, onDone, setNeutral }: ActivityProps) {
       <div className="prompt-word">{parts.map((pt, i) => <span key={i} className={pt.tricky ? 'tricky' : ''}>{pt.text}</span>)}</div>
       {step.source && <div className="subtitle">for <i>{step.source}</i></div>}
       <Waveform />
-      {step.model ? ready && <div className="parent-strip"><button className="pbtn ok" onPointerDown={next} aria-label="Next">→</button><small>grown-up</small></div> : strip}
+      {step.model ? ready && <div className="parent-strip">{meter.ready && <div className="mic-cue on" aria-hidden>🎤</div>}<button className="pbtn ok small" onPointerDown={next} aria-label="Next">→</button><small>grown-up</small></div> : strip}
     </div>
   );
 }
@@ -469,7 +470,7 @@ export function Story({ step, ctx, onDone, setNeutral }: ActivityProps) {
   const [next, setNext] = useState(0);
   useEffect(() => { say({ p: 'story' }); }, []);
   const { strip } = useSpokenScore({
-    enabled: next >= words.length, parentScoring: ctx.settings.parentScoring, setNeutral, onDone,
+    enabled: next >= words.length, parentScoring: ctx.settings.parentScoring, setNeutral, onDone, acceptWhenEnabled: true,
     correction: async () => { await say({ p: 'my_turn' }); for (const { w } of words) await say({ w: w.replace(/[^A-Za-z]/g, '') }); await say({ p: 'your_turn' }); setNext(0); },
   });
   return (
@@ -527,7 +528,9 @@ export function Meet({ step, onDone }: ActivityProps) {
       .then(() => setPhase('you'));
     // eslint-disable-next-line
   }, [g]);
-  const next = useTap(async () => { if (phase !== 'you') return; setPhase('done'); await sayYes(); onDone(null); });
+  const advance = async () => { if (phase !== 'you') return; setPhase('done'); await sayYes(); onDone(null); };
+  const next = useTap(advance);
+  useUtterance(meter.ready && phase === 'you', advance, 600);
   return (
     <div className="stage">
       <div className="meet">
@@ -535,7 +538,7 @@ export function Meet({ step, onDone }: ActivityProps) {
         {anchor && <PictureTile word={anchor} onTap={() => say({ w: anchor })} />}
       </div>
       <Caption>{phase === 'you' ? 'Your turn' : ''}</Caption>
-      {phase === 'you' && <div className="parent-strip"><button className="pbtn ok" onPointerDown={next} aria-label="Next">→</button><small>grown-up</small></div>}
+      {phase === 'you' && <div className="parent-strip">{meter.ready && <div className="mic-cue on" aria-hidden>🎤</div>}<button className="pbtn ok small" onPointerDown={next} aria-label="Next">→</button><small>grown-up</small></div>}
     </div>
   );
 }
@@ -581,8 +584,9 @@ export function Rhyme({ step, onDone, setNeutral }: ActivityProps) {
         await words();
         await say({ pause: 400 }, { p: 'rhyme_teach' }, { pause: 300 });
         await words();
-        await say({ pause: 400 }, { p: 'your_turn' });
         setPhase('done');
+        await wait(900);
+        onDone(null);
         return;
       }
       await say({ p: 'rhyme_ask' }, { pause: 250 });
@@ -621,7 +625,7 @@ export function Rhyme({ step, onDone, setNeutral }: ActivityProps) {
         <PictureTile word={b} onTap={() => say({ w: b })} />
       </div>
       {step.demo
-        ? <><Caption>They rhyme</Caption>{phase === 'done' && <div className="parent-strip"><button className="pbtn ok" onPointerDown={next} aria-label="Next">→</button><small>grown-up</small></div>}</>
+        ? <><Caption>They rhyme</Caption><div className="parent-strip"><button className="pbtn ok small" onPointerDown={next} aria-label="Next">→</button><small>grown-up</small></div></>
         : (
           <div className="row">
             <button className={`tile yesno ${picked === true ? 'selected' : ''}`} onPointerDown={yes} aria-label="Yes, they rhyme" data-c={step.rhymes ? '1' : undefined}>👍</button>

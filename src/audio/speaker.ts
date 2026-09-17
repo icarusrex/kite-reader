@@ -11,7 +11,9 @@ let playing = false;
 let finishCurrent: (() => void) | null = null;
 let cancelToken = 0;
 
-export const isPlaying = () => playing;
+let quietSince = 0;
+/** True while the app is speaking, and briefly after (the speaker's echo mustn't count as the child answering). */
+export const isPlaying = () => playing || performance.now() - quietSince < 400;
 
 export async function initAudio() {
   try {
@@ -44,7 +46,7 @@ function playUrl(url: string, token: number): Promise<boolean> {
     // Watchdog: a clip that stalls (network hiccup) or never reports "ended" must not freeze the activity.
     let watchdog = window.setTimeout(() => done(false)(), 12000);
     a.onloadedmetadata = () => { clearTimeout(watchdog); watchdog = window.setTimeout(() => done(true)(), (a.duration || 10) * 1000 + 1500); };
-    const done = (ok: boolean) => () => { if (settled) return; settled = true; clearTimeout(watchdog); if (current === a) { playing = false; finishCurrent = null; } resolve(ok); };
+    const done = (ok: boolean) => () => { if (settled) return; settled = true; clearTimeout(watchdog); if (current === a) { playing = false; quietSince = performance.now(); finishCurrent = null; } resolve(ok); };
     finishCurrent = done(true);
     a.onended = done(true);
     a.onerror = done(false);
@@ -57,7 +59,7 @@ export function stop() {
   if (current) { current.pause(); current = null; }
   finishCurrent?.(); // let the interrupted say() finish right away
   finishCurrent = null;
-  playing = false;
+  playing = false; quietSince = performance.now();
 }
 
 /**

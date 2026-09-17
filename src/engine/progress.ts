@@ -42,6 +42,7 @@ export interface Settings {
   parentScoring: boolean;
   readinessPassed: boolean | null;
   micSensitivity: number; // 1..5
+  rev?: number;           // settings migrations applied (1 = automatic scoring default, 2026-09-17)
 }
 
 export interface BasicsState { status: 'locked' | 'active' | 'passed'; sessions: number; passedOn?: string }
@@ -77,7 +78,7 @@ export function freshProgress(): Progress {
     version: 1,
     track: 'basics',
     basics: freshBasics(),
-    settings: { childName: '', capMinutes: 10, parentScoring: true, readinessPassed: null, micSensitivity: 3 },
+    settings: { childName: '', capMinutes: 10, parentScoring: false, readinessPassed: null, micSensitivity: 3, rev: 1 },
     levels,
     items: {},
     sessions: [],

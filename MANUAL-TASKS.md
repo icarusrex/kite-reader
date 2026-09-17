@@ -8,7 +8,7 @@ In the app: hold 🔒 (top-left) for 1.5 s → **Grown-ups**. The **Status** tab
 He starts on **Basics**: 10 short lessons for a child who doesn't know letters yet, modelled on the first lessons of *Teach Your Child to Read in 100 Easy Lessons*. One letter **sound** per lesson (m, s, a, f, n, l, t, not letter names), “say it fast” listening games (sun…flower → sunflower), rhyme shown before it's asked (from lesson 5) and a left-to-right game. Every game starts with “watch me”. Sessions are 10 minutes.
 - A lesson counts as done when he gets about 80% right; otherwise it repeats next time.
 - After lesson 10 he moves to level 1 automatically. Grown-ups → **Lessons** shows where he is; **Practice** replays any lesson; **Settings** can skip Basics or go back to it.
-- Sit with him: tap ✓ / → for spoken answers, and don't worry about getting things “wrong”, the app corrects gently.
+- **Spoken answers count by themselves** (since 2026-09-17): when he speaks, a green ✓ appears and it moves on. The mic hears *that* he spoke, not *what*, so if the answer was wrong, tap the small **✗** (right side) within that second and the app corrects gently. If he's quiet, it says “Your turn” again; the small ✓ / → moves on if the mic missed him. A pulsing 🎤 means it's listening. To check every answer yourself instead: Settings → “Grown-up checks every spoken answer”.
 - Paper option alongside: *100 Easy Lessons* lessons 1–10 cover the same ground.
 
 ## Before the first real session

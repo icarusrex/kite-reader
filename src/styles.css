@@ -219,3 +219,12 @@ button { font-family: inherit; color: inherit; border: 0; background: none; curs
 .track-dot.wiggle { animation: wiggle .35s; }
 @keyframes wiggle { 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
 .track-game .kite { position: absolute; transition: left .4s ease, top .4s ease; }
+
+/* Spoken answers: listening cue, heard ✓ */
+.mic-cue { font-size: 40px; opacity: .35; }
+.mic-cue.on { opacity: 1; animation: mic-pulse 1.4s ease-in-out infinite; }
+@keyframes mic-pulse { 50% { transform: scale(1.18); } }
+.heard { width: 64px; height: 64px; border-radius: 50%; background: var(--sage); color: white; font-size: 36px; display: grid; place-items: center; animation: pop .25s ease-out; }
+@keyframes pop { from { transform: scale(.4); } }
+.pbtn.small { width: 44px; height: 44px; font-size: 20px; opacity: .8; }
+@media (prefers-reduced-motion: reduce) { .mic-cue.on { animation: none; } }

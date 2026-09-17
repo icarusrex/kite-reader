@@ -18,6 +18,8 @@ export function migrate(p: Progress): Progress {
   const basics = { ...freshBasics(), ...(p.basics ?? {}) };
   const settings = { ...freshProgress().settings, ...p.settings };
   if (!p.track && settings.capMinutes === 15) settings.capMinutes = 10;
+  // 2026-09-17: spoken answers count automatically (grown-up can still tap ✗); the old "grown-up checks" is a setting
+  if ((p.settings?.rev ?? 0) < 1) { settings.parentScoring = false; settings.rev = 1; }
   return { ...freshProgress(), ...p, track, basics, settings, levels };
 }
 
