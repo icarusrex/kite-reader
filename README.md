@@ -6,7 +6,8 @@ Curriculum spec: `Curriculum v1.md` in the Obsidian vault (`04-personal/Mentava 
 
 ## Status — v0.2
 
-- Readiness check (dogfish/fishdog directionality + oral blending, using only unambiguous pictures)
+- **Basics track** (before level 1, where new learners start): 10 guided lessons, one letter sound each (m s a f n l t), say-it-fast (compound → syllables → stretched sounds), rhyme shown then asked, left-to-right game, "watch me" demo before every game; 10-minute sessions (`src/content/basics.ts`, `src/engine/basics.ts`)
+- Readiness check (dogfish/fishdog directionality + oral blending, using only unambiguous pictures) (gates level 1)
 - Levels 1–20 (Stage 1): a, m, s, t, review, f, d, g, i, n, p, h, b, l, j, c, v, w, r, k
 - Activities: Ear Game (rhyme, onset-rime, blending, first and final sound), Sound Reveal, Hear & Tap (+ confusable pairs b/d, f/v, r/w), See & Say, Hold It, Glide Blend + Say It Fast, Alien Names, Read & Match, Which Word, Build It, Sentence Read, **Story** (levels 5–20), Heart Word (modelled first, then read cold; tricky part marked)
 - Watercolour illustrations for every picture word and story (`npm run pictures`, Gemini with approved character sheets)

@@ -1,4 +1,5 @@
 import { LEVELS } from '../content/levels';
+import { BASICS } from '../content/basics';
 import { currentLevel, today } from '../engine/progress';
 import { useStore } from '../app/store';
 import { Kite, ParentCorner, useTap } from '../ui/components';
@@ -20,6 +21,14 @@ export function Home({ onStart, onParent, onStories, extraAllowed }: { onStart: 
           <Kite style={{ left: 0, width: '22vmin', height: '24vmin', transform: resting ? 'rotate(-12deg)' : undefined }} />
         </div>
         <h1 className="title">{resting ? 'See you tomorrow!' : name ? `Hi ${name}!` : 'Hi!'}</h1>
+        {progress.track === 'basics' ? (
+          <div className="path" aria-label="Basics">
+            {BASICS.map((b) => {
+              const st = progress.basics[b.n]?.status;
+              return <div key={b.n} className={`stone ${st === 'passed' ? 'passed' : st === 'active' ? 'current' : ''}`}>{st === 'passed' ? '★' : b.newSound ?? '↺'}</div>;
+            })}
+          </div>
+        ) : (
         <div className="path" aria-label="Levels">
           {LEVELS.map((l) => {
             const st = progress.levels[l.n]?.status;
@@ -27,6 +36,7 @@ export function Home({ onStart, onParent, onStories, extraAllowed }: { onStart: 
             return <div key={l.n} className={`stone ${cls}`}>{st === 'passed' ? '★' : l.newGraphemes[0] ?? '↺'}</div>;
           })}
         </div>
+        )}
         {!resting && <button className="primary" onPointerDown={start} aria-label="Start">▶</button>}
         {resting && <p className="subtitle">Your brain worked hard today.</p>}
       </div>

@@ -38,6 +38,20 @@ export const PROMPTS = {
   heart_read: 'Read this heart word.',
   story: 'Read the story. Tap each word as you read it.',
   book_ready: 'You can read a new book!',
+  // Basics track
+  watch_me: 'Watch me first.',
+  say_fast_game: "Let's play say it fast! Listen.",
+  which_picture: 'Which picture is it?',
+  it_is: "It's",
+  sound_says: 'This letter says',
+  like_in: 'like in',
+  find_sound: 'Find the letter that says',
+  rhyme_teach: 'These words rhyme. They sound the same at the end.',
+  rhyme_ask: 'Do these words rhyme?',
+  rhyme_yes: 'Yes! They rhyme.',
+  rhyme_no: "No, they don't rhyme.",
+  track_game: 'Help the kite fly. Tap the dots, one by one.',
+  basics_done: 'You learned a new sound today!',
 } as const;
 
 export type PromptId = keyof typeof PROMPTS;

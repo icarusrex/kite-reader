@@ -22,21 +22,26 @@ function Shell() {
   const [extra, setExtra] = useState(false);
   const [extras, setExtras] = useState<SessionExtras | undefined>();
   const [practice, setPractice] = useState<number | undefined>();
+  const [practiceBasics, setPracticeBasics] = useState<number | undefined>();
   useEffect(() => { initAudio(); requestPersistence(); meter.sensitivity = progress.settings.micSensitivity; /* eslint-disable-next-line */ }, []);
 
   const start = async () => {
     await meter.start(); // must be inside the tap for iOS
-    if (progress.settings.readinessPassed === null) return setView('readiness');
+    // The readiness check gates level 1 only; Basics is for children who aren't ready yet.
+    if (progress.track === 'levels' && progress.settings.readinessPassed === null) return setView('readiness');
     setExtras(await localExtras(currentLevel(progress)));
     setPractice(undefined);
+    setPracticeBasics(undefined);
     setView('session');
   };
 
   if (view === 'parent') return <Parent onClose={() => setView('home')} onReadiness={async () => { await meter.start(); setView('readiness'); }} onExtraSession={() => { setExtra(true); setView('home'); }}
-    onPractice={async (n) => { await meter.start(); setExtras(await localExtras(n)); setPractice(n); setView('session'); }} />;
+    onPractice={async (n) => { await meter.start(); setExtras(await localExtras(n)); setPracticeBasics(undefined); setPractice(n); setView('session'); }}
+    onPracticeBasics={async (n) => { await meter.start(); setPractice(undefined); setPracticeBasics(n); setView('session'); }} />;
   if (view === 'stories') return <StoryChair onClose={() => setView('home')} />;
   if (view === 'readiness') return <Readiness onDone={() => setView('home')} />;
-  if (view === 'session') return <Session key={practice ?? 'main'} extras={extras} practiceLevel={practice} onParent={() => setView('parent')} onExit={() => { setExtra(false); if (practice) { setPractice(undefined); setView('parent'); } else setView('done'); }} />;
+  if (view === 'session') return <Session key={practice ?? (practiceBasics ? `b${practiceBasics}` : 'main')} extras={extras} practiceLevel={practice} practiceBasics={practiceBasics} onParent={() => setView('parent')}
+    onExit={() => { setExtra(false); if (practice || practiceBasics) { setPractice(undefined); setPracticeBasics(undefined); setView('parent'); } else setView('done'); }} />;
   if (view === 'done') return <Done onHome={() => setView('home')} onParent={() => setView('parent')} />;
   return <Home onStart={start} onParent={() => setView('parent')} onStories={() => setView('stories')} extraAllowed={extra} />;
 }

@@ -3,6 +3,7 @@ import { meter } from '../audio/mic';
 import { Utter, say, saySegmented, sayYes, stop } from '../audio/speaker';
 import { GRAPHEME_BY_ID } from '../content/phonemes';
 import { displayChunks, segment, trickyParts } from '../engine/decodable';
+import { ANCHORS, COMPOUND, SYLLABLE } from '../content/basics';
 import { Caption, Kite, PictureTile, ReplayButton, Tile, Waveform, useTap } from '../ui/components';
 import { useSpokenScore } from './scoring';
 import { useUtterance } from './useSpeech';
@@ -84,7 +85,11 @@ function useTapChoice(opts: {
 }
 
 /* ---------- A2 Hear & Tap ---------- */
-export function HearTap({ step, onDone, setNeutral }: ActivityProps) {
+export function HearTap(props: ActivityProps) {
+  if (props.step.demo) return <TapDemo {...props} intro={() => say({ p: 'find_sound' }, { pause: 150 }, { g: props.step.g! })} outro={() => say({ g: props.step.g! })} answer={props.step.g!} render={(o, state) => <Tile key={o} label={o} state={state} />} />;
+  return <HearTapLive {...props} />;
+}
+function HearTapLive({ step, onDone, setNeutral }: ActivityProps) {
   const g = step.g!;
   const intro = () => say({ p: 'tap_sound' }, { pause: 150 }, { g });
   const { choose, stateOf } = useTapChoice({
@@ -352,7 +357,23 @@ function SentenceChip({ w, state, onTap }: { w: string; state: string; onTap: ()
 }
 
 /* ---------- A14 Ear Game (oral phonemic awareness) ---------- */
-export function Ear({ step, onDone, setNeutral }: ActivityProps) {
+export function Ear(props: ActivityProps) {
+  const { step } = props;
+  if (step.demo) {
+    const e = step.ear!;
+    const segsOf = (w: string) => segment(w) ?? [];
+    const intro = async () => {
+      if (e.mode === 'rhyme') await say({ p: 'ear_rhyme' }, { pause: 150 }, { w: e.target });
+      else if (e.mode === 'first') await say({ p: 'ear_first' }, { pause: 150 }, { g: e.target });
+      else if (e.mode === 'last') await say({ p: 'ear_last' }, { pause: 150 }, { g: e.target });
+      else if (e.mode === 'onset') { const s = segsOf(e.target); await say({ p: 'ear_listen' }, { pause: 300 }, { g: s[0] }, { pause: 300 }, { w: e.target.slice(1) }); }
+      else { await say({ p: 'ear_listen' }, { pause: 300 }); await saySegmented(segsOf(e.target), 180); }
+    };
+    return <TapDemo {...props} step={{ ...step, options: e.options }} intro={intro} outro={() => say({ p: 'it_is' }, { pause: 100 }, { w: step.word! })} answer={step.word!} render={(o, state) => <PictureTile key={o} word={o} state={state} />} />;
+  }
+  return <EarLive {...props} />;
+}
+function EarLive({ step, onDone, setNeutral }: ActivityProps) {
   const e = step.ear!;
   const answer = step.word!;
   const segsOf = (w: string) => segment(w) ?? [];
@@ -464,4 +485,181 @@ export function Story({ step, ctx, onDone, setNeutral }: ActivityProps) {
       {strip}
     </div>
   );
+}
+
+/* ---------- "Watch me": shows a tap game once with the answer, unscored ---------- */
+function TapDemo({ step, onDone, intro, outro, answer, render }: ActivityProps & {
+  intro: () => Promise<void>; outro: () => Promise<void>; answer: string;
+  render: (option: string, state: 'good' | 'hint' | 'dim' | undefined) => JSX.Element;
+}) {
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    let live = true;
+    (async () => {
+      await say({ p: 'watch_me' }, { pause: 200 });
+      await intro();
+      await wait(500);
+      if (!live) return;
+      setShown(true);
+      await say({ p: 'my_turn' }, { pause: 150 });
+      await outro();
+      await wait(700);
+      if (live) onDone(null);
+    })();
+    return () => { live = false; };
+    // eslint-disable-next-line
+  }, []);
+  return (
+    <div className="stage">
+      <Caption>Watch me</Caption>
+      <div className="row demo">{step.options!.map((o) => render(o, shown ? (o === answer ? 'good' : 'dim') : undefined))}</div>
+    </div>
+  );
+}
+
+/* ---------- Basics: meet a sound (letter + picture anchor, unscored) ---------- */
+export function Meet({ step, onDone }: ActivityProps) {
+  const g = step.g!;
+  const anchor = ANCHORS[g];
+  const [phase, setPhase] = useState<'model' | 'you' | 'done'>('model');
+  useEffect(() => {
+    say({ p: 'sound_says' }, { pause: 200 }, { g }, { pause: 500 }, { p: 'like_in' }, { pause: 100 }, { w: anchor }, { pause: 600 }, { g }, { pause: 400 }, { p: 'your_turn' })
+      .then(() => setPhase('you'));
+    // eslint-disable-next-line
+  }, [g]);
+  const next = useTap(async () => { if (phase !== 'you') return; setPhase('done'); await sayYes(); onDone(null); });
+  return (
+    <div className="stage">
+      <div className="meet">
+        <Tile big label={g} onTap={() => say({ g })} />
+        {anchor && <PictureTile word={anchor} onTap={() => say({ w: anchor })} />}
+      </div>
+      <Caption>{phase === 'you' ? 'Your turn' : ''}</Caption>
+      {phase === 'you' && <div className="parent-strip"><button className="pbtn ok" onPointerDown={next} aria-label="Next">→</button><small>grown-up</small></div>}
+    </div>
+  );
+}
+
+/* ---------- Basics: say it fast (oral blending with pictures) ---------- */
+const splitOf = (word: string) => [...COMPOUND, ...SYLLABLE].find((c) => c.word === word)?.split ?? word;
+export function SayFast(props: ActivityProps) {
+  const { step } = props;
+  const word = step.word!;
+  const slow = () => step.fast!.mode === 'stretch'
+    ? saySegmented(segment(word) ?? [], 0)
+    : say({ key: `split:${word}`, text: splitOf(word) });
+  const intro = async () => { await say({ p: 'say_fast_game' }, { pause: 250 }); await slow(); await say({ pause: 300 }, { p: 'which_picture' }); };
+  if (step.demo) return <TapDemo {...props} intro={intro} outro={() => say({ p: 'it_is' }, { pause: 100 }, { w: word })} answer={word} render={(o, state) => <PictureTile key={o} word={o} state={state} />} />;
+  return <SayFastLive {...props} intro={intro} slow={slow} />;
+}
+function SayFastLive({ step, onDone, setNeutral, intro, slow }: ActivityProps & { intro: () => Promise<void>; slow: () => Promise<void> }) {
+  const word = step.word!;
+  const { choose, stateOf } = useTapChoice({
+    answer: word, onDone, setNeutral, intro,
+    correction: async () => { await say({ p: 'my_turn' }, { pause: 150 }); await slow(); await say({ pause: 250 }, { p: 'it_is' }, { w: word }); },
+  });
+  return (
+    <div className="stage">
+      <div style={{ fontSize: '9vmin' }}>👂</div>
+      <ReplayButton onTap={slow} />
+      <div className="row">{step.options!.map((o) => <PictureTile key={o} word={o} onTap={() => choose(o)} state={stateOf(o)} correct={o === word} />)}</div>
+    </div>
+  );
+}
+
+/* ---------- Basics: rhyme (shown first, then yes / no) ---------- */
+export function Rhyme({ step, onDone, setNeutral }: ActivityProps) {
+  const [a, b] = step.pair!;
+  const [phase, setPhase] = useState<'intro' | 'ask' | 'done'>('intro');
+  const [picked, setPicked] = useState<boolean | null>(null);
+  const attempt = useRef(1);
+  const words = () => say({ w: a }, { pause: 350 }, { w: b });
+  useEffect(() => {
+    (async () => {
+      if (step.demo) {
+        await say({ p: 'watch_me' }, { pause: 200 });
+        await words();
+        await say({ pause: 400 }, { p: 'rhyme_teach' }, { pause: 300 });
+        await words();
+        await say({ pause: 400 }, { p: 'your_turn' });
+        setPhase('done');
+        return;
+      }
+      await say({ p: 'rhyme_ask' }, { pause: 250 });
+      await words();
+      setPhase('ask');
+    })();
+    // eslint-disable-next-line
+  }, []);
+  const answer = async (yes: boolean) => {
+    if (phase === 'done' && step.demo) { onDone(null); return; }
+    if (phase !== 'ask' && phase !== 'intro') return;
+    stop();
+    setPicked(yes);
+    if (yes === step.rhymes) {
+      setPhase('done');
+      await say({ p: step.rhymes ? 'rhyme_yes' : 'rhyme_no' });
+      onDone(attempt.current === 1);
+      return;
+    }
+    setNeutral(true);
+    await say({ p: 'my_turn' }, { pause: 150 });
+    await words();
+    await say({ pause: 300 }, { p: step.rhymes ? 'rhyme_yes' : 'rhyme_no' });
+    setNeutral(false);
+    attempt.current = 2;
+    setPicked(null);
+    setPhase('ask');
+  };
+  const yes = useTap(() => answer(true));
+  const no = useTap(() => answer(false));
+  const next = useTap(() => onDone(null));
+  return (
+    <div className="stage">
+      <div className="row">
+        <PictureTile word={a} onTap={() => say({ w: a })} />
+        <PictureTile word={b} onTap={() => say({ w: b })} />
+      </div>
+      {step.demo
+        ? <><Caption>They rhyme</Caption>{phase === 'done' && <div className="parent-strip"><button className="pbtn ok" onPointerDown={next} aria-label="Next">→</button><small>grown-up</small></div>}</>
+        : (
+          <div className="row">
+            <button className={`tile yesno ${picked === true ? 'selected' : ''}`} onPointerDown={yes} aria-label="Yes, they rhyme" data-c={step.rhymes ? '1' : undefined}>👍</button>
+            <button className={`tile yesno ${picked === false ? 'selected' : ''}`} onPointerDown={no} aria-label="No" data-c={step.rhymes ? undefined : '1'}>👎</button>
+          </div>
+        )}
+      <ReplayButton onTap={words} />
+    </div>
+  );
+}
+
+/* ---------- Basics: left to right (tap the dots in order; unscored) ---------- */
+export function TrackGame({ onDone }: ActivityProps) {
+  const DOTS = 4;
+  const [at, setAt] = useState(0);
+  const [wiggle, setWiggle] = useState<number | null>(null);
+  useEffect(() => { say({ p: 'track_game' }); }, []);
+  const tap = async (i: number) => {
+    if (i !== at) { setWiggle(i); setTimeout(() => setWiggle(null), 400); return; }
+    stop();
+    const n = at + 1;
+    setAt(n);
+    if (n === DOTS) { await wait(400); await sayYes(); onDone(null); }
+  };
+  return (
+    <div className="stage">
+      <div className="track-game">
+        <Kite style={{ left: `calc(${(Math.min(at, DOTS - 1) / (DOTS - 1)) * 100}% - 9vmin)`, top: at === DOTS ? '-8vmin' : '-2vmin' }} />
+        {Array.from({ length: DOTS }, (_, i) => (
+          <TrackDot key={i} done={i < at} next={i === at} wiggle={wiggle === i} onTap={() => tap(i)} />
+        ))}
+        <div className="arrow" style={{ width: '100%' }} />
+      </div>
+      <Caption>→</Caption>
+    </div>
+  );
+}
+function TrackDot({ done, next, wiggle, onTap }: { done: boolean; next: boolean; wiggle: boolean; onTap: () => void }) {
+  const tap = useTap(onTap);
+  return <button className={`track-dot ${done ? 'done' : ''} ${next ? 'next' : ''} ${wiggle ? 'wiggle' : ''}`} onPointerDown={tap} aria-label="dot" data-c={next ? '1' : undefined} />;
 }

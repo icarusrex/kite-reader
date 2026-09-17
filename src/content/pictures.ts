@@ -10,6 +10,12 @@ export const PICTURES: Record<string, string> = {
   dad: '👨', sad: '😢', dig: '⛏️', fan: '🪭', fin: '🦈', tin: '🥫', man: '🧍', pin: '📌', lip: '👄', hill: '⛰️',
   cap: '🧢', cab: '🚕', rat: '🐀', kid: '🧒', bag: '👜', gas: '⛽', nap: '😴', ham: '🍖', bib: '👶', pan: '🍳',
   wig: '💇', lid: '🫙', kit: '🧰', jam: '🍓', rag: '🧽', cup: '☕', fish: '🐟', mat: '🟫', tap: '🚰', fig: '🟣',
+  // Basics track: sound anchors, say-it-fast words, rhymes
+  apple: '🍎', nest: '🪺', sunflower: '🌻', cupcake: '🧁', rainbow: '🌈', football: '⚽', snowman: '⛄', starfish: '⭐',
+  ladybug: '🐞', popcorn: '🍿', pancake: '🥞', teapot: '🫖', raincoat: '🧥', toothbrush: '🪥', table: '🪑', monkey: '🐒',
+  rabbit: '🐇', pencil: '✏️', basket: '🧺', tiger: '🐯', carrot: '🥕', lemon: '🍋', button: '🔘', zebra: '🦓', spider: '🕷️',
+  robot: '🤖', moon: '🌙', spoon: '🥄', cake: '🎂', snake: '🐍', bee: '🐝', tree: '🌳', goat: '🐐', boat: '⛵', fox: '🦊',
+  box: '📦', mouse: '🐭', house: '🏠', frog: '🐸',
 };
 
 export const CLEAR_WORDS = ['cat', 'pig', 'bat', 'hat', 'map', 'sun', 'bed', 'bus', 'dog', 'van', 'ten', 'leg', 'web', 'log', 'pen'];

@@ -2,30 +2,36 @@ import { useEffect, useRef, useState } from 'react';
 import { meter } from '../audio/mic';
 import { say, stop } from '../audio/speaker';
 import { levelByN } from '../content/levels';
-import { Banner, Build, Ear, Glide, HearTap, HeartWord, Hold, ReadMatch, Reveal, SeeSay, Sentence, Story, WhichWord } from '../activities/Activities';
+import { Banner, Build, Ear, Glide, HearTap, HeartWord, Hold, Meet, ReadMatch, Reveal, Rhyme, SayFast, SeeSay, Sentence, Story, TrackGame, WhichWord } from '../activities/Activities';
 import { ActivityProps } from '../activities/types';
 import { PASS_RATIO, SessionExtras, Step, StepKind, buildCheckout, buildMain, storyFor, storyLevel } from '../engine/session';
 import { storyPictureUrl } from '../content/pictures';
-import { SessionLog, coldCheckDue, currentLevel, failCold, passCheckout, passCold, recordAnswer, today } from '../engine/progress';
+import { SessionLog, coldCheckDue, currentBasics, currentLevel, failCold, passBasics, passCheckout, passCold, recordAnswer, today } from '../engine/progress';
+import { BASICS_PASS_RATIO, buildBasics } from '../engine/basics';
 import { useStore } from '../app/store';
 import { ParentCorner } from '../ui/components';
 
 const VIEWS: Record<StepKind, (p: ActivityProps) => JSX.Element> = {
   ear: Ear, reveal: Reveal, hearTap: HearTap, seeSay: SeeSay, hold: Hold, glide: Glide, alien: Glide,
   readMatch: ReadMatch, build: Build, whichWord: WhichWord, sentence: Sentence, story: Story, banner: Banner, heart: HeartWord,
+  meet: Meet, sayFast: SayFast, rhyme: Rhyme, trackGame: TrackGame,
 };
 
 interface Tally { answered: number; correct: number }
 
-export function Session({ onExit, onParent, extras, practiceLevel }: { onExit: (log: SessionLog) => void; onParent: () => void; extras?: SessionExtras; practiceLevel?: number }) {
+export function Session({ onExit, onParent, extras, practiceLevel, practiceBasics }: { onExit: (log: SessionLog) => void; onParent: () => void; extras?: SessionExtras; practiceLevel?: number; practiceBasics?: number }) {
   const { progress, update } = useStore();
   const progressRef = useRef(progress);
   progressRef.current = progress;
 
+  // Basics lesson (before level 1): the grown-up's practice pick, or the current one while on the Basics track
+  const basicsLesson = useRef(practiceBasics ?? (!practiceLevel && progress.track === 'basics' ? currentBasics(progress) : undefined)).current;
+  const practice = !!(practiceLevel || practiceBasics);
   const startLevel = useRef(practiceLevel ?? currentLevel(progress)).current;
   const [level, setLevel] = useState(startLevel);
   const [queue, setQueue] = useState<Step[]>(() =>
-    !practiceLevel && coldCheckDue(progress, startLevel) ? buildCheckout(startLevel, 'cold') : buildMain(progress, startLevel, extras));
+    basicsLesson ? buildBasics(progress, basicsLesson)
+      : !practiceLevel && coldCheckDue(progress, startLevel) ? buildCheckout(startLevel, 'cold') : buildMain(progress, startLevel, extras));
   const [index, setIndex] = useState(0);
   const [neutral, setNeutral] = useState(false);
   const tallies = useRef<Record<Step['phase'], Tally>>({ main: { answered: 0, correct: 0 }, checkout: { answered: 0, correct: 0 }, cold: { answered: 0, correct: 0 } });
@@ -54,11 +60,13 @@ export function Session({ onExit, onParent, extras, practiceLevel }: { onExit: (
     ended.current = true;
     const n = levelRef.current;
     const t = tallies.current;
-    if (ranMain.current && !practiceLevel) {
+    if (basicsLesson && ranMain.current && !practice) {
+      update((p) => ({ ...p, basics: { ...p.basics, [basicsLesson]: { ...p.basics[basicsLesson], sessions: (p.basics[basicsLesson]?.sessions ?? 0) + 1 } } }));
+    } else if (!basicsLesson && ranMain.current && !practiceLevel) {
       update((p) => ({ ...p, levels: { ...p.levels, [n]: { ...p.levels[n], sessions: (p.levels[n]?.sessions ?? 0) + 1 } } }));
     }
     const log: SessionLog = {
-      date: today(), level: n, activeSeconds: active.current, endedBy, ...(practiceLevel ? { practice: true } : {}),
+      date: today(), level: basicsLesson ? 0 : n, activeSeconds: active.current, endedBy, ...(practice ? { practice: true } : {}), ...(basicsLesson ? { basics: basicsLesson } : {}),
       answered: t.main.answered + t.checkout.answered + t.cold.answered,
       correct: t.main.correct + t.checkout.correct + t.cold.correct,
     };
@@ -77,7 +85,7 @@ export function Session({ onExit, onParent, extras, practiceLevel }: { onExit: (
   const wantsStoryTime = () => {
     const n = levelRef.current;
     const sessionsSoFar = progressRef.current.sessions.length + 1;
-    return !practiceLevel && !!storyFor(n) && sessionsSoFar % 3 === 0;
+    return !practice && !basicsLesson && !!storyFor(n) && sessionsSoFar % 3 === 0;
   };
 
   /** Called when the queue runs out: decide what comes next. */
@@ -98,6 +106,13 @@ export function Session({ onExit, onParent, extras, practiceLevel }: { onExit: (
     }
     if (phase === 'main') {
       ranMain.current = true;
+      if (basicsLesson) {
+        if (!practice && ratio >= BASICS_PASS_RATIO) {
+          update((p) => passBasics(p, basicsLesson));
+          say({ p: 'basics_done' });
+        }
+        return finish('complete');
+      }
       if (practiceLevel) return finish('complete');
       const sessions = progressRef.current.levels[n]?.sessions ?? 0;
       const status = progressRef.current.levels[n]?.status;

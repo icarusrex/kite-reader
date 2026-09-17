@@ -8,7 +8,8 @@ import { Progress, dueItems } from './progress';
 
 export type StepKind =
   | 'ear' | 'reveal' | 'hearTap' | 'seeSay' | 'hold' | 'glide' | 'alien'
-  | 'readMatch' | 'build' | 'whichWord' | 'sentence' | 'story' | 'banner' | 'heart';
+  | 'readMatch' | 'build' | 'whichWord' | 'sentence' | 'story' | 'banner' | 'heart'
+  | 'meet' | 'sayFast' | 'rhyme' | 'trackGame';
 
 export interface Step {
   uid: string;
@@ -26,6 +27,10 @@ export interface Step {
   phase: 'main' | 'checkout' | 'cold';
   reinjected?: boolean;
   model?: boolean;          // heart word: first exposure is shown and modelled, not scored
+  demo?: boolean;           // "watch me": the activity is shown with the answer, not scored
+  fast?: { mode: 'compound' | 'syllable' | 'stretch' };  // say it fast (word = answer, options = pictures)
+  pair?: [string, string];  // rhyme: two picture words; `rhymes` says whether they do
+  rhymes?: boolean;
   source?: string;          // book title for real-book sentences
 }
 
@@ -133,8 +138,8 @@ export function buildMain(p: Progress, n: number, extras?: SessionExtras): Step[
   const firstSession = (p.levels[n]?.sessions ?? 0) === 0;
   const recent = level.newGraphemes.length ? level.newGraphemes : knownGraphemes(n).slice(-3);
 
-  // 1. Ear warm-up (oral only)
-  for (let i = 0; i < 4; i++) steps.push(earStep(level));
+  // 1. Ear warm-up (oral only); in early levels the first one is a "watch me" demo
+  for (let i = 0; i < 4; i++) steps.push({ ...earStep(level), ...(i === 0 && n <= 5 ? { demo: true } : {}) });
 
   // 2. Spaced review
   for (const item of dueItems(p, undefined, 5)) {

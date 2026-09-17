@@ -4,7 +4,8 @@ import { LEVELS, MAX_LEVEL, levelByN } from '../content/levels';
 import { GRAPHEMES } from '../content/phonemes';
 import { PROMPTS } from '../content/prompts';
 import { checkText } from '../engine/decodable';
-import { currentLevel, freshProgress, jumpTo, Progress, today } from '../engine/progress';
+import { currentBasics, currentLevel, freshProgress, jumpTo, Progress, setTrack, today } from '../engine/progress';
+import { BASICS } from '../content/basics';
 import { hasManifest, hasRecording, refreshRecordings, say } from '../audio/speaker';
 import { remove } from '../engine/storage';
 import { meter } from '../audio/mic';
@@ -18,7 +19,7 @@ import { useRecorder } from '../audio/useRecorder';
 
 type Tab = 'status' | 'progress' | 'lessons' | 'sounds' | 'books' | 'settings' | 'backup';
 
-export function Parent({ onClose, onReadiness, onExtraSession, onPractice }: { onClose: () => void; onReadiness: () => void; onExtraSession: () => void; onPractice: (level: number) => void }) {
+export function Parent({ onClose, onReadiness, onExtraSession, onPractice, onPracticeBasics }: { onClose: () => void; onReadiness: () => void; onExtraSession: () => void; onPractice: (level: number) => void; onPracticeBasics: (lesson: number) => void }) {
   const [tab, setTab] = useState<Tab>('status');
   return (
     <div className="parent">
@@ -33,7 +34,7 @@ export function Parent({ onClose, onReadiness, onExtraSession, onPractice }: { o
       <main>
         {tab === 'status' && <StatusTab go={setTab} />}
         {tab === 'progress' && <ProgressTab />}
-        {tab === 'lessons' && <LessonsTab onPractice={onPractice} />}
+        {tab === 'lessons' && <LessonsTab onPractice={onPractice} onPracticeBasics={onPracticeBasics} />}
         {tab === 'sounds' && <SoundsTab />}
         {tab === 'books' && <BooksTab />}
         {tab === 'settings' && <SettingsTab onReadiness={onReadiness} onExtraSession={onExtraSession} />}
@@ -203,6 +204,12 @@ function SettingsTab({ onReadiness, onExtraSession }: { onReadiness: () => void;
         <div className="row" style={{ justifyContent: 'flex-start', gap: 8 }}>
           <button className="btn" onClick={onReadiness}>Run readiness check</button>
           <button className="btn light" onClick={onExtraSession}>Allow one more session today</button>
+        </div>
+        <p>Track: <b>{p.track === 'basics' ? `Basics, lesson ${currentBasics(p)} of ${BASICS.length}` : `Levels, level ${currentLevel(p)}`}</b></p>
+        <div className="row" style={{ justifyContent: 'flex-start', gap: 8 }}>
+          {p.track === 'basics'
+            ? <button className="btn light" onClick={() => { if (window.confirm('Skip Basics and start level 1?')) update((x) => setTrack(x, 'levels')); }}>Skip Basics → levels</button>
+            : <button className="btn light" onClick={() => update((x) => setTrack(x, 'basics', 1))}>Go back to Basics</button>}
         </div>
         <label>Jump to level (marks earlier levels passed)
           <select value={currentLevel(p)} onChange={(e) => update((x) => jumpTo(x, +e.target.value))}>

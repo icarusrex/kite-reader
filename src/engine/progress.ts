@@ -1,4 +1,5 @@
 import { MAX_LEVEL } from '../content/levels';
+import { BASICS } from '../content/basics';
 
 // Leitner intervals in days per box (box index 0..5)
 export const BOX_DAYS = [0, 1, 2, 4, 7, 14];
@@ -31,6 +32,7 @@ export interface SessionLog {
   answered: number;
   correct: number;
   endedBy: 'cap' | 'complete' | 'fatigue' | 'parent';
+  basics?: number;       // Basics lesson (then `level` is 0)
   practice?: boolean;    // grown-up replayed a level: doesn't move progress or count toward the daily cap
 }
 
@@ -42,8 +44,13 @@ export interface Settings {
   micSensitivity: number; // 1..5
 }
 
+export interface BasicsState { status: 'locked' | 'active' | 'passed'; sessions: number; passedOn?: string }
+
 export interface Progress {
   version: 1;
+  /** 'basics': letter sounds + listening games before level 1 (children who don't know letters yet). */
+  track: 'basics' | 'levels';
+  basics: Record<number, BasicsState>;
   settings: Settings;
   levels: Record<number, LevelState>;
   items: Record<string, ItemState>;
@@ -68,7 +75,9 @@ export function freshProgress(): Progress {
   for (let n = 1; n <= MAX_LEVEL; n++) levels[n] = { status: n === 1 ? 'active' : 'locked', sessions: 0 };
   return {
     version: 1,
-    settings: { childName: '', capMinutes: 15, parentScoring: true, readinessPassed: null, micSensitivity: 3 },
+    track: 'basics',
+    basics: freshBasics(),
+    settings: { childName: '', capMinutes: 10, parentScoring: true, readinessPassed: null, micSensitivity: 3 },
     levels,
     items: {},
     sessions: [],
@@ -147,4 +156,27 @@ export function jumpTo(p: Progress, n: number, date = today()): Progress {
 export function coldCheckDue(p: Progress, level: number, date = today()) {
   const l = p.levels[level];
   return l?.status === 'cold' && !!l.checkoutPassedOn && l.checkoutPassedOn < date;
+}
+
+export function freshBasics(): Record<number, BasicsState> {
+  return Object.fromEntries(BASICS.map((b) => [b.n, { status: b.n === 1 ? 'active' : 'locked', sessions: 0 }]));
+}
+
+export function currentBasics(p: Progress): number {
+  return BASICS.find((b) => p.basics[b.n]?.status === 'active')?.n ?? BASICS[BASICS.length - 1].n;
+}
+
+/** Basics lesson passed: unlock the next one; after the last one, move on to level 1. */
+export function passBasics(p: Progress, n: number, date = today()): Progress {
+  const basics = { ...p.basics, [n]: { ...p.basics[n], status: 'passed' as const, passedOn: date } };
+  const next = BASICS.find((b) => b.n > n);
+  if (next) basics[next.n] = { ...basics[next.n], status: 'active' };
+  return { ...p, basics, track: next ? p.track : 'levels' };
+}
+
+/** Grown-up choice: start (or go back to) Basics lesson n, or skip Basics and go to the levels. */
+export function setTrack(p: Progress, track: Progress['track'], basicsLesson = 1): Progress {
+  if (track === 'levels') return { ...p, track };
+  const basics = Object.fromEntries(BASICS.map((b) => [b.n, { ...(p.basics[b.n] ?? { sessions: 0 }), status: b.n < basicsLesson ? 'passed' : b.n === basicsLesson ? 'active' : 'locked' }])) as Record<number, BasicsState>;
+  return { ...p, track, basics };
 }

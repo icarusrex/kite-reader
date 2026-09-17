@@ -1,22 +1,47 @@
 import { Fragment, useState } from 'react';
 import { useStore } from '../../app/store';
 import { LEVELS } from '../../content/levels';
+import { ANCHORS, BASICS } from '../../content/basics';
 import { storyPictureUrl } from '../../content/pictures';
 import { currentLevel } from '../../engine/progress';
 import { say, stop } from '../../audio/speaker';
 
 /** Every built level: what it teaches, practice it again (progress untouched), preview its story. */
-export function LessonsTab({ onPractice }: { onPractice: (level: number) => void }) {
+export function LessonsTab({ onPractice, onPracticeBasics }: { onPractice: (level: number) => void; onPracticeBasics: (lesson: number) => void }) {
   const { progress: p } = useStore();
-  const cur = currentLevel(p);
+  const cur = p.track === 'levels' ? currentLevel(p) : 0;
   const [open, setOpen] = useState<number | null>(null);
   const readAloud = async (lines: string[]) => {
     stop();
     for (const w of lines.join(' ').split(/\s+/)) await say({ w: w.replace(/[^A-Za-z]/g, '') }, { pause: 120 });
   };
   return (
+    <>
     <div className="card">
-      <h2>Lessons</h2>
+      <h2>Basics (before level 1)</h2>
+      <p style={{ fontSize: 14 }}>For a child who doesn't know letters yet: one letter sound per lesson, “say it fast” listening games, rhyme shown before it's asked, and a left-to-right game. Every game starts with a “watch me”. After lesson {BASICS.length} he moves on to level 1.</p>
+      <table>
+        <thead><tr><th>Lesson</th><th>New sound</th><th>Say it fast</th><th>Also</th><th>Status</th><th /></tr></thead>
+        <tbody>
+          {BASICS.map((b) => {
+            const st = p.basics[b.n]?.status ?? 'locked';
+            const here = p.track === 'basics' && st === 'active';
+            return (
+              <tr key={b.n} className={here ? 'current-row' : ''}>
+                <td>B{b.n}</td>
+                <td style={{ fontFamily: 'Andika', fontSize: 20 }}>{b.newSound ? `${b.newSound} (${ANCHORS[b.newSound]})` : 'review'}</td>
+                <td style={{ fontSize: 13 }}>{{ compound: 'sun…flower', syllable: 'ta…ble', stretch: 'mmm-a-p' }[b.sayFast]}</td>
+                <td style={{ fontSize: 13 }}>{[b.track && 'left to right', b.rhyme && 'rhyme'].filter(Boolean).join(', ')}</td>
+                <td><span className={`pill ${st === 'passed' ? 'good' : st === 'locked' ? '' : 'warn'}`}>{here ? 'current' : st}</span></td>
+                <td><button className="btn" onClick={() => onPracticeBasics(b.n)}>Practice</button></td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+    <div className="card">
+      <h2>Levels</h2>
       <p style={{ fontSize: 14 }}><b>Practice</b> runs a normal session for that level without changing his level or unlocking anything; answers still feed spaced review. Handy for replaying a level he found hard, or trying one yourself.</p>
       <table>
         <thead><tr><th>Level</th><th>New</th><th>Words</th><th>Status</th><th /></tr></thead>
@@ -54,5 +79,6 @@ export function LessonsTab({ onPractice }: { onPractice: (level: number) => void
         </tbody>
       </table>
     </div>
+    </>
   );
 }

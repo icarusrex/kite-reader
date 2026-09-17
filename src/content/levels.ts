@@ -20,8 +20,8 @@ export interface Level {
 }
 
 export const LEVELS: Level[] = [
-  { n: 1, title: 'a', newGraphemes: ['a'], heartWords: [], words: [], nonsense: [], sentences: [], pa: 'rhyme' },
-  { n: 2, title: 'm', newGraphemes: ['m'], heartWords: [], words: ['am'], nonsense: ['ma', 'mam'], sentences: [], pa: 'rhyme' },
+  { n: 1, title: 'a', newGraphemes: ['a'], heartWords: [], words: [], nonsense: [], sentences: [], pa: 'onset_rime' },
+  { n: 2, title: 'm', newGraphemes: ['m'], heartWords: [], words: ['am'], nonsense: ['ma', 'mam'], sentences: [], pa: 'onset_rime' },
   { n: 3, title: 's', newGraphemes: ['s'], heartWords: [], words: ['am', 'Sam'], nonsense: ['mas', 'sa', 'mam'], sentences: [], pa: 'onset_rime' },
   { n: 4, title: 't', newGraphemes: ['t'], heartWords: [], words: ['at', 'mat', 'sat', 'Sam', 'am'], nonsense: ['tam', 'tas', 'tat'], sentences: ['Sam sat.'], pa: 'onset_rime' },
   { n: 5, title: 'Review', newGraphemes: [], heartWords: [], words: ['am', 'at', 'mat', 'sat', 'Sam', 'Matt'], nonsense: ['tas', 'mas', 'tat', 'sa'], sentences: ['Sam sat.', 'Matt sat.'], pa: 'blend2', story: ['Sam sat.', 'Matt sat.', 'Sam sat at a mat.'] },

@@ -207,3 +207,15 @@ button { font-family: inherit; color: inherit; border: 0; background: none; curs
 .row.waiting .tile { opacity: .55; transition: opacity .2s; }
 /* Tapped word in the readers: instant feedback while its audio loads */
 .local-text span:active, .reader-text span:active { background: var(--accent-soft); border-radius: 6px; }
+
+/* Basics */
+.meet { display: flex; gap: 6vmin; align-items: center; }
+.tile.yesno { font-size: calc(var(--tile) * .5); min-width: var(--tile); }
+.row.demo { pointer-events: none; }
+.track-game { position: relative; display: flex; justify-content: space-between; align-items: center; width: min(80vw, 760px); padding-top: 18vmin; }
+.track-dot { width: 13vmin; height: 13vmin; min-width: 70px; min-height: 70px; border-radius: 50%; background: var(--card); box-shadow: 0 6px 0 var(--line); z-index: 1; }
+.track-dot.next { background: var(--accent-soft); outline: 4px solid var(--accent); }
+.track-dot.done { background: var(--sage); }
+.track-dot.wiggle { animation: wiggle .35s; }
+@keyframes wiggle { 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+.track-game .kite { position: absolute; transition: left .4s ease, top .4s ease; }

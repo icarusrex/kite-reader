@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { freshProgress, Progress } from '../engine/progress';
+import { freshBasics, freshProgress, Progress } from '../engine/progress';
 import { MAX_LEVEL } from '../content/levels';
 import { load, save } from '../engine/storage';
 
@@ -7,12 +7,18 @@ interface Store { progress: Progress; update: (fn: (p: Progress) => Progress) =>
 const Ctx = createContext<Store | null>(null);
 
 /** Upgrade saved data when new levels are added. */
-function migrate(p: Progress): Progress {
+export function migrate(p: Progress): Progress {
   const levels = { ...p.levels };
   for (let n = 1; n <= MAX_LEVEL; n++) {
     if (!levels[n]) levels[n] = { status: levels[n - 1]?.status === 'passed' ? 'active' : 'locked', sessions: 0 };
   }
-  return { ...freshProgress(), ...p, settings: { ...freshProgress().settings, ...p.settings }, levels };
+  // Added 2026-09-17: Basics track. A child who hasn't passed any level starts there; sessions default to 10 minutes.
+  const passedAny = Object.values(levels).some((l) => l.status === 'passed');
+  const track = p.track ?? (passedAny ? 'levels' : 'basics');
+  const basics = { ...freshBasics(), ...(p.basics ?? {}) };
+  const settings = { ...freshProgress().settings, ...p.settings };
+  if (!p.track && settings.capMinutes === 15) settings.capMinutes = 10;
+  return { ...freshProgress(), ...p, track, basics, settings, levels };
 }
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {

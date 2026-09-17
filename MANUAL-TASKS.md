@@ -4,6 +4,13 @@ What's left for you, in order. Items marked **(tell Claude)** are quicker if you
 
 In the app: hold 🔒 (top-left) for 1.5 s → **Grown-ups**. The **Status** tab shows this checklist's progress (sounds recorded, readiness, pictures) and what gets built next; **Lessons** lets you practise any level again without changing progress.
 
+## How he starts: Basics (added 2026-09-17)
+He starts on **Basics**: 10 short lessons for a child who doesn't know letters yet, modelled on the first lessons of *Teach Your Child to Read in 100 Easy Lessons*. One letter **sound** per lesson (m, s, a, f, n, l, t, not letter names), “say it fast” listening games (sun…flower → sunflower), rhyme shown before it's asked (from lesson 5) and a left-to-right game. Every game starts with “watch me”. Sessions are 10 minutes.
+- A lesson counts as done when he gets about 80% right; otherwise it repeats next time.
+- After lesson 10 he moves to level 1 automatically. Grown-ups → **Lessons** shows where he is; **Practice** replays any lesson; **Settings** can skip Basics or go back to it.
+- Sit with him: tap ✓ / → for spoken answers, and don't worry about getting things “wrong”, the app corrects gently.
+- Paper option alongside: *100 Easy Lessons* lessons 1–10 cover the same ground.
+
 ## Before the first real session
 
 ### 1. Listen to the built-in letter sounds (≈5 min)
@@ -31,8 +38,8 @@ Play one session yourself on the device your child will use, before they do.
 - **Listen for bad audio:** any word or instruction that sounds wrong (see Listen-checks).
 - **Time it:** a session should end on its own in about 8–15 minutes.
 
-### 4. Readiness check (≈3 min, with your child)
-Settings → **Readiness check**. It uses pictures a child names exactly (cat, dog, sun…) and plays the letter sounds, so do it **after** step 1.
+### 4. Readiness check (later, before level 1)
+Not needed for Basics. Before level 1: Settings → **Readiness check**. It uses pictures a child names exactly (cat, dog, sun…) and plays the letter sounds, so do it **after** step 1.
 **(tell Claude)** the result: "left-to-right x/8, blending y/5". If they don't pass, the Basics track (letter sounds only, no blending) gets built next.
 
 ## Listen-checks (ElevenLabs audio, one-time)

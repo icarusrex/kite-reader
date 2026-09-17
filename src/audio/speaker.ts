@@ -77,6 +77,7 @@ export type Utter =
   | { p: PromptId }
   | { g: string }            // phoneme
   | { w: string }            // word
+  | { key: string; text: string }  // any other clip in the manifest (e.g. split:sunflower)
   | { pause: number };
 
 /** Speak a sequence; a new call cancels the previous one. */
@@ -88,6 +89,7 @@ export async function say(...parts: Utter[]) {
     if ('p' in part) await playKey(`prompt:${part.p}`, PROMPTS[part.p], token);
     else if ('g' in part) await playKey(`phoneme:${part.g}`, GRAPHEME_BY_ID[part.g]?.tts ?? part.g, token);
     else if ('w' in part) await playKey(`word:${part.w.toLowerCase()}`, part.w, token);
+    else if ('key' in part) await playKey(part.key, part.text, token);
     else await wait(part.pause);
   }
 }

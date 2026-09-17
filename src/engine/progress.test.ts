@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { coldCheckDue, currentLevel, dueItems, freshProgress, passCheckout, passCold, recordAnswer } from './progress';
+import { Progress, coldCheckDue, currentLevel, dueItems, freshProgress, passCheckout, passCold, recordAnswer } from './progress';
 
 describe('progress', () => {
   it('starts at level 1', () => expect(currentLevel(freshProgress())).toBe(1));
@@ -24,5 +24,13 @@ describe('progress', () => {
     expect(coldCheckDue(p, 1, '2026-09-02')).toBe(true);
     p = passCold(p, 1, '2026-09-02');
     expect(currentLevel(p)).toBe(2);
+  });
+  it('existing progress with no level passed moves to Basics; a child already past level 1 stays on levels', async () => {
+    const { migrate } = await import('../app/store');
+    const old = { ...freshProgress(), track: undefined, basics: undefined, settings: { ...freshProgress().settings, capMinutes: 15 } } as unknown as Progress;
+    expect(migrate(old).track).toBe('basics');
+    expect(migrate(old).settings.capMinutes).toBe(10);
+    const along = { ...old, levels: { ...old.levels, 1: { status: 'passed', sessions: 2 }, 2: { status: 'active', sessions: 0 } } } as unknown as Progress;
+    expect(migrate(along).track).toBe('levels');
   });
 });

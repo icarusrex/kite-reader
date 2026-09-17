@@ -16,6 +16,7 @@ import { PROMPTS } from '../src/content/prompts';
 import { LEVELS } from '../src/content/levels';
 import { GRAPHEMES } from '../src/content/phonemes';
 import { PICTURES } from '../src/content/pictures';
+import { BASICS_PICTURE_WORDS, COMPOUND, SYLLABLE } from '../src/content/basics';
 
 const KEY = process.env.ELEVENLABS_API_KEY;
 // Liam (energetic young American man), chosen by ear on 2026-09-16 over Matilda, Jessica, Sarah, Will and Chris.
@@ -79,6 +80,7 @@ for (const l of LEVELS) {
   [...l.sentences, ...(l.story ?? [])].forEach((s) => s.split(/\s+/).forEach((w) => words.add(w.replace(/[^A-Za-z]/g, '').toLowerCase())));
 }
 Object.keys(PICTURES).forEach((w) => words.add(w));
+BASICS_PICTURE_WORDS.forEach((w) => words.add(w));
 // Every word in the bundled picture books, so tapping a word in the book reader uses this voice (and works offline)
 for (const d of readdirSync('public/books', { withFileTypes: true }).filter((e) => e.isDirectory())) {
   const book = JSON.parse(readFileSync(join('public/books', d.name, 'book.json'), 'utf8'));
@@ -91,6 +93,8 @@ Object.keys(PICTURES).forEach((w) => words.add(w.slice(1)));
 (async () => {
   if (!only || only === 'prompts') for (const [id, text] of Object.entries(PROMPTS)) await job(`prompt:${id}`, 'prompts', id, text);
   if (!only || only === 'words') for (const w of [...words].filter(Boolean).sort()) await job(`word:${w}`, 'words', w, `${w}.`);
+  // Basics say-it-fast: the word said slowly in two parts ("sun... flower")
+  if (!only || only === 'words') for (const { word, split } of [...COMPOUND, ...SYLLABLE]) await job(`split:${word}`, 'split', word, `${split}.`);
   // Continuous sounds are held (mː = "mmm"); stop sounds stay short.
   if (!only || only === 'phonemes') for (const g of GRAPHEMES) await job(`phoneme:${g.id}`, 'phonemes', g.id, PHONEME_TEXT[g.id] ?? `<phoneme alphabet="ipa" ph="${g.ipa}${g.continuous ? 'ːː' : ''}">${g.id}</phoneme>`, PHONEME_MODEL);
   console.log(`manifest: ${Object.keys(manifest).length} entries`);
