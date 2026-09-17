@@ -13,6 +13,8 @@ interface Env {
   ELEVENLABS_API_KEY: string;
 }
 
+import { IPA_MODEL, withPronunciation } from '../src/content/pronounce';
+
 // Same voice and model as scripts/gen-audio.ts
 const VOICE = 'TX3LPaxmHKxFdv7VOQHJ';
 const MODEL = 'eleven_v3';
@@ -26,14 +28,18 @@ async function say(req: Request, env: Env): Promise<Response> {
   const text = raw.replace(/[’‘]/g, "'").replace(/\s+/g, ' ').trim();
   // Words and short phrases only (letters, spaces, basic punctuation)
   if (!text || text.length > 200 || !/^[A-Za-z0-9][A-Za-z0-9 '"().,!?;:-]*$/.test(text)) return new Response('bad text', { status: 400 });
-  const spoken = /[.!?]$/.test(text) ? text : `${text}.`;
-  const key = `${VOICE}:${MODEL}:${spoken.toLowerCase()}`;
+  const plain = /[.!?]$/.test(text) ? text : `${text}.`;
+  // Homographs said on their own (wind, tears, live) go as IPA so they're said in the books' sense
+  const p = withPronunciation(plain);
+  const spoken = p.text;
+  const model = p.ipa ? IPA_MODEL : MODEL;
+  const key = `${VOICE}:${model}:${spoken.toLowerCase()}`;
   const cached = await env.SAY_CACHE.get(key, 'arrayBuffer');
   if (cached) return audio(cached, true);
   const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE}?output_format=mp3_44100_128`, {
     method: 'POST',
     headers: { 'xi-api-key': env.ELEVENLABS_API_KEY, 'Content-Type': 'application/json', Accept: 'audio/mpeg' },
-    body: JSON.stringify({ text: spoken, model_id: MODEL, voice_settings: { stability: 0.5, similarity_boost: 0.8 } }),
+    body: JSON.stringify({ text: spoken, model_id: model, voice_settings: model === MODEL ? { stability: 0.5, similarity_boost: 0.8 } : { stability: 0.6, similarity_boost: 0.8, speed: 0.9 } }),
   });
   if (!res.ok) return new Response(`tts ${res.status}`, { status: 502 });
   const body = await res.arrayBuffer();

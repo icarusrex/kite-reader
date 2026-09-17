@@ -342,7 +342,6 @@
   "word:dark": "words/dark.mp3",
   "word:day": "words/day.mp3",
   "word:do": "words/do.mp3",
-  "word:does": "words/does.mp3",
   "word:dogs": "words/dogs.mp3",
   "word:don't": "words/don't.mp3",
   "word:doves": "words/doves.mp3",
@@ -520,7 +519,6 @@
   "word:put": "words/put.mp3",
   "word:rain": "words/rain.mp3",
   "word:reach": "words/reach.mp3",
-  "word:read": "words/read.mp3",
   "word:red": "words/red.mp3",
   "word:right": "words/right.mp3",
   "word:rings": "words/rings.mp3",
@@ -726,7 +724,6 @@
   "word:zebra": "words/zebra.mp3",
   "split:sunflower": "split/sunflower.mp3",
   "split:cupcake": "split/cupcake.mp3",
-  "split:rainbow": "split/rainbow.mp3",
   "split:football": "split/football.mp3",
   "split:snowman": "split/snowman.mp3",
   "split:starfish": "split/starfish.mp3",
@@ -747,5 +744,8 @@
   "split:button": "split/button.mp3",
   "split:zebra": "split/zebra.mp3",
   "split:spider": "split/spider.mp3",
+  "word:does": "words/does.mp3",
+  "word:read": "words/read.mp3",
+  "split:rainbow": "split/rainbow.mp3",
   "split:robot": "split/robot.mp3"
 }
