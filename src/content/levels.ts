@@ -1,21 +1,18 @@
 import { GRAPHEMES } from './phonemes';
 
-export type PaSkill = 'rhyme' | 'onset_rime' | 'blend2' | 'blend3' | 'first_sound' | 'final_sound';
+export type PaSkill = 'rhyme' | 'onset_rime' | 'blend2' | 'blend3' | 'first_sound' | 'final_sound' | 'medial_sound' | 'segment3';
 
 export interface Level {
   n: number;
   title: string;
-  newGraphemes: string[]; // empty = review level
+  newGraphemes: string[];
   heartWords: string[];
-  words: string[];       // real words for blending/reading
-  nonsense: string[];    // alien names
+  words: string[];
+  nonsense: string[];
   sentences: string[];
   pa: PaSkill;
-  /** Minimal-pair sets for "Which word?" */
   pairs?: string[][];
-  /** Short decodable story (one sentence per entry): read in sessions and at story time. */
   story?: string[];
-  /** Graphemes easily confused with each other (b/d): extra Hear & Tap with only these options. */
   contrast?: string[];
 }
 
@@ -40,8 +37,6 @@ export const LEVELS: Level[] = [
     pa: 'first_sound', pairs: [['tan', 'tin'], ['fan', 'fin'], ['man', 'min'], ['sat', 'sit']],
     story: ['Dan sat in a tin.', 'Nan sat in a tin.', 'Tin Man sat in a tin!'],
   },
-  // Levels 11–20 (Stage 1). Characters remixed from public-domain stories: Pooh and Pig (Piglet) from
-  // Winnie-the-Pooh, Tin Man from Oz. "Pooh" is a heart word (P is decodable, "ooh" is learned by heart).
   {
     n: 11, title: 'p', newGraphemes: ['p'], heartWords: ['Pooh'],
     words: ['pat', 'pin', 'tip', 'map', 'nap', 'pig', 'pit', 'sip', 'dip', 'tap', 'pan', 'pad', 'Pam'],
@@ -80,7 +75,7 @@ export const LEVELS: Level[] = [
     words: ['jam', 'jig', 'Jill', 'Jim', 'jab', 'jib'],
     nonsense: ['jaf', 'jid', 'jip', 'jas'],
     sentences: ['Pooh had jam.', 'Pig did a jig.', 'Jill had jam.'],
-    pa: 'first_sound', pairs: [['jig', 'dig'], ['jam', 'ham']],
+    pa: 'medial_sound', pairs: [['jig', 'dig'], ['jam', 'ham']],
     story: ['Pooh had jam.', 'Pig had jam.', 'Pooh did a jig.', 'Jam! Jam! Jam!'],
   },
   {
@@ -96,7 +91,7 @@ export const LEVELS: Level[] = [
     words: ['van', 'vat', 'Viv', 'vim', 'Val'],
     nonsense: ['vag', 'vip', 'vin', 'vam'],
     sentences: ['Pooh had a van.', 'A pig sat in a van.', 'Viv can nap.'],
-    pa: 'final_sound', pairs: [['van', 'fan'], ['vat', 'fat']],
+    pa: 'medial_sound', pairs: [['van', 'fan'], ['vat', 'fat']],
     contrast: ['f', 'v'],
     story: ['Pooh had a big van.', 'Pig sat in it.', 'Tin Man sat in it.', 'A cat hid in it!'],
   },
@@ -113,7 +108,7 @@ export const LEVELS: Level[] = [
     words: ['rat', 'rip', 'rag', 'ran', 'rib', 'rim', 'rid', 'ram'],
     nonsense: ['raf', 'ril', 'rab', 'rin'],
     sentences: ['Pig ran.', 'A rat ran in a van.', 'Tin Man had a rag.'],
-    pa: 'final_sound', pairs: [['rig', 'wig'], ['rag', 'wag'], ['ran', 'van']],
+    pa: 'medial_sound', pairs: [['rig', 'wig'], ['rag', 'wag'], ['ran', 'van']],
     contrast: ['r', 'w'],
     story: ['A rat ran in.', 'Pig ran!', 'Pooh ran!', 'Tin Man had a nap.'],
   },
@@ -122,18 +117,14 @@ export const LEVELS: Level[] = [
     words: ['kid', 'kit', 'Kim', 'kin', 'Kip'],
     nonsense: ['kif', 'kad', 'kag', 'kib'],
     sentences: ['Kim had a kit.', 'A kid ran.', 'Pooh can win a kit.'],
-    pa: 'final_sound', pairs: [['kit', 'kid'], ['kin', 'kid']],
+    pa: 'segment3', pairs: [['kit', 'kid'], ['kin', 'kid']],
     story: ['Kim had a big kit.', 'A pin sat in it.', 'Kim hit it!', 'Pig ran. Pooh hid.', 'Tin Man had a nap.'],
   },
 ];
 
 export const MAX_LEVEL = LEVELS.length;
 export const levelByN = (n: number) => LEVELS.find((l) => l.n === n)!;
-
-/** Level where a grapheme becomes available. */
 export const graphemeLevel = (g: string) => GRAPHEMES.find((x) => x.id === g)?.level ?? Infinity;
-
-/** Graphemes available (taught) at level n. */
 export function knownGraphemes(n: number): string[] {
   return GRAPHEMES.filter((g) => g.level <= n).map((g) => g.id);
 }

@@ -7,16 +7,18 @@ import { say, sayYes } from '../audio/speaker';
 import { useUtterance } from './useSpeech';
 import { useTap } from '../ui/components';
 
-const GRACE_MS = 1100;     // after the child speaks: ✓ shows, the grown-up can still tap ✗
-const REPROMPT_MS = 7000;  // silence this long: "Your turn" again
+const REPROMPT_MS = 7000;
 
 /**
  * Scoring for spoken answers.
- * - Automatic (default): when the child speaks, a ✓ shows and it counts after a moment unless the grown-up taps ✗.
- *   The mic hears *that* he spoke, not *what*; the grown-up is the check. Silence → "Your turn" again.
- *   `acceptWhenEnabled` (sentences, stories): tapping through every word is the answer, no voice needed.
- * - Grown-up checks (setting, or no microphone): grown-up taps ✓ / ✗.
- * On a first-attempt miss, runs `correction` (My turn → Together → Your turn) and allows one retry.
+ *
+ * The microphone may detect that an attempt happened and may draw a waveform, but it never decides that a scored
+ * answer is correct. A grown-up confirms every scored spoken response with ✓ / ✗. This keeps noisy pediatric speech
+ * detection out of mastery, SRS, checkout, and cold-check data.
+ *
+ * `parentScoring=false` means "mic-assisted": the app listens for an attempt and shows that it heard one. It does not
+ * mean automatic correctness. `acceptWhenEnabled` is used for sentence/story screens where tapping through the words
+ * makes the answer ready for grown-up scoring without waiting for a separate voice event.
  */
 export function useSpokenScore(opts: {
   enabled: boolean;
@@ -25,22 +27,21 @@ export function useSpokenScore(opts: {
   onDone: (correct: boolean) => void;
   setNeutral: (on: boolean) => void;
   acceptWhenEnabled?: boolean;
-  /** Letter sound expected: the spoken sound is checked (loosely) against the grown-up's recording. */
+  /** Letter sound expected: reference audio is shown as coaching, never as an automatic mastery verdict. */
   sound?: string;
 }) {
   const [attempt, setAttempt] = useState(1);
   const [busy, setBusy] = useState(false);
   const [heard, setHeard] = useState(false);
   const [refs, setRefs] = useState<Record<string, Reference> | null>(null);
-  const [tryShape, setTryShape] = useState<{ env: number[]; ok: boolean } | null>(null);
+  const [tryShape, setTryShape] = useState<{ env: number[] } | null>(null);
   useEffect(() => { if (opts.sound && !meter.simulated) loadReferences().then(setRefs); }, [opts.sound]);
   const finished = useRef(false);
-  const grace = useRef<number>();
-  const parent = opts.parentScoring || (!meter.ready && !opts.acceptWhenEnabled);
-  const listening = opts.enabled && !busy && !parent && !heard;
+
+  const micAssisted = !opts.parentScoring && meter.ready && !opts.acceptWhenEnabled;
+  const listening = opts.enabled && !busy && micAssisted && !heard;
 
   const resolve = useCallback(async (ok: boolean) => {
-    clearTimeout(grace.current);
     if (finished.current || busy) return;
     setHeard(false);
     if (ok) {
@@ -54,6 +55,7 @@ export function useSpokenScore(opts: {
       opts.setNeutral(true);
       await opts.correction();
       opts.setNeutral(false);
+      setTryShape(null);
       setBusy(false);
       setAttempt(2);
     } else {
@@ -62,60 +64,36 @@ export function useSpokenScore(opts: {
     }
   }, [attempt, busy, opts]);
 
-  // Heard an answer: show ✓, count it after a moment unless ✗
-  const accept = () => {
-    setHeard(true);
-    grace.current = window.setTimeout(() => resolve(true), GRACE_MS);
-  };
-  // For letter sounds: check the kind of sound first (loose); clearly the wrong kind → gentle correction
   const onSpoke = (start: number, end: number) => {
     const target = opts.sound;
     const clip = target && refs?.[target] ? meter.clip(start - 150, end + 150) : null;
-    const features = clip && extract(clip.samples, clip.rate);
-    if (!target || !refs?.[target] || !clip || !features) { accept(); return; }
-    const ok = acceptSound(target, features, Object.fromEntries(Object.entries(refs).map(([g, r]) => [g, r.features])));
-    setTryShape({ env: envelope(clip.samples, clip.rate), ok });
-    if (ok) accept();
-    else { setHeard(false); grace.current = window.setTimeout(() => { setTryShape(null); resolve(false); }, 900); }
+    if (clip) setTryShape({ env: envelope(clip.samples, clip.rate) });
+    setHeard(true);
   };
-  const spoke = useUtterance(listening && !opts.acceptWhenEnabled && !tryShape, onSpoke, 600);
-  useEffect(() => {
-    if (listening && opts.acceptWhenEnabled) accept();
-    // eslint-disable-next-line
-  }, [listening, opts.acceptWhenEnabled]);
+  const spoke = useUtterance(listening, onSpoke, 600);
 
-  // Silence: prompt again (once per attempt)
+  // Silence: prompt again (once per attempt). The prompt does not change the score.
   useEffect(() => {
-    if (!listening || opts.acceptWhenEnabled) return;
+    if (!listening) return;
     const t = window.setTimeout(() => say({ p: 'your_turn' }), REPROMPT_MS);
     return () => clearTimeout(t);
-  }, [listening, attempt, opts.acceptWhenEnabled]);
-  useEffect(() => () => clearTimeout(grace.current), []);
+  }, [listening, attempt]);
 
   const okTap = useTap(() => resolve(true));
   const noTap = useTap(() => resolve(false));
 
-  // Sound shapes: the grown-up's recording, and his try once he's spoken
   const compare = opts.sound && refs?.[opts.sound] && opts.enabled
-    ? <SoundCompare reference={refs[opts.sound].envelope} child={tryShape?.env} ok={tryShape?.ok} />
+    ? <SoundCompare reference={refs[opts.sound].envelope} child={tryShape?.env} />
     : null;
 
   const strip = opts.enabled ? (
     <div className="parent-strip">
-      {parent ? (
-        <>
-          <button className="pbtn ok" disabled={busy} onPointerDown={okTap} aria-label="Correct">✓</button>
-          <button className="pbtn no" disabled={busy} onPointerDown={noTap} aria-label="Not yet">✗</button>
-          <small>grown-up</small>
-        </>
-      ) : (
-        <>
-          {heard ? <div className="heard" aria-label="Heard it">✓</div> : !busy && <div className={`mic-cue ${opts.acceptWhenEnabled ? '' : 'on'}`} aria-hidden>🎤</div>}
-          {!heard && <button className="pbtn ok small" disabled={busy} onPointerDown={okTap} aria-label="Correct">✓</button>}
-          <button className="pbtn no small" disabled={busy} onPointerDown={noTap} aria-label="Not yet">✗</button>
-          <small>grown-up</small>
-        </>
-      )}
+      {micAssisted && (heard
+        ? <div className="heard" aria-label="Attempt heard">🎤</div>
+        : !busy && <div className="mic-cue on" aria-hidden>🎤</div>)}
+      <button className="pbtn ok" disabled={busy} onPointerDown={okTap} aria-label="Correct">✓</button>
+      <button className="pbtn no" disabled={busy} onPointerDown={noTap} aria-label="Not yet">✗</button>
+      <small>grown-up</small>
     </div>
   ) : null;
 
@@ -123,8 +101,9 @@ export function useSpokenScore(opts: {
 }
 
 /**
- * Unscored "your turn" for a letter sound (meet a sound, sound reveal): listens, loosely checks the sound, and moves on
- * when it's close; if clearly different it shows him again ("my turn… your turn") once, then moves on regardless.
+ * Unscored "your turn" for a letter sound (meet a sound, sound reveal): listens, loosely checks the sound, and moves
+ * on when it is close; if clearly different it models once, then moves on regardless. This classifier is coaching
+ * only and never writes mastery/SRS data.
  */
 export function useSoundTry(sound: string, enabled: boolean, onGood: () => void) {
   const [refs, setRefs] = useState<Record<string, Reference> | null>(null);

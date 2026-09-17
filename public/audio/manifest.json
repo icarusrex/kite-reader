@@ -748,5 +748,9 @@
   "split:robot": "split/robot.mp3",
   "word:does": "words/does.mp3",
   "word:read": "words/read.mp3",
-  "prompt:story_tap": "prompts/story_tap.mp3"
+  "prompt:story_tap": "prompts/story_tap.mp3",
+  "prompt:ear_middle": "prompts/ear_middle.mp3",
+  "prompt:ear_middle_end": "prompts/ear_middle_end.mp3",
+  "prompt:segment_word": "prompts/segment_word.mp3",
+  "prompt:meaning": "prompts/meaning.mp3"
 }

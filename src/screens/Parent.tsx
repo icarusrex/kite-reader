@@ -195,7 +195,7 @@ function SettingsTab({ onReadiness, onExtraSession }: { onReadiness: () => void;
         <h2>Child</h2>
         <label>Name <input type="text" value={s.childName} onChange={(e) => set({ childName: e.target.value })} /></label>
         <label>Session cap (active minutes) <input type="number" min={5} max={30} value={s.capMinutes} onChange={(e) => set({ capMinutes: Math.max(5, Math.min(30, +e.target.value || 15)) })} /></label>
-        <label>Grown-up checks every spoken answer (off: it counts when he speaks, and you can tap ✗) <input type="checkbox" checked={s.parentScoring} onChange={(e) => set({ parentScoring: e.target.checked })} /></label>
+        <label>Grown-up-only scoring (off: the mic shows when an attempt was heard, but a grown-up still taps ✓ / ✗) <input type="checkbox" checked={s.parentScoring} onChange={(e) => set({ parentScoring: e.target.checked })} /></label>
         <label>Mic sensitivity (1 strict – 5 sensitive) <input type="range" min={1} max={5} value={s.micSensitivity} onChange={(e) => { set({ micSensitivity: +e.target.value }); meter.sensitivity = +e.target.value; }} /></label>
       </div>
       <div className="card">

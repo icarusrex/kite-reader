@@ -7,8 +7,6 @@ import { useStore } from '../app/store';
 import { CLEAR_WORDS } from '../content/pictures';
 
 type Trial = { kind: 'dir'; answer: 'dogfish' | 'fishdog'; left: 'dogfish' | 'fishdog' } | { kind: 'blend'; answer: string; options: string[] };
-
-// Only pictures a child names exactly this way (see CLEAR_WORDS).
 const BLEND = CLEAR_WORDS;
 
 function makeTrials(): Trial[] {
@@ -45,13 +43,19 @@ export function Readiness({ onDone }: { onDone: () => void }) {
   };
 
   if (!t) {
-    const passed = score.dir >= 7 && score.blend >= 4;
+    // Oral blending is the placement gate. Directionality is useful diagnostic information, not a prerequisite to read.
+    const passed = score.blend >= 4;
+    const trackingStrong = score.dir >= 7;
     return (
       <div className="parent" style={{ display: 'grid', placeItems: 'center' }}>
-        <div className="card" style={{ maxWidth: 520 }}>
+        <div className="card" style={{ maxWidth: 560 }}>
           <h2>Readiness check (for grown-ups)</h2>
-          <p>Left-to-right: <b>{score.dir}/8</b> (pass ≥ 7) · Oral blending: <b>{score.blend}/5</b> (pass ≥ 4)</p>
-          <p>{passed ? 'Ready to start Level 1.' : 'Not quite ready for blending. Retry in about 2 weeks; meanwhile play oral sound games (“what word is c…a…t?”) and read aloud together. You can also start anyway.'}</p>
+          <p>Oral blending: <b>{score.blend}/5</b> (ready ≥ 4) · Left-to-right tracking: <b>{score.dir}/8</b> (diagnostic)</p>
+          <p>{passed
+            ? trackingStrong
+              ? 'Ready to start Level 1.'
+              : 'Oral blending is ready. Start Level 1 and keep the left-to-right tracking games in the warm-up; tracking is not a reason to hold reading back.'
+            : 'Oral blending is not ready yet. Use Basics and oral sound games (“what word is c…a…t?”), then retry later. You can still start Level 1 if a grown-up wants to.'}</p>
           <div className="row" style={{ justifyContent: 'flex-start', gap: 8 }}>
             <button className="btn" onClick={() => { update((p) => ({ ...p, settings: { ...p.settings, readinessPassed: passed } })); onDone(); }}>{passed ? 'Start' : 'Save result'}</button>
             {!passed && <button className="btn light" onClick={() => { update((p) => ({ ...p, settings: { ...p.settings, readinessPassed: true } })); onDone(); }}>Start anyway</button>}

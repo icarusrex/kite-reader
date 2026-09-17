@@ -1,4 +1,4 @@
-// Every spoken instruction. `gen-audio` renders these with ElevenLabs; the app falls back to device TTS.
+// Every spoken instruction. `gen-audio` renders these with ElevenLabs; missing generated prompts can use runtime TTS.
 export const PROMPTS = {
   welcome: 'Hi! Let’s read.',
   new_sound: 'Here is a new sound.',
@@ -20,6 +20,10 @@ export const PROMPTS = {
   ear_rhyme: 'Which one rhymes with',
   ear_first: 'Which one starts with',
   ear_last: 'Which one ends with',
+  ear_middle: 'Which one has',
+  ear_middle_end: 'in the middle?',
+  segment_word: 'Say each sound in',
+  meaning: 'Which picture was in what you read?',
   yes_1: 'Yes!',
   yes_2: 'That’s it.',
   yes_3: 'You got it.',
@@ -39,7 +43,6 @@ export const PROMPTS = {
   heart_read: 'Read this heart word.',
   story: 'Read the story. Tap each word as you read it.',
   book_ready: 'You can read a new book!',
-  // Basics track
   watch_me: 'Watch me first.',
   say_fast_game: "Let's play say it fast! Listen.",
   which_picture: 'Which picture is it?',
