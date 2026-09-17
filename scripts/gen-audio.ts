@@ -10,7 +10,7 @@
  */
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tokenize } from '../src/engine/wordLevel';
-import { IPA_MODEL, withPronunciation } from '../src/content/pronounce';
+import { withPronunciation } from '../src/content/pronounce';
 import { finishClip } from './audio-finish';
 import { join } from 'node:path';
 import { PROMPTS } from '../src/content/prompts';
@@ -57,10 +57,9 @@ async function tts(text: string, file: string, model = MODEL, attempt = 0): Prom
 }
 
 async function job(key: string, dir: string, name: string, rawText: string, rawModel = MODEL) {
-  // Homographs (rain-bow, read, does) are sent as IPA with a model that follows it; letter sounds already are.
-  const p = rawModel === PHONEME_MODEL ? { text: rawText, ipa: false } : withPronunciation(rawText);
-  const text = p.text;
-  const model = p.ipa ? IPA_MODEL : rawModel;
+  // Homographs (read, does, tears) are respelled so they're said in the books' sense; letter sounds use IPA already.
+  const text = rawModel === PHONEME_MODEL ? rawText : withPronunciation(rawText);
+  const model = rawModel;
   // Letter sounds are cleaned up into WAV (slowed at generation, faded so they don't cut off).
   const finish = model === PHONEME_MODEL;
   const rel = `${dir}/${name}.${finish ? 'wav' : 'mp3'}`;

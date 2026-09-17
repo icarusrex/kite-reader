@@ -744,8 +744,8 @@
   "split:button": "split/button.mp3",
   "split:zebra": "split/zebra.mp3",
   "split:spider": "split/spider.mp3",
-  "word:does": "words/does.mp3",
-  "word:read": "words/read.mp3",
   "split:rainbow": "split/rainbow.mp3",
-  "split:robot": "split/robot.mp3"
+  "split:robot": "split/robot.mp3",
+  "word:does": "words/does.mp3",
+  "word:read": "words/read.mp3"
 }

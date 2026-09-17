@@ -1,43 +1,34 @@
 /**
  * Homographs: words spelled the same but said differently (rainbow's "bow" vs "take a bow"). A word said on its own
- * has no context, so the voice guesses. These are sent as exact IPA, in the sense the app's books use.
+ * has no context, so the voice guesses. These are respelled for the voice, in the sense the app's books use.
+ * Respelling (not IPA) because the IPA-capable models make whole words sound wrong ("does" tested 2026-09-17).
  * Used by scripts/gen-audio.ts and the /api/say worker.
  */
 export const PRONOUNCE: Record<string, string> = {
-  bow: 'boʊ', bows: 'boʊz',            // rain-bow, a bow and arrow
-  row: 'roʊ', rows: 'roʊz',            // ro-bot, a row of trees
-  read: 'riːd', reads: 'riːdz',        // "My brothers read"
-  does: 'dʌz',                         // "What does this say?"
-  live: 'lɪv', lives: 'lɪvz',          // "I live in Kansas"
-  wind: 'wɪnd', winds: 'wɪndz',        // the wind blows
-  wound: 'wuːnd',
-  close: 'kloʊz',                      // close the door
-  use: 'juːz', used: 'juːzd',
-  tear: 'tɪr', tears: 'tɪrz',          // the Tin Man's tears
-  lead: 'liːd', leads: 'liːdz',        // lead the way
-  minute: 'ˈmɪnɪt',
-  desert: 'ˈdɛzərt',
-  present: 'ˈprɛzənt',
-  content: 'kənˈtɛnt',
-  excuse: 'ɪkˈskjuːz',                 // "excuse me"
-  permit: 'pərˈmɪt',
-  converse: 'kənˈvɜrs',
-  learned: 'lɜrnd',
-  wicked: 'ˈwɪkɪd',
-  dove: 'dʌv',
+  bow: 'boh', bows: 'bohz',            // rain-bow, a bow and arrow
+  row: 'roe', rows: 'roez',            // ro-bot, a row of trees
+  read: 'reed', reads: 'reeds',        // "My brothers read"
+  does: 'duz',                         // "What does this say?"
+  live: 'liv', lives: 'livz',          // "I live in Kansas"
+  wind: 'winnd', winds: 'winndz',      // the wind blows
+  wound: 'woond',
+  close: 'kloze',                      // close the door
+  use: 'yooz', used: 'yoozd',
+  tear: 'teer', tears: 'teers',        // the Tin Man's tears
+  lead: 'leed', leads: 'leeds',        // lead the way
+  minute: 'minnit',
+  desert: 'dezzert',
+  present: 'prezzent',
+  content: 'kuntent',
+  excuse: 'ekskyooz',                  // "excuse me"
+  permit: 'permitt',
+  converse: 'kunverse',
+  learned: 'lernd',
+  wicked: 'wikkid',
+  dove: 'duv',
 };
 
-/** Model that follows IPA phoneme tags (eleven_v3 doesn't). */
-export const IPA_MODEL = 'eleven_turbo_v2';
-
-/** Replace homographs in a text with IPA phoneme tags. `ipa` tells the caller to use IPA_MODEL. */
-export function withPronunciation(text: string): { text: string; ipa: boolean } {
-  let ipa = false;
-  const out = text.replace(/[A-Za-z]+/g, (w) => {
-    const ph = PRONOUNCE[w.toLowerCase()];
-    if (!ph) return w;
-    ipa = true;
-    return `<phoneme alphabet="ipa" ph="${ph}">${w}</phoneme>`;
-  });
-  return { text: out, ipa };
+/** Respell homographs in a text so the voice says them in the intended sense. */
+export function withPronunciation(text: string): string {
+  return text.replace(/[A-Za-z]+/g, (w) => PRONOUNCE[w.toLowerCase()] ?? w);
 }
