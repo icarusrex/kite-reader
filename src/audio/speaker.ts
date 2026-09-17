@@ -13,7 +13,7 @@ let cancelToken = 0;
 
 let quietSince = 0;
 /** True while the app is speaking, and briefly after (the speaker's echo mustn't count as the child answering). */
-export const isPlaying = () => playing || performance.now() - quietSince < 400;
+export const isPlaying = () => playing || performance.now() - quietSince < 700;
 
 export async function initAudio() {
   try {

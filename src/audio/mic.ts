@@ -35,7 +35,8 @@ class VoiceMeter {
     }
     try {
       this.stream = await navigator.mediaDevices.getUserMedia({
-        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: false },
+        // No browser noise suppression: it treats a held "sss" as background noise and removes it
+        audio: { echoCancellation: true, noiseSuppression: false, autoGainControl: false },
       });
       const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       this.ctx = new Ctx();
@@ -44,6 +45,17 @@ class VoiceMeter {
       this.analyser.fftSize = 1024;
       src.connect(this.analyser);
       this.buf = new Float32Array(this.analyser.fftSize);
+      // Continuous capture of the last few seconds, so a spoken sound can be checked afterwards
+      const proc = this.ctx.createScriptProcessor(2048, 1, 1);
+      const mute = this.ctx.createGain();
+      mute.gain.value = 0;
+      proc.onaudioprocess = (e) => {
+        const data = e.inputBuffer.getChannelData(0);
+        this.chunks.push({ at: performance.now(), data: new Float32Array(data) });
+        const keep = Math.ceil((5 * this.ctx!.sampleRate) / 2048);
+        if (this.chunks.length > keep) this.chunks.splice(0, this.chunks.length - keep);
+      };
+      src.connect(proc); proc.connect(mute); mute.connect(this.ctx.destination);
       this.ready = true;
       this.calibrating = 25; // ~400ms of frames
       this.loop();
@@ -75,6 +87,21 @@ class VoiceMeter {
   };
 
   subscribe(l: Listener) { this.listeners.add(l); return () => { this.listeners.delete(l); }; }
+
+  private chunks: { at: number; data: Float32Array }[] = [];
+  /** True with ?simvoice (tests): there's no real audio to check. */
+  get simulated() { return !this.analyser && this.ready; }
+  /** Audio between two performance.now() times (from the last ~5 s). */
+  clip(from: number, to: number): { samples: Float32Array; rate: number } | null {
+    if (!this.ctx || !this.chunks.length) return null;
+    const rate = this.ctx.sampleRate;
+    const parts = this.chunks.filter((c) => c.at >= from && c.at - (c.data.length / rate) * 1000 <= to);
+    if (!parts.length) return null;
+    const out = new Float32Array(parts.reduce((n, c) => n + c.data.length, 0));
+    let o = 0;
+    for (const c of parts) { out.set(c.data, o); o += c.data.length; }
+    return { samples: out, rate };
+  }
 
   recalibrate() { this.calibrating = 25; }
 

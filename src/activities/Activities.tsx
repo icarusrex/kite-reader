@@ -5,7 +5,7 @@ import { GRAPHEME_BY_ID } from '../content/phonemes';
 import { displayChunks, segment, trickyParts } from '../engine/decodable';
 import { ANCHORS, COMPOUND, SYLLABLE } from '../content/basics';
 import { Caption, Kite, PictureTile, ReplayButton, Tile, Waveform, useTap } from '../ui/components';
-import { useSpokenScore } from './scoring';
+import { useSoundTry, useSpokenScore } from './scoring';
 import { useUtterance } from './useSpeech';
 import { ActivityProps, wait } from './types';
 
@@ -30,14 +30,14 @@ export function Reveal({ step, onDone }: ActivityProps) {
     if (phase === 'you1') { setPhase('model'); await say({ g }, { pause: 200 }, { p: 'your_turn' }); setPhase('you2'); }
     else if (phase === 'you2') { setPhase('done'); await sayYes(); onDone(null); }
   };
-  useUtterance(meter.ready && (phase === 'you1' || phase === 'you2'), next);
+  const { compare } = useSoundTry(g, phase === 'you1' || phase === 'you2', next);
   const tap = useTap(next);
   return (
     <div className="stage">
       <div style={{ transform: shown ? 'scale(1)' : 'scale(0.2)', opacity: shown ? 1 : 0, transition: 'all .5s cubic-bezier(.3,1.6,.5,1)' }}>
         <Tile big label={g} onTap={() => say({ g })} />
       </div>
-      <Waveform />
+      {compare ?? <Waveform />}
       <Caption>{phase.startsWith('you') ? 'Your turn' : ''}</Caption>
       {(phase === 'you1' || phase === 'you2') && (
         <div className="parent-strip"><button className="pbtn ok" onPointerDown={tap} aria-label="Next">→</button><small>grown-up</small></div>
@@ -109,14 +109,14 @@ export function SeeSay({ step, ctx, onDone, setNeutral }: ActivityProps) {
   const g = step.g!;
   const [ready, setReady] = useState(false);
   useEffect(() => { say({ p: 'say_sound' }).then(() => setReady(true)); }, [g]);
-  const { strip, attempt } = useSpokenScore({
-    enabled: ready, parentScoring: ctx.settings.parentScoring, onDone, setNeutral,
+  const { strip, attempt, compare } = useSpokenScore({
+    enabled: ready, parentScoring: ctx.settings.parentScoring, onDone, setNeutral, sound: g,
     correction: () => correctSpoken({ g }),
   });
   return (
     <div className="stage">
       <Tile big label={g} />
-      <Waveform />
+      {compare ?? <Waveform />}
       <Caption>{attempt === 2 ? 'Your turn' : ''}</Caption>
       {strip}
     </div>
@@ -539,13 +539,14 @@ export function Meet({ step, onDone }: ActivityProps) {
   }, [g]);
   const advance = async () => { if (phase !== 'you') return; setPhase('done'); await sayYes(); onDone(null); };
   const next = useTap(advance);
-  useUtterance(meter.ready && phase === 'you', advance, 600);
+  const { compare } = useSoundTry(g, phase === 'you', advance);
   return (
     <div className="stage">
       <div className="meet">
         <Tile big label={g} onTap={() => say({ g })} />
         {anchor && <PictureTile word={anchor} onTap={() => say({ w: anchor })} />}
       </div>
+      {compare}
       <Caption>{phase === 'you' ? 'Your turn' : ''}</Caption>
       {phase === 'you' && <div className="parent-strip">{meter.ready && <div className="mic-cue on" aria-hidden>🎤</div>}<button className="pbtn ok small" onPointerDown={next} aria-label="Next">→</button><small>grown-up</small></div>}
     </div>

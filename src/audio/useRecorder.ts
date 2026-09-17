@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { save } from '../engine/storage';
 import { refreshRecordings, say } from './speaker';
+import { resetReferences } from './references';
 
 /** Record a pure sound for grapheme g into this device's storage; it overrides the built-in sound right away. */
 export function useRecorder(onSaved: () => void) {
@@ -19,6 +20,7 @@ export function useRecorder(onSaved: () => void) {
     r.onstop = async () => {
       await save(`rec:g:${g}`, new Blob(chunks.current, { type: r.mimeType }));
       await refreshRecordings();
+      resetReferences();
       setRecording(null);
       onSaved();
       say({ g });

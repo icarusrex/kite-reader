@@ -236,3 +236,6 @@ button { font-family: inherit; color: inherit; border: 0; background: none; curs
 @keyframes story-pulse { 50% { transform: scale(1.05); } }
 @keyframes tap-hand { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-10px, -12px); } }
 @media (prefers-reduced-motion: reduce) { .story-done, .story-done-hand { animation: none; } }
+
+/* Sound shapes: grown-up's recording vs his try */
+.sound-compare { width: min(70vw, 520px); height: 110px; }
