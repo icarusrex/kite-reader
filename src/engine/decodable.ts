@@ -63,6 +63,8 @@ export function checkText(text: string, level: number, heartWords: string[] = []
 /** Split a heart word into parts the child can already sound out and the tricky part to learn by heart
  *  ("Pooh" at L11 → P | ooh). */
 export function trickyParts(word: string, level: number): { text: string; tricky: boolean }[] {
+  const marked = markTricky(word);
+  if (marked) return marked;
   const parts: { text: string; tricky: boolean }[] = [];
   const letters = word.replace(/[^A-Za-z]/g, '');
   let i = 0;
@@ -78,5 +80,37 @@ export function trickyParts(word: string, level: number): { text: string; tricky
     else parts.push({ text: letters.slice(i, i + len), tricky });
     i += len;
   }
+  return parts;
+}
+
+/**
+ * The part of each sight word that doesn't sound the way its letters say (learned by heart). Letter-availability
+ * can't find these: in "is" every letter is taught, but the s says /z/.
+ */
+export const TRICKY: Record<string, string[]> = {
+  the: ['e'], is: ['s'], i: ['i'], pooh: ['ooh'],
+  he: ['e'], she: ['e'], we: ['e'], me: ['e'], be: ['e'], to: ['o'], has: ['s'], his: ['s'], as: ['s'],
+  no: ['o'], go: ['o'], so: ['o'],
+  you: ['ou'], are: ['a', 'e'], was: ['a', 's'], of: ['o', 'f'], said: ['ai'], my: ['y'],
+};
+
+function markTricky(word: string): { text: string; tricky: boolean }[] | null {
+  const spots = TRICKY[word.toLowerCase()];
+  if (!spots) return null;
+  const lower = word.toLowerCase();
+  const flags = [...word].map(() => false);
+  let from = 0;
+  for (const s of spots) {
+    const at = lower.indexOf(s, from);
+    if (at < 0) continue;
+    for (let k = at; k < at + s.length; k++) flags[k] = true;
+    from = at + s.length;
+  }
+  const parts: { text: string; tricky: boolean }[] = [];
+  [...word].forEach((ch, k) => {
+    const last = parts[parts.length - 1];
+    if (last && last.tricky === flags[k]) last.text += ch;
+    else parts.push({ text: ch, tricky: flags[k] });
+  });
   return parts;
 }

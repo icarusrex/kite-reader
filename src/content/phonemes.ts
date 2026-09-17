@@ -41,6 +41,9 @@ export const GRAPHEMES: Grapheme[] = [
   { id: 'e', level: 9, continuous: true, ipa: 'ɛ', tts: 'eh', example: 'egg', recordTip: 'The "e" in egg/bed: eee (short, not "ee").' },
 ];
 
+/** The sound a grapheme makes, for "is this the same sound?" (c, k and ck all say /k/). */
+export const soundOf = (g: string) => (g === 'c' || g === 'ck' ? 'k' : GRAPHEMES.find((x) => x.id === g)?.same ?? g);
+
 /** Sounds to record and generate: every grapheme except those that share another's sound (ck = k). */
 export const SOUNDS = GRAPHEMES.filter((g) => !g.same);
 

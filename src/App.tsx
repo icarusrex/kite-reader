@@ -6,6 +6,7 @@ import { Parent } from './screens/Parent';
 import { Readiness } from './screens/Readiness';
 import { StoryChair } from './screens/StoryChair';
 import { listBooks } from './books/library';
+import { bookExtras } from './books/extras';
 import { SessionExtras } from './engine/session';
 import { currentLevel } from './engine/progress';
 import { wordLevel } from './engine/wordLevel';
@@ -62,12 +63,7 @@ function Done({ onHome, onParent }: { onHome: () => void; onParent: () => void }
 /** Sentences + pre-teach words from the family's bundled books. */
 async function localExtras(n: number): Promise<SessionExtras> {
   try {
-    const books = await listBooks();
-    const sentences = books.flatMap((b) => (b.analysis?.sentences ?? []).filter((x) => x.level <= n).map((x) => ({ text: x.text, source: b.title })));
-    const heart = n < 5 ? [] : books
-      .filter((b) => b.analysis && b.analysis.readyPreteach <= n + 10)
-      .flatMap((b) => b.analysis!.preteach.filter((w) => wordLevel(w).level > n).map((word) => ({ word, source: b.title })));
-    return { sentences, heart };
+    return bookExtras(await listBooks(), n);
   } catch {
     return { sentences: [], heart: [] };
   }

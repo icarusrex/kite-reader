@@ -1,5 +1,5 @@
 import { LEVELS, Level, knownGraphemes, levelByN } from '../content/levels';
-import { GRAPHEMES, GRAPHEME_BY_ID } from '../content/phonemes';
+import { GRAPHEMES, GRAPHEME_BY_ID, soundOf } from '../content/phonemes';
 import { CLEAR_WORDS, PICTURES, storyPictureUrl } from '../content/pictures';
 import { checkText, segment } from './decodable';
 import BOOK_SENTENCES from '../content/bookSentences.json';
@@ -52,9 +52,11 @@ const PICTURE_WORDS = Object.keys(PICTURES);
 const BLEND_WORDS = CLEAR_WORDS;
 const CVC_PICTURE_WORDS = CLEAR_WORDS.filter((w) => segment(w)?.length === 3);
 
+/** Hear & Tap choices. Never two spellings of the same sound (c / k / ck): either would be "right". */
 function graphemeOptions(target: string, level: number, n: number): string[] {
-  const known = knownGraphemes(level).filter((g) => g !== target);
-  const extra = GRAPHEMES.map((g) => g.id).filter((g) => g !== target && !known.includes(g));
+  const other = (g: string) => g !== target && soundOf(g) !== soundOf(target);
+  const known = knownGraphemes(level).filter(other);
+  const extra = GRAPHEMES.map((g) => g.id).filter((g) => other(g) && !known.includes(g));
   const distract = [...pick(known, n - 1), ...extra].slice(0, n - 1);
   return shuffle([target, ...distract]);
 }
@@ -131,7 +133,10 @@ function readMatchStep(word: string, phase: Step['phase'] = 'main'): Step {
 
 function buildStep(word: string, level: number): Step {
   const parts = segment(word)!;
-  const decoys = pick(knownGraphemes(level).filter((g) => !parts.includes(g)), Math.min(2, Math.max(0, knownGraphemes(level).length - parts.length)));
+  // decoy tiles never spell a sound already in the word another way (c / k for "ck")
+  const partSounds = parts.map(soundOf);
+  const pool = knownGraphemes(level).filter((g) => !parts.includes(g) && !partSounds.includes(soundOf(g)));
+  const decoys = pick(pool, Math.min(2, pool.length));
   return { ...wStep('build', word.toLowerCase()), options: shuffle([...parts, ...decoys]) };
 }
 
@@ -151,6 +156,9 @@ export interface SessionExtras {
   heart: { word: string; source: string }[];
 }
 
+/** New sight words per session: more than this crowds out decoding practice (level 14 has 9). */
+export const MAX_NEW_HEART = 3;
+
 export function buildMain(p: Progress, n: number, extras?: SessionExtras): Step[] {
   const level = levelByN(n);
   const steps: Step[] = [];
@@ -167,10 +175,15 @@ export function buildMain(p: Progress, n: number, extras?: SessionExtras): Step[
   }
 
   // 3. New sound(s).
+  const soundsIntroduced: string[] = [];
   for (const g of level.newGraphemes) {
-    if (firstSession) steps.push({ uid: uid(), kind: 'banner', banner: 'new_sound', phase: 'main' });
+    // Another spelling of a sound just introduced (k, ck after c): short version, it's the same sound
+    const again = soundsIntroduced.includes(soundOf(g));
+    soundsIntroduced.push(soundOf(g));
+    if (firstSession && !again) steps.push({ uid: uid(), kind: 'banner', banner: 'new_sound', phase: 'main' });
     steps.push({ ...gStep('reveal', g, n), itemId: undefined });
-    for (let i = 0; i < 3; i++) steps.push(gStep('hearTap', g, n));
+    for (let i = 0; i < (again ? 1 : 3); i++) steps.push(gStep('hearTap', g, n));
+    if (again) { steps.push(gStep('seeSay', g, n)); continue; }
     const g0 = GRAPHEME_BY_ID[g];
     if (g0.continuous) steps.push({ ...gStep('hold', g, n), itemId: undefined });
     steps.push(gStep('seeSay', g, n));
@@ -181,8 +194,11 @@ export function buildMain(p: Progress, n: number, extras?: SessionExtras): Step[
     steps.push({ ...gStep('hearTap', g, n), options: shuffle([...level.contrast]) });
   }
 
+  // Sight words: at most MAX_NEW_HEART new ones per session (in the level's order); started ones keep being practised
+  let introduced = 0;
   for (const h of level.heartWords) {
     const seen = p.items[`h:${h}`]?.seen ?? 0;
+    if (!seen) { if (introduced >= MAX_NEW_HEART) continue; introduced++; }
     if (seen < 3) steps.push({ uid: uid(), kind: 'heart', word: h, model: true, phase: 'main' });
     if (seen < 6) steps.push({ uid: uid(), kind: 'heart', word: h, itemId: `h:${h}`, itemKind: 'word', phase: 'main' });
   }
@@ -213,7 +229,7 @@ export function buildMain(p: Progress, n: number, extras?: SessionExtras): Step[
   if (n >= 4) pick(level.words.filter((w) => w.length <= 4), 3).forEach((w) => steps.push(buildStep(w, n)));
 
   // 8. Connected text, then one tiny meaning check when a clear picture target is available.
-  const newHeart = (extras?.heart ?? []).filter((h) => !p.items[`h:${h.word}`]).slice(0, 2);
+  const newHeart = (extras?.heart ?? []).filter((h) => !p.items[`h:${h.word}`] && !level.heartWords.includes(h.word)).slice(0, Math.max(0, Math.min(2, MAX_NEW_HEART - introduced)));
   for (const h of newHeart) {
     steps.push({ uid: uid(), kind: 'heart', word: h.word, source: h.source, model: true, phase: 'main' });
     steps.push({ uid: uid(), kind: 'heart', word: h.word, source: h.source, itemId: `h:${h.word}`, itemKind: 'word', phase: 'main' });

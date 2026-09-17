@@ -25,11 +25,11 @@ describe('session builder', () => {
   it('public-domain book sentences are strictly decodable', () => {
     for (const n of [10, 12, 20]) for (const s of bookSentencesFor(n)) expect(s.level).toBeLessThanOrEqual(n);
   });
-  it('level 7 teaches Pooh (with the, is, I) as heart words: modelled first, then read', () => {
+  it('level 7 teaches Pooh, the, is as heart words: modelled first, then read; I waits for the next session', () => {
     const steps = buildMain(jumpTo(freshProgress(), 7), 7);
     const pooh = steps.filter((s) => s.kind === 'heart' && s.word === 'Pooh');
     expect(pooh.map((s) => !!s.model)).toEqual([true, false]);
-    expect(steps.filter((s) => s.kind === 'heart' && !s.model).map((s) => s.word)).toEqual(['the', 'is', 'I', 'Pooh']);
+    expect(steps.filter((s) => s.kind === 'heart' && !s.model).map((s) => s.word)).toEqual(['Pooh', 'the', 'is']);
   });
   it('confusable letters get Hear & Tap with only those two options', () => {
     const steps = buildMain(jumpTo(freshProgress(), 20), 20);

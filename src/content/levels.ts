@@ -20,9 +20,9 @@ export interface Level {
  * Levels 1–20 follow the Jolly Phonics order used by most beginner decodable books (e.g. SPELD SA):
  *   s a t i p n → c k ck e h r m d → g o u l f b
  * with -s endings and first sight words at the level 7 review (the, is, I), adjacent consonants and more sight words
- * at the level 14 review (he, she, we, me, be, to, has, his, as), and you, are, was, of, said, my at level 20.
+ * at the level 14 review (he, she, we, me, be, to, has, his, as), no/go/so with o (16), and you, are, was, of, said, my at 20.
  * Re-sequenced 2026-09-17 from the Mentava order, which left e/u/-s/the/is/and until levels 25–44 and made almost
- * no real beginner book readable (2 of 60 SPELD SA books by level 20, now 41).
+ * no real beginner book readable (2 of 60 SPELD SA books by level 20, now 31; 37 with pre-teaching).
  * Characters: Pip the piglet, Pooh (sight word from level 7), Tin Man (from level 12).
  */
 export const LEVELS: Level[] = [
@@ -46,7 +46,7 @@ export const LEVELS: Level[] = [
     story: ['Pip sat in a tin.', 'Nan sat in a pan.', 'Nat sat in a tin pan!'],
   },
   {
-    n: 7, title: 'review', newGraphemes: [], heartWords: ['the', 'is', 'I', 'Pooh'],
+    n: 7, title: 'review', newGraphemes: [], heartWords: ['Pooh', 'the', 'is', 'I'], // introduced up to 3 per session, story words first
     words: ['sits', 'taps', 'pins', 'naps', 'tins', 'pans', 'tips', 'pats'], nonsense: ['nas', 'pas', 'tis'],
     sentences: ['Pip sits in the pan.', 'Nat is in the tin.', 'I sit in the tin.'], pa: 'first_sound',
     story: ['Pooh sits in a tin.', 'Pip sits in the pan.', 'Is it a pan?', 'It is!'],
@@ -95,7 +95,7 @@ export const LEVELS: Level[] = [
     story: ['Dad had a red hat.', 'Pip hid in it.', 'Dad sat.', 'Pip is in the hat!'],
   },
   {
-    n: 14, title: 'review', newGraphemes: [], heartWords: ['he', 'she', 'we', 'me', 'be', 'to', 'has', 'his', 'as'],
+    n: 14, title: 'review', newGraphemes: [], heartWords: ['he', 'has', 'she', 'we', 'to', 'me', 'be', 'his', 'as'],
     words: ['and', 'ant', 'sand', 'hand', 'stand', 'nest', 'tent', 'spin', 'snap', 'trip', 'step', 'stick', 'crack', 'drip'],
     nonsense: ['stap', 'drin', 'snek'], sentences: ['He has a tent.', 'She and Pip stand in the sand.', 'We stick it in the nest.'],
     pa: 'first_sound', pairs: [['trip', 'drip'], ['hand', 'sand'], ['snap', 'snip']],
@@ -109,7 +109,7 @@ export const LEVELS: Level[] = [
     story: ['Pip is a pig.', 'Pip digs in the sand.', 'He digs and digs.', 'Pooh gets a pan.', '"Dig, Pip, dig!"'],
   },
   {
-    n: 16, title: 'o', newGraphemes: ['o'], heartWords: [],
+    n: 16, title: 'o', newGraphemes: ['o'], heartWords: ['no', 'go', 'so'],
     words: ['on', 'not', 'pot', 'top', 'hot', 'dog', 'cot', 'mop', 'rock', 'sock', 'Tom', 'stop', 'spot', 'hop', 'got', 'drop'],
     nonsense: ['tog', 'pok', 'nop'], sentences: ['The pot is hot.', 'Stop, Pip!'], pa: 'final_sound',
     pairs: [['hat', 'hot'], ['pat', 'pot'], ['sack', 'sock']],
@@ -138,7 +138,7 @@ export const LEVELS: Level[] = [
     story: ['Pooh sits on a log in the fog.', 'A frog hops up.', '"Pip, it is fun!"', 'Pip and Pooh hop and hop.'],
   },
   {
-    n: 20, title: 'b', newGraphemes: ['b'], heartWords: ['you', 'are', 'was', 'of', 'said', 'my'],
+    n: 20, title: 'b', newGraphemes: ['b'], heartWords: ['said', 'was', 'you', 'my', 'are', 'of'],
     words: ['bat', 'bed', 'big', 'bug', 'bun', 'bag', 'bib', 'cab', 'crab', 'rub', 'bus', 'bell', 'best', 'bump'],
     nonsense: ['bip', 'bol', 'deb'], sentences: ['Pooh said, "My pot is in the bag."', 'You are a big bug!'], pa: 'segment3',
     pairs: [['bad', 'dad'], ['big', 'dig'], ['bed', 'bad']],
