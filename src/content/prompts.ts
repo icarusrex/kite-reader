@@ -29,6 +29,7 @@ export const PROMPTS = {
   cold: 'Let’s remember yesterday.',
   level_done: 'You finished a level!',
   story_time: 'Go find someone. It’s story time! Read it to them.',
+  story_tap: 'When you have read it, tap the big green button!',
   all_done: 'All done for today. See you tomorrow!',
   rest: 'Your brain worked hard. Let’s rest.',
   tap_dogfish: 'Tap dogfish.',

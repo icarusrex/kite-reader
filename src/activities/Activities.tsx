@@ -414,7 +414,10 @@ export function Banner({ step, onDone }: ActivityProps) {
   const text = { checkout: 'Show what you know', cold: 'Remember yesterday?', story_time: 'Story time! Go find someone.', new_sound: 'A new sound!', level_done: 'You finished a level!' }[b];
   const story = b === 'story_time' ? step.lines : undefined;
   useEffect(() => {
-    say({ p: b }).then(() => { if (b !== 'story_time') setTimeout(finish, b === 'level_done' ? 1800 : 500); });
+    say({ p: b }).then(() => {
+      if (b === 'story_time') say({ pause: 400 }, { p: 'story_tap' });
+      else setTimeout(finish, b === 'level_done' ? 1800 : 500);
+    });
     // eslint-disable-next-line
   }, []);
   return (
@@ -428,7 +431,13 @@ export function Banner({ step, onDone }: ActivityProps) {
           <div className="story">{story.map((l, i) => <p key={i}>{l}</p>)}</div>
         </div>
       )}
-      {b === 'story_time' && <button className="primary soft" onPointerDown={tap}>We read it ✓</button>}
+      {b === 'story_time' && (
+        <button className="primary soft story-done" onPointerDown={tap} aria-label="We read it">
+          <span className="story-done-icons" aria-hidden>📖👍</span>
+          <span>We read it!</span>
+          <span className="story-done-hand" aria-hidden>👆</span>
+        </button>
+      )}
     </div>
   );
 }

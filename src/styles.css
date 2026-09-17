@@ -228,3 +228,11 @@ button { font-family: inherit; color: inherit; border: 0; background: none; curs
 @keyframes pop { from { transform: scale(.4); } }
 .pbtn.small { width: 44px; height: 44px; font-size: 20px; opacity: .8; }
 @media (prefers-reduced-motion: reduce) { .mic-cue.on { animation: none; } }
+
+/* Story time: "We read it" button with icons and a tapping hand, so a pre-reader knows to press it */
+.story-done { position: relative; height: auto; padding: 18px 48px; flex-direction: column; gap: 4px; font-size: 34px; animation: story-pulse 1.8s ease-in-out infinite; }
+.story-done-icons { font-size: 64px; line-height: 1; }
+.story-done-hand { position: absolute; right: -18px; bottom: -26px; font-size: 56px; animation: tap-hand 1.8s ease-in-out infinite; }
+@keyframes story-pulse { 50% { transform: scale(1.05); } }
+@keyframes tap-hand { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-10px, -12px); } }
+@media (prefers-reduced-motion: reduce) { .story-done, .story-done-hand { animation: none; } }

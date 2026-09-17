@@ -747,5 +747,6 @@
   "split:rainbow": "split/rainbow.mp3",
   "split:robot": "split/robot.mp3",
   "word:does": "words/does.mp3",
-  "word:read": "words/read.mp3"
+  "word:read": "words/read.mp3",
+  "prompt:story_tap": "prompts/story_tap.mp3"
 }
