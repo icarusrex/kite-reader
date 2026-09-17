@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useStore } from '../../app/store';
 import { LEVELS, MAX_LEVEL } from '../../content/levels';
-import { GRAPHEMES } from '../../content/phonemes';
+import { SOUNDS as GRAPHEMES } from '../../content/phonemes';
 import { PICTURES, pictureUrl, storyPictureUrl } from '../../content/pictures';
 import { PROMPTS } from '../../content/prompts';
 import { currentBasics, currentLevel } from '../../engine/progress';
@@ -60,7 +60,7 @@ export function StatusTab({ go }: { go: (tab: 'sounds' | 'settings' | 'lessons')
       <div className="card">
         <h2>Coming next</h2>
         <ul className="checklist">
-          <li><span className={`pill ${levelsLeft <= 3 ? 'warn' : ''}`}>{levelsLeft <= 3 ? 'needed soon' : `in ~${levelsLeft} levels`}</span> <span><b>Levels 21–30</b> (ck, sh, ch, th, <i>the</i>, o, nd, -s, mp, ft). Needs engine work: two-letter sounds on one tile, the heart word <i>the</i>. Ask Claude at level ~17.</span></li>
+          <li><span className={`pill ${levelsLeft <= 3 ? 'warn' : ''}`}>{levelsLeft <= 3 ? 'needed soon' : `in ~${levelsLeft} levels`}</span> <span><b>Levels 21–30</b> (the next Jolly Phonics groups: sh, ch, th, ng, j, v, w, z, x, y, qu and first long vowels ai, ee, oa). Needs engine work for two-letter sounds on one tile. Ask Claude at level ~17.</span></li>
           <li><span className="pill">from level 50</span> <span><b>Reading speed</b>: timed word lists against his own previous time.</span></li>
           <li><span className="pill">later</span> <span><b>Math</b> (separate short session), <b>progress sync</b> between Mac and tablet.</span></li>
         </ul>

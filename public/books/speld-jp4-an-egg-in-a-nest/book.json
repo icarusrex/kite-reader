@@ -1,0 +1,55 @@
+{
+ "id": "speld-jp4-an-egg-in-a-nest",
+ "title": "An egg in a nest",
+ "author": "SPELD SA (Jolly Phonics Set 4)",
+ "pages": [
+  {
+   "text": "A big gum tree is on\na hill.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "A magpie is in the\ngum tree.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "The magpie has\na nest.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "The nest is in the\ngum tree.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "The magpie sits on\nthe nest.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "She has laid lots\nof eggs.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "In fact, she has\nlaid ten eggs.",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "But can you see? Just 1\negg is in the nest. Where\nare the rest of the eggs?",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

@@ -16,6 +16,10 @@ export const PICTURES: Record<string, string> = {
   rabbit: '🐇', pencil: '✏️', basket: '🧺', tiger: '🐯', carrot: '🥕', lemon: '🍋', button: '🔘', zebra: '🦓', spider: '🕷️',
   robot: '🤖', moon: '🌙', spoon: '🥄', cake: '🎂', snake: '🐍', bee: '🐝', tree: '🌳', goat: '🐐', boat: '⛵', fox: '🦊',
   box: '📦', mouse: '🐭', house: '🏠', frog: '🐸',
+  // Levels 1–20 in the Jolly Phonics order (2026-09-17)
+  insect: '🐜', net: '🥅', hen: '🐔', peg: '📎', pot: '🍲', sock: '🧦', rock: '🪨', bug: '🐛', duck: '🦆', rug: '🧶',
+  nut: '🥜', doll: '🪆', flag: '🚩', bun: '🍞', crab: '🦀', hand: '✋', tent: '⛺', sand: '🏖️', drum: '🥁', truck: '🚚',
+  lamp: '💡', bell: '🔔', gift: '🎁', mop: '🧹',
 };
 
 export const CLEAR_WORDS = ['cat', 'pig', 'bat', 'hat', 'map', 'sun', 'bed', 'bus', 'dog', 'van', 'ten', 'leg', 'web', 'log', 'pen'];

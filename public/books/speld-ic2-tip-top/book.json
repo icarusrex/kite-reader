@@ -1,0 +1,55 @@
+{
+ "id": "speld-ic2-tip-top",
+ "title": "Tip top",
+ "author": "SPELD SA (Initial Code Set 2)",
+ "pages": [
+  {
+   "text": "Mim sat.\nPit, pat, pit, pat.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Is it Sam or not?",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "It is Sam!",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "“In on the mat, Sam!”",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Sam is in. Tip-top!",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Mim and Sam\non the mat.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Sit and pat Sam.",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Mim and Sam sit in.",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

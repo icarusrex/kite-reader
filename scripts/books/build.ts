@@ -7,7 +7,7 @@
  * Output is private: the repo is private and the site sits behind Cloudflare Access.
  */
 import { execFileSync, spawnSync } from 'node:child_process';
-import { mkdirSync, readFileSync, rmSync, writeFileSync, existsSync, mkdtempSync, statSync } from 'node:fs';
+import { mkdirSync, readFileSync, rmSync, writeFileSync, existsSync, mkdtempSync, statSync, readdirSync } from 'node:fs';
 import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
 import JSZip from 'jszip';
@@ -21,8 +21,39 @@ type Kind =
   | { kind: 'pdf'; file: string; skipPages?: number[]; jacket?: boolean } // jacket: page 0 is back + front cover
   | { kind: 'epub-text'; file: string }      // real text + one picture per page (split on pagebreak)
   | { kind: 'epub-layers'; file: string }    // index-N_1.jpg = picture, index-N_2+.png = text images
-  | { kind: 'epub-images'; file: string };   // scanned pages with text baked in; images sharing a <p> form one spread
+  | { kind: 'epub-images'; file: string }    // scanned pages with text baked in; images sharing a <p> form one spread
+  | { kind: 'pdf-text'; file: string };      // digital PDF with a text layer (SPELD SA): story pages are the numbered ones
 type Source = { id: string; title: string; author: string } & Kind;
+
+/** SPELD SA free decodable readers (~/Documents/eBooks/SPELD SA/<set>/<book>.pdf): listed automatically. */
+function speldBooks(): Source[] {
+  const root = join(SRC, 'SPELD SA');
+  if (!existsSync(root)) return [];
+  return readdirSync(root, { withFileTypes: true }).filter((d) => d.isDirectory()).sort((a, b) => a.name.localeCompare(b.name)).flatMap((set) =>
+    readdirSync(join(root, set.name)).filter((f) => f.endsWith('.pdf')).sort().map((f) => {
+      const file = join('SPELD SA', set.name, f);
+      const first = speldText(join(SRC, file))[0]?.split('\n').map((l) => l.trim()).filter(Boolean) ?? [];
+      // title line, e.g. "Tan-Tan sits Tan-Tan sits" (printed twice on the cover) → "Tan-Tan sits"
+      let title = first.find((l, i) => i > 0 && !/^(SET|Unit|Sounds-Write|\d+$|Written|Illustrated|SPELD|Phonic)/i.test(l)) ?? f;
+      const half = title.length / 2;
+      if (title.length % 2 === 1 && title.slice(0, half - 0.5) === title.slice(half + 0.5)) title = title.slice(0, half - 0.5);
+      const setSlug = set.name.toLowerCase().replace(/jolly phonics set /, 'jp').replace(/initial code set /, 'ic');
+      return { id: `speld-${setSlug}-${slug(title)}`, title, author: `SPELD SA (${set.name})`, kind: 'pdf-text' as const, file };
+    }));
+}
+const slug = (s: string) => s.toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 50);
+function speldText(pdf: string): string[] {
+  return JSON.parse(execFileSync(join(tmp, 'extract'), ['text', pdf], { encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 }));
+}
+/** Story pages of a SPELD SA book: numbered pages that aren't teacher notes; text without the page number. */
+const SPELD_NOTES = /^(Learning to read|Practice page|Vocabulary|From blending to fluency|Fluency chart|Cover artwork|SPELD SA Phonic Books|This set of SPELD|Sounds-Write)/i;
+function speldPages(pages: string[]) {
+  return pages.map((p, n) => {
+    const lines = p.trim().split('\n').map((l) => l.trim()).filter(Boolean);
+    if (n === 0 || SPELD_NOTES.test(lines[0] ?? '') || !lines.some((l) => /^\d{1,2}$/.test(l))) return null;
+    return { n, text: lines.filter((l) => !/^\d{1,2}$/.test(l)).join('\n') };
+  }).filter((x): x is { n: number; text: string } => x !== null);
+}
 
 const BOOKS: Source[] = [
   { id: 'fat-cat-on-a-mat', title: 'Fat Cat on a Mat', author: 'Phil Roxbee Cox', kind: 'pdf', file: 'Fat Cat on a Mat.pdf', jacket: true },
@@ -37,7 +68,7 @@ const BOOKS: Source[] = [
 ];
 
 type Img = { file: string } | { pdf: string; page: number; rightHalf?: boolean };
-type Job = { out?: string; picture?: Img[]; ocr: Img[]; text?: string };
+type Job = { out?: string; picture?: Img[]; ocr: Img[]; text?: string; maxWidth?: number; quality?: number };
 type Extracted = { out?: string; width: number; height: number; lines: string[] };
 
 const BOILERPLATE = /usborne|phonics readers|language (expert|consultant)|illustrat|edited by|copyright|all rights|isbn|random house|harpercollins|beginner books|library of congress|printed in|www\.|\.com|published by|trademark|\bphd\b/i;
@@ -76,6 +107,11 @@ async function unzip(file: string) {
 /** Pages as extraction jobs: `out` is the picture file name inside the book folder. */
 async function jobsFor(b: Source, dir: string): Promise<Job[]> {
   const out = (n: number) => join(dir, `${String(n).padStart(2, '0')}.jpg`);
+  if (b.kind === 'pdf-text') {
+    const pdf = join(SRC, b.file);
+    // Smaller pictures: 60 books, and they're simple line-and-colour illustrations
+    return speldPages(speldText(pdf)).map((pg, i) => ({ out: out(i), picture: [{ pdf, page: pg.n }], ocr: [], text: pg.text, maxWidth: 700, quality: 0.55 }));
+  }
   if (b.kind === 'pdf') {
     const pdf = join(SRC, b.file);
     const count = extract.pages(pdf);
@@ -115,12 +151,24 @@ function cleanLines(lines: string[]) {
 
 const dict = new Set(readFileSync('src/content/common-words.txt', 'utf8').split('\n'));
 const overrides: Record<string, Record<string, string | null>> = existsSync('scripts/books/overrides.json') ? JSON.parse(readFileSync('scripts/books/overrides.json', 'utf8')) : {};
-const only = process.argv.slice(2);
+const only = process.argv.slice(2).filter((a) => !a.startsWith('--'));
 const extract = extractor();
 const indexPath = join(OUT, 'index.json');
 const index: LibraryEntry[] = existsSync(indexPath) ? JSON.parse(readFileSync(indexPath, 'utf8')) : [];
 
-for (const b of BOOKS) {
+// --analyze-only: re-score existing books (after a curriculum change) without re-extracting pictures and text
+if (process.argv.includes('--analyze-only')) {
+  for (const e of index) {
+    const book: Book = JSON.parse(readFileSync(join(OUT, e.id, 'book.json'), 'utf8'));
+    e.analysis = analyzeBook(book, dict);
+  }
+  index.sort((a, b) => a.analysis.readyPreteach - b.analysis.readyPreteach || a.title.localeCompare(b.title));
+  writeFileSync(indexPath, JSON.stringify(index, null, 1));
+  console.log(`re-scored ${index.length} books`);
+  process.exit(0);
+}
+
+for (const b of [...BOOKS, ...speldBooks()]) {
   if (only.length && !only.includes(b.id)) continue;
   const dir = join(OUT, b.id);
   rmSync(dir, { recursive: true, force: true });

@@ -1,0 +1,55 @@
+{
+ "id": "speld-jp1-the-tins-sit",
+ "title": "The tins sit",
+ "author": "SPELD SA (Jolly Phonics Set 1)",
+ "pages": [
+  {
+   "text": "It is a tin.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "A tin, a tin, a tin",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "The tins sit.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Sant is at the tins.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Sant pats.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Sant spins.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Sant tips the tins.",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Nat pats Sant.",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

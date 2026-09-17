@@ -1,0 +1,55 @@
+{
+ "id": "speld-jp2-yes-no",
+ "title": "Yes/No",
+ "author": "SPELD SA (Jolly Phonics Set 2)",
+ "pages": [
+  {
+   "text": "Is it a tap?",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Yes. It is a _____.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Is it a cat?",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "No. It is a _____.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Is it a rat?",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "No. It is a _____.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Is it an ant?\nYes. It is an _____.",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Is it a man?\nNo. It is a _____.",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

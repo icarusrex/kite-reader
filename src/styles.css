@@ -155,7 +155,7 @@ button { font-family: inherit; color: inherit; border: 0; background: none; curs
 .prompts p { margin: 8px 0; }
 .home-books { position: absolute; right: 20px; bottom: 20px; width: 84px; height: 84px; border-radius: 26px; background: var(--card); box-shadow: 0 4px 0 var(--line); font-size: 44px; }
 .local-page { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; padding: 0 20px; align-items: center; }
-.local-page img { width: 100%; height: auto; max-height: 100%; object-fit: contain; border-radius: 16px; }
+.local-page img { width: 100%; height: auto; max-height: calc(100vh - 170px); object-fit: contain; border-radius: 16px; }
 .local-text { font-size: clamp(28px, 4.5vmin, 48px); line-height: 1.5; }
 @media (max-aspect-ratio: 1/1) { .local-page { grid-template-columns: 1fr; } }
 .shelf-label { font-size: 22px; color: var(--muted); margin: 8px 0 0; }

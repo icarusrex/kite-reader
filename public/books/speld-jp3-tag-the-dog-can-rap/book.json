@@ -1,0 +1,55 @@
+{
+ "id": "speld-jp3-tag-the-dog-can-rap",
+ "title": "Tag the dog can rap",
+ "author": "SPELD SA (Jolly Phonics Set 3)",
+ "pages": [
+  {
+   "text": "I am Tag.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Black and red on\nthe flag",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I sit on a mat.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I get a big hat.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I am a bug.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I hop on a rug.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I get a red cap.",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I, too, can rap.",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

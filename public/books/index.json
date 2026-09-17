@@ -1,5 +1,3279 @@
 [
  {
+  "id": "speld-jp1-sant-the-ant",
+  "title": "Sant the ant",
+  "author": "SPELD SA (Jolly Phonics Set 1)",
+  "pages": 4,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 21,
+   "unique": 11,
+   "ready95": 14,
+   "readyPreteach": 7,
+   "preteach": [
+    "ant",
+    "on"
+   ],
+   "names": [
+    "sant"
+   ],
+   "sentences": []
+  }
+ },
+ {
+  "id": "speld-jp1-tan-tan-sits",
+  "title": "Tan-Tan sits",
+  "author": "SPELD SA (Jolly Phonics Set 1)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 31,
+   "unique": 7,
+   "ready95": 7,
+   "readyPreteach": 7,
+   "preteach": [],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Sit Tan-Tan.",
+     "level": 6,
+     "page": 1
+    },
+    {
+     "text": "Tan-Tan sits.",
+     "level": 7,
+     "page": 2
+    },
+    {
+     "text": "Nat pats Tan-Tan.",
+     "level": 7,
+     "page": 3
+    },
+    {
+     "text": "Sit Tan-Tan, sit.",
+     "level": 6,
+     "page": 4
+    },
+    {
+     "text": "Tan-Tan sits.",
+     "level": 7,
+     "page": 4
+    },
+    {
+     "text": "Pat Tan-Tan.",
+     "level": 6,
+     "page": 5
+    },
+    {
+     "text": "Pip pats Tan-Tan.",
+     "level": 7,
+     "page": 6
+    },
+    {
+     "text": "Tan-Tan sits.",
+     "level": 7,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp1-the-tins-sit",
+  "title": "The tins sit",
+  "author": "SPELD SA (Jolly Phonics Set 1)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 26,
+   "unique": 12,
+   "ready95": 7,
+   "readyPreteach": 7,
+   "preteach": [
+    "spins"
+   ],
+   "names": [
+    "sant"
+   ],
+   "sentences": [
+    {
+     "text": "It is a tin.",
+     "level": 7,
+     "page": 0
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp1-a-pan",
+  "title": "A pan",
+  "author": "SPELD SA (Jolly Phonics Set 1)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 18,
+   "unique": 7,
+   "ready95": 14,
+   "readyPreteach": 12,
+   "preteach": [
+    "and"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "A pan sits.",
+     "level": 7,
+     "page": 2
+    },
+    {
+     "text": "Pat sits.",
+     "level": 7,
+     "page": 3
+    },
+    {
+     "text": "A pan tips.",
+     "level": 7,
+     "page": 5
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic2-it-is-tim",
+  "title": "It is Tim",
+  "author": "SPELD SA (Initial Code Set 2)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 27,
+   "unique": 7,
+   "ready95": 12,
+   "readyPreteach": 12,
+   "preteach": [],
+   "names": [],
+   "sentences": [
+    {
+     "text": "It is Tim.",
+     "level": 12,
+     "page": 0
+    },
+    {
+     "text": "It is Sim.",
+     "level": 12,
+     "page": 1
+    },
+    {
+     "text": "It is Tim.",
+     "level": 12,
+     "page": 1
+    },
+    {
+     "text": "Sit, Sam.",
+     "level": 12,
+     "page": 2
+    },
+    {
+     "text": "Sit, Sim.",
+     "level": 12,
+     "page": 3
+    },
+    {
+     "text": "It is Tim.",
+     "level": 12,
+     "page": 4
+    },
+    {
+     "text": "It is Sim!",
+     "level": 12,
+     "page": 5
+    },
+    {
+     "text": "It is Tim!",
+     "level": 12,
+     "page": 5
+    },
+    {
+     "text": "Sit, Tim.",
+     "level": 12,
+     "page": 6
+    },
+    {
+     "text": "Sip, Sim.",
+     "level": 12,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic1-tim-sat",
+  "title": "Tim sat",
+  "author": "SPELD SA (Initial Code Set 1)",
+  "pages": 6,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 12,
+   "unique": 6,
+   "ready95": 12,
+   "readyPreteach": 12,
+   "preteach": [],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Sit, Tim.",
+     "level": 12,
+     "page": 1
+    },
+    {
+     "text": "Tim sat.",
+     "level": 12,
+     "page": 2
+    },
+    {
+     "text": "It is Sam.",
+     "level": 12,
+     "page": 3
+    },
+    {
+     "text": "Sit, Sam.",
+     "level": 12,
+     "page": 5
+    },
+    {
+     "text": "Sam sat.",
+     "level": 12,
+     "page": 6
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp2-hats",
+  "title": "Hats",
+  "author": "SPELD SA (Jolly Phonics Set 2)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 33,
+   "unique": 15,
+   "ready95": 14,
+   "readyPreteach": 13,
+   "preteach": [
+    "and"
+   ],
+   "names": [],
+   "sentences": []
+  }
+ },
+ {
+  "id": "speld-jp1-ants-in-anns-pants",
+  "title": "Ants in Ann’s pants",
+  "author": "SPELD SA (Jolly Phonics Set 1)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 23,
+   "unique": 10,
+   "ready95": 14,
+   "readyPreteach": 14,
+   "preteach": [],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Ann sits.",
+     "level": 14,
+     "page": 4
+    },
+    {
+     "text": "Ann sits in the pit.",
+     "level": 14,
+     "page": 5
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp2-crack-crack-crack",
+  "title": "Crack, crack, crack",
+  "author": "SPELD SA (Jolly Phonics Set 2)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 60,
+   "unique": 27,
+   "ready95": 14,
+   "readyPreteach": 14,
+   "preteach": [
+    "spot",
+    "drink",
+    "sprint"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "I print a map.",
+     "level": 14,
+     "page": 0
+    },
+    {
+     "text": "I pick a spot.",
+     "level": 16,
+     "page": 0
+    },
+    {
+     "text": "I sprint the track.",
+     "level": 20,
+     "page": 2
+    },
+    {
+     "text": "I tip the sack.",
+     "level": 8,
+     "page": 3
+    },
+    {
+     "text": "I hack a pit.",
+     "level": 10,
+     "page": 4
+    },
+    {
+     "text": "Hack, hack, hack, hack!",
+     "level": 10,
+     "page": 4
+    },
+    {
+     "text": "Damp cap, damp pants, damp hands Sit.",
+     "level": 14,
+     "page": 5
+    },
+    {
+     "text": "Crack, crack, crack!",
+     "level": 14,
+     "page": 6
+    },
+    {
+     "text": "Pip, pip pip In the pit is a nest.",
+     "level": 14,
+     "page": 7
+    },
+    {
+     "text": "Pip, pip, pip.",
+     "level": 5,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp1-it",
+  "title": "It",
+  "author": "SPELD SA (Jolly Phonics Set 1)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 33,
+   "unique": 11,
+   "ready95": 14,
+   "readyPreteach": 14,
+   "preteach": [],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Ann is ‘it’.",
+     "level": 14,
+     "page": 1
+    },
+    {
+     "text": "Ann taps Nat.",
+     "level": 14,
+     "page": 2
+    },
+    {
+     "text": "Nat sits.",
+     "level": 7,
+     "page": 2
+    },
+    {
+     "text": "Ann pats Pip.",
+     "level": 14,
+     "page": 3
+    },
+    {
+     "text": "Pip sits.",
+     "level": 7,
+     "page": 3
+    },
+    {
+     "text": "Ann pats Tan.",
+     "level": 14,
+     "page": 4
+    },
+    {
+     "text": "Tan sits.",
+     "level": 7,
+     "page": 4
+    },
+    {
+     "text": "Ann taps Pat.",
+     "level": 14,
+     "page": 5
+    },
+    {
+     "text": "Pat pants.",
+     "level": 14,
+     "page": 6
+    },
+    {
+     "text": "Ann pants.",
+     "level": 14,
+     "page": 6
+    },
+    {
+     "text": "Pat is ‘it’.",
+     "level": 7,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp2-ken",
+  "title": "Ken",
+  "author": "SPELD SA (Jolly Phonics Set 2)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 41,
+   "unique": 20,
+   "ready95": 20,
+   "readyPreteach": 14,
+   "preteach": [
+    "was",
+    "helmet",
+    "of",
+    "drink"
+   ],
+   "names": [
+    "pant"
+   ],
+   "sentences": [
+    {
+     "text": "Ken was at a track.",
+     "level": 20,
+     "page": 0
+    },
+    {
+     "text": "Ken had a cap and a helmet.",
+     "level": 20,
+     "page": 1
+    },
+    {
+     "text": "Ken sat.",
+     "level": 9,
+     "page": 2
+    },
+    {
+     "text": "Ken did a kick.",
+     "level": 13,
+     "page": 3
+    },
+    {
+     "text": "He did a spin.",
+     "level": 14,
+     "page": 4
+    },
+    {
+     "text": "Ken sat and had a rest.",
+     "level": 14,
+     "page": 6
+    },
+    {
+     "text": "Ken had a sip of his drink.",
+     "level": 38,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp1-nat-and-pat",
+  "title": "Nat and Pat",
+  "author": "SPELD SA (Jolly Phonics Set 1)",
+  "pages": 7,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 25,
+   "unique": 10,
+   "ready95": 14,
+   "readyPreteach": 14,
+   "preteach": [],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Pat sat.",
+     "level": 5,
+     "page": 1
+    },
+    {
+     "text": "Nat sat.",
+     "level": 6,
+     "page": 4
+    },
+    {
+     "text": "Spit in the pan!",
+     "level": 14,
+     "page": 6
+    },
+    {
+     "text": "Spit in the pan!",
+     "level": 14,
+     "page": 6
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp2-rick",
+  "title": "Rick",
+  "author": "SPELD SA (Jolly Phonics Set 2)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 30,
+   "unique": 14,
+   "ready95": 16,
+   "readyPreteach": 14,
+   "preteach": [
+    "tank",
+    "on"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Rick kicks.",
+     "level": 11,
+     "page": 1
+    },
+    {
+     "text": "He kicks a hat.",
+     "level": 14,
+     "page": 2
+    },
+    {
+     "text": "He kicks a mat.",
+     "level": 14,
+     "page": 3
+    },
+    {
+     "text": "Rick kicks a cap.",
+     "level": 11,
+     "page": 4
+    },
+    {
+     "text": "Rick kicks a tank.",
+     "level": 38,
+     "page": 5
+    },
+    {
+     "text": "Rick is on the sand.",
+     "level": 16,
+     "page": 6
+    },
+    {
+     "text": "A track is in the sand.",
+     "level": 14,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp2-sant-the-ant-is-mad",
+  "title": "Sant the ant is mad",
+  "author": "SPELD SA (Jolly Phonics Set 2)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 40,
+   "unique": 21,
+   "ready95": 16,
+   "readyPreteach": 14,
+   "preteach": [
+    "no",
+    "not"
+   ],
+   "names": [
+    "sant"
+   ],
+   "sentences": [
+    {
+     "text": "No, no, no!",
+     "level": 16,
+     "page": 4
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp1-sit",
+  "title": "Sit",
+  "author": "SPELD SA (Jolly Phonics Set 1)",
+  "pages": 12,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 12,
+   "unique": 6,
+   "ready95": 14,
+   "readyPreteach": 14,
+   "preteach": [],
+   "names": [],
+   "sentences": []
+  }
+ },
+ {
+  "id": "speld-ic1-tan",
+  "title": "Tan",
+  "author": "SPELD SA (Initial Code Set 1)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 53,
+   "unique": 13,
+   "ready95": 15,
+   "readyPreteach": 14,
+   "preteach": [
+    "get",
+    "not",
+    "hop"
+   ],
+   "names": [
+    "gab"
+   ],
+   "sentences": [
+    {
+     "text": "Sit Tan-Tan.",
+     "level": 6,
+     "page": 1
+    },
+    {
+     "text": "Tan-Tan can not hop.",
+     "level": 16,
+     "page": 2
+    },
+    {
+     "text": "Tan-Tan can sit.",
+     "level": 8,
+     "page": 2
+    },
+    {
+     "text": "Sit Tan-Tan, sit.",
+     "level": 6,
+     "page": 4
+    },
+    {
+     "text": "Pip can get Tan-Tan to sit.",
+     "level": 15,
+     "page": 4
+    },
+    {
+     "text": "Sit Tan-Tan.",
+     "level": 6,
+     "page": 5
+    },
+    {
+     "text": "Pip can pat him.",
+     "level": 12,
+     "page": 6
+    },
+    {
+     "text": "Pat, pat, pat!",
+     "level": 5,
+     "page": 6
+    },
+    {
+     "text": "Tan-Tan sits.",
+     "level": 7,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp1-tap",
+  "title": "Tap",
+  "author": "SPELD SA (Jolly Phonics Set 1)",
+  "pages": 12,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 12,
+   "unique": 6,
+   "ready95": 14,
+   "readyPreteach": 14,
+   "preteach": [],
+   "names": [],
+   "sentences": []
+  }
+ },
+ {
+  "id": "speld-jp2-ants-at-the-tip",
+  "title": "Ants at the tip",
+  "author": "SPELD SA (Jolly Phonics Set 2)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 39,
+   "unique": 17,
+   "ready95": 16,
+   "readyPreteach": 16,
+   "preteach": [
+    "tank"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "An ant is on Mick.",
+     "level": 16,
+     "page": 3
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic2-it-is-big",
+  "title": "It is big!",
+  "author": "SPELD SA (Initial Code Set 2)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 47,
+   "unique": 23,
+   "ready95": 16,
+   "readyPreteach": 16,
+   "preteach": [
+    "big"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Mac can sit on top.",
+     "level": 16,
+     "page": 0
+    },
+    {
+     "text": "Cam can tap on it.",
+     "level": 16,
+     "page": 1
+    },
+    {
+     "text": "Sim is in a gap.",
+     "level": 15,
+     "page": 2
+    },
+    {
+     "text": "Cam has a pin on his cap.",
+     "level": 16,
+     "page": 3
+    },
+    {
+     "text": "The tap is on and Sim can sip.",
+     "level": 16,
+     "page": 4
+    },
+    {
+     "text": "Mac can get it.",
+     "level": 15,
+     "page": 5
+    },
+    {
+     "text": "Cam, Mac and Sim can sit.",
+     "level": 14,
+     "page": 6
+    },
+    {
+     "text": "It is big!",
+     "level": 20,
+     "page": 6
+    },
+    {
+     "text": "It can get hot!",
+     "level": 16,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic1-nan",
+  "title": "Nan",
+  "author": "SPELD SA (Initial Code Set 1)",
+  "pages": 7,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 43,
+   "unique": 15,
+   "ready95": 16,
+   "readyPreteach": 16,
+   "preteach": [],
+   "names": [
+    "mim"
+   ],
+   "sentences": [
+    {
+     "text": "Nan sat.",
+     "level": 6,
+     "page": 1
+    },
+    {
+     "text": "Sit, Tom.",
+     "level": 16,
+     "page": 1
+    },
+    {
+     "text": "Tap, tap, tap.",
+     "level": 5,
+     "page": 3
+    },
+    {
+     "text": "In Tom and Nan sit in.",
+     "level": 16,
+     "page": 4
+    },
+    {
+     "text": "A pot is on top.",
+     "level": 16,
+     "page": 5
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic2-tip-top",
+  "title": "Tip top",
+  "author": "SPELD SA (Initial Code Set 2)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 39,
+   "unique": 17,
+   "ready95": 16,
+   "readyPreteach": 16,
+   "preteach": [
+    "or"
+   ],
+   "names": [
+    "mim"
+   ],
+   "sentences": [
+    {
+     "text": "Pit, pat, pit, pat.",
+     "level": 5,
+     "page": 0
+    },
+    {
+     "text": "Is it Sam or not?",
+     "level": 64,
+     "page": 1
+    },
+    {
+     "text": "It is Sam!",
+     "level": 12,
+     "page": 2
+    },
+    {
+     "text": "In on the mat, Sam!",
+     "level": 16,
+     "page": 3
+    },
+    {
+     "text": "Sam is in.",
+     "level": 12,
+     "page": 4
+    },
+    {
+     "text": "Tip-top!",
+     "level": 16,
+     "page": 4
+    },
+    {
+     "text": "Sit and pat Sam.",
+     "level": 14,
+     "page": 6
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp2-yes-no",
+  "title": "Yes/No",
+  "author": "SPELD SA (Jolly Phonics Set 2)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 40,
+   "unique": 11,
+   "ready95": 16,
+   "readyPreteach": 16,
+   "preteach": [
+    "yes"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Is it a tap?",
+     "level": 7,
+     "page": 0
+    },
+    {
+     "text": "It is a _____.",
+     "level": 7,
+     "page": 1
+    },
+    {
+     "text": "Is it a cat?",
+     "level": 8,
+     "page": 2
+    },
+    {
+     "text": "It is a _____.",
+     "level": 7,
+     "page": 3
+    },
+    {
+     "text": "Is it a rat?",
+     "level": 11,
+     "page": 4
+    },
+    {
+     "text": "It is a _____.",
+     "level": 7,
+     "page": 5
+    },
+    {
+     "text": "Is it an ant?",
+     "level": 14,
+     "page": 6
+    },
+    {
+     "text": "It is an _____.",
+     "level": 7,
+     "page": 6
+    },
+    {
+     "text": "Is it a man?",
+     "level": 12,
+     "page": 7
+    },
+    {
+     "text": "It is a _____.",
+     "level": 7,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic1-kip-has-a-nap",
+  "title": "Kip has a nap",
+  "author": "SPELD SA (Initial Code Set 1)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 56,
+   "unique": 22,
+   "ready95": 20,
+   "readyPreteach": 18,
+   "preteach": [
+    "bag",
+    "big",
+    "laptop"
+   ],
+   "names": [
+    "kip"
+   ],
+   "sentences": [
+    {
+     "text": "He has a nap in a kit bag.",
+     "level": 20,
+     "page": 4
+    },
+    {
+     "text": "He has a nap on the laptop.",
+     "level": 20,
+     "page": 6
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic2-lap-it-up",
+  "title": "Lap it up",
+  "author": "SPELD SA (Initial Code Set 2)",
+  "pages": 7,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 45,
+   "unique": 26,
+   "ready95": 20,
+   "readyPreteach": 18,
+   "preteach": [
+    "beg",
+    "bad",
+    "of"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Ken has a pan.",
+     "level": 14,
+     "page": 0
+    },
+    {
+     "text": "The pan is up on top.",
+     "level": 17,
+     "page": 1
+    },
+    {
+     "text": "Sit, Pat!",
+     "level": 5,
+     "page": 2
+    },
+    {
+     "text": "Pat is Ken’s Pal.",
+     "level": 18,
+     "page": 2
+    },
+    {
+     "text": "Sit and beg, Pat.",
+     "level": 20,
+     "page": 3
+    },
+    {
+     "text": "Pat is bad to hop up and tip the pan!",
+     "level": 20,
+     "page": 4
+    },
+    {
+     "text": "It is sad to get rid of it.",
+     "level": 20,
+     "page": 5
+    },
+    {
+     "text": "Ken let Pat lap up the pan.",
+     "level": 18,
+     "page": 6
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp3-tig-naps-a-lot",
+  "title": "Tig naps a lot",
+  "author": "SPELD SA (Jolly Phonics Set 3)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 32,
+   "unique": 16,
+   "ready95": 20,
+   "readyPreteach": 18,
+   "preteach": [
+    "bag",
+    "laptop"
+   ],
+   "names": [
+    "tig"
+   ],
+   "sentences": []
+  }
+ },
+ {
+  "id": "speld-jp3-is-it-a",
+  "title": "Is it a ...?",
+  "author": "SPELD SA (Jolly Phonics Set 3)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 60,
+   "unique": 19,
+   "ready95": 20,
+   "readyPreteach": 19,
+   "preteach": [
+    "bat",
+    "bag",
+    "bed"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Is it a bat, a bag, a bed?",
+     "level": 20,
+     "page": 0
+    },
+    {
+     "text": "It is a bag.",
+     "level": 20,
+     "page": 1
+    },
+    {
+     "text": "Is it a mat, a man, a mug?",
+     "level": 17,
+     "page": 2
+    },
+    {
+     "text": "It is a man.",
+     "level": 12,
+     "page": 3
+    },
+    {
+     "text": "Is it a hill, a hat, a hip?",
+     "level": 18,
+     "page": 4
+    },
+    {
+     "text": "It is a hill.",
+     "level": 18,
+     "page": 4
+    },
+    {
+     "text": "Is it a fin, a fan, a frog?",
+     "level": 19,
+     "page": 5
+    },
+    {
+     "text": "It is a fan.",
+     "level": 19,
+     "page": 5
+    },
+    {
+     "text": "Is it a peg, a pig, an egg?",
+     "level": 15,
+     "page": 6
+    },
+    {
+     "text": "It is an egg.",
+     "level": 15,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp2-red-sand",
+  "title": "Red sand",
+  "author": "SPELD SA (Jolly Phonics Set 2)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 44,
+   "unique": 18,
+   "ready95": 20,
+   "readyPreteach": 19,
+   "preteach": [
+    "my"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "I sit in the red sand.",
+     "level": 14,
+     "page": 1
+    },
+    {
+     "text": "I tip the sand.",
+     "level": 14,
+     "page": 2
+    },
+    {
+     "text": "I pat the sand.",
+     "level": 14,
+     "page": 3
+    },
+    {
+     "text": "Red sand is on my skin.",
+     "level": 20,
+     "page": 4
+    },
+    {
+     "text": "I stand and tip the red sand off.",
+     "level": 19,
+     "page": 6
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp3-a-bug-in-a-mug",
+  "title": "A bug in a mug",
+  "author": "SPELD SA (Jolly Phonics Set 3)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 67,
+   "unique": 24,
+   "ready95": 21,
+   "readyPreteach": 20,
+   "preteach": [
+    "drink",
+    "jug",
+    "drank"
+   ],
+   "names": [
+    "glug"
+   ],
+   "sentences": [
+    {
+     "text": "Ben had a big mug.",
+     "level": 20,
+     "page": 0
+    },
+    {
+     "text": "He got a drink from a jug.",
+     "level": 38,
+     "page": 1
+    },
+    {
+     "text": "A bug was in the mug.",
+     "level": 20,
+     "page": 2
+    },
+    {
+     "text": "Can you spot the bug in the mug?",
+     "level": 20,
+     "page": 2
+    },
+    {
+     "text": "Ben did not spot the bug in the mug.",
+     "level": 20,
+     "page": 3
+    },
+    {
+     "text": "Ben drank the drink from the mug.",
+     "level": 38,
+     "page": 4
+    },
+    {
+     "text": "Can you still spot the bug in the mug?",
+     "level": 20,
+     "page": 5
+    },
+    {
+     "text": "The bug is not in the mug.",
+     "level": 20,
+     "page": 6
+    },
+    {
+     "text": "The bug is in Ben.",
+     "level": 20,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp3-can-you-spot-it-1",
+  "title": "Can you spot it? [1]",
+  "author": "SPELD SA (Jolly Phonics Set 3)",
+  "pages": 11,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 68,
+   "unique": 22,
+   "ready95": 20,
+   "readyPreteach": 20,
+   "preteach": [
+    "sink"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Can you spot a pot and a pan?",
+     "level": 20,
+     "page": 0
+    },
+    {
+     "text": "If you can, tap the pan.",
+     "level": 20,
+     "page": 1
+    },
+    {
+     "text": "Can you spot a tap?",
+     "level": 20,
+     "page": 2
+    },
+    {
+     "text": "Is the tap on?",
+     "level": 16,
+     "page": 3
+    },
+    {
+     "text": "Can you spot a mug and a cup?",
+     "level": 20,
+     "page": 4
+    },
+    {
+     "text": "If you can, tap the mug.",
+     "level": 20,
+     "page": 5
+    },
+    {
+     "text": "Is the cup up?",
+     "level": 17,
+     "page": 5
+    },
+    {
+     "text": "Can you spot a sink?",
+     "level": 38,
+     "page": 6
+    },
+    {
+     "text": "Is the plug in the sink?",
+     "level": 38,
+     "page": 7
+    },
+    {
+     "text": "Can you spot a bin?",
+     "level": 20,
+     "page": 8
+    },
+    {
+     "text": "Is the lid on the bin?",
+     "level": 20,
+     "page": 9
+    },
+    {
+     "text": "Can you spot an ant?",
+     "level": 20,
+     "page": 10
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp2-did-it-happen",
+  "title": "Did it happen?",
+  "author": "SPELD SA (Jolly Phonics Set 2)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 61,
+   "unique": 31,
+   "ready95": 20,
+   "readyPreteach": 20,
+   "preteach": [
+    "drank",
+    "drink"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Did it happen?",
+     "level": 20,
+     "page": 0
+    },
+    {
+     "text": "Dan sat in a tent.",
+     "level": 14,
+     "page": 1
+    },
+    {
+     "text": "Did it happen?",
+     "level": 20,
+     "page": 1
+    },
+    {
+     "text": "Did it happen?",
+     "level": 20,
+     "page": 2
+    },
+    {
+     "text": "Kim met Nick at camp.",
+     "level": 14,
+     "page": 3
+    },
+    {
+     "text": "Did it happen?",
+     "level": 20,
+     "page": 3
+    },
+    {
+     "text": "Pam had a trip to the dentist.",
+     "level": 20,
+     "page": 4
+    },
+    {
+     "text": "Did it happen?",
+     "level": 20,
+     "page": 4
+    },
+    {
+     "text": "Did it happen?",
+     "level": 20,
+     "page": 5
+    },
+    {
+     "text": "Pam ran on the sand.",
+     "level": 16,
+     "page": 6
+    },
+    {
+     "text": "Did it happen?",
+     "level": 20,
+     "page": 6
+    },
+    {
+     "text": "Did it happen?",
+     "level": 20,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic1-is-it-a",
+  "title": "Is it a...?",
+  "author": "SPELD SA (Initial Code Set 1)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 48,
+   "unique": 16,
+   "ready95": 22,
+   "readyPreteach": 20,
+   "preteach": [
+    "vet",
+    "van"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Is it a bed, a dog, a bat?",
+     "level": 20,
+     "page": 0
+    },
+    {
+     "text": "It is a dog.",
+     "level": 16,
+     "page": 1
+    },
+    {
+     "text": "Is it a vet, a pet, a van?",
+     "level": 22,
+     "page": 2
+    },
+    {
+     "text": "It is a van.",
+     "level": 22,
+     "page": 3
+    },
+    {
+     "text": "Is it a fin, a fan, a fig?",
+     "level": 19,
+     "page": 4
+    },
+    {
+     "text": "It is a fan.",
+     "level": 19,
+     "page": 5
+    },
+    {
+     "text": "Is it a peg, a pig, an egg?",
+     "level": 15,
+     "page": 6
+    },
+    {
+     "text": "It is an egg.",
+     "level": 15,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic1-red-sand",
+  "title": "Red sand",
+  "author": "SPELD SA (Initial Code Set 1)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 79,
+   "unique": 35,
+   "ready95": 21,
+   "readyPreteach": 20,
+   "preteach": [
+    "some",
+    "for",
+    "sink",
+    "jump"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Red sand is in my hand.",
+     "level": 20,
+     "page": 0
+    },
+    {
+     "text": "I sit in the red sand.",
+     "level": 14,
+     "page": 1
+    },
+    {
+     "text": "Nan has a rest.",
+     "level": 14,
+     "page": 1
+    },
+    {
+     "text": "I tip some soft sand in Nan’s big hands.",
+     "level": 113,
+     "page": 2
+    },
+    {
+     "text": "Red sand is on my legs.",
+     "level": 20,
+     "page": 4
+    },
+    {
+     "text": "I sink in the hot sand.",
+     "level": 38,
+     "page": 4
+    },
+    {
+     "text": "I jump up and the red sand tips off.",
+     "level": 21,
+     "page": 6
+    },
+    {
+     "text": "Nan and I set off.",
+     "level": 19,
+     "page": 7
+    },
+    {
+     "text": "Nan is the best.",
+     "level": 20,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp3-sant-the-ant-gets-sick",
+  "title": "Sant the ant gets sick",
+  "author": "SPELD SA (Jolly Phonics Set 3)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 42,
+   "unique": 26,
+   "ready95": 20,
+   "readyPreteach": 20,
+   "preteach": [
+    "drink"
+   ],
+   "names": [
+    "sant"
+   ],
+   "sentences": [
+    {
+     "text": "He was sick.",
+     "level": 20,
+     "page": 4
+    },
+    {
+     "text": "He had a big rest.",
+     "level": 20,
+     "page": 6
+    },
+    {
+     "text": "He can get up.",
+     "level": 17,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic1-sant-the-ant-is-ill",
+  "title": "Sant the ant is ill",
+  "author": "SPELD SA (Initial Code Set 1)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 87,
+   "unique": 40,
+   "ready95": 23,
+   "readyPreteach": 20,
+   "preteach": [
+    "come",
+    "drink",
+    "for",
+    "well"
+   ],
+   "names": [
+    "sant"
+   ],
+   "sentences": [
+    {
+     "text": "He had to stop on the spot and rest.",
+     "level": 16,
+     "page": 1
+    },
+    {
+     "text": "He was still not well.",
+     "level": 23,
+     "page": 6
+    },
+    {
+     "text": "He is glad to get up from bed.",
+     "level": 20,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp3-stuck-in-the-mud",
+  "title": "Stuck in the mud",
+  "author": "SPELD SA (Jolly Phonics Set 3)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 87,
+   "unique": 34,
+   "ready95": 45,
+   "readyPreteach": 20,
+   "preteach": [
+    "saw",
+    "they"
+   ],
+   "names": [
+    "ina"
+   ],
+   "sentences": [
+    {
+     "text": "A big, fat pig ran in the mud.",
+     "level": 20,
+     "page": 0
+    },
+    {
+     "text": "The pig got its legs stuck in the mud.",
+     "level": 18,
+     "page": 0
+    },
+    {
+     "text": "They saw the black pig stuck in the mud.",
+     "level": 91,
+     "page": 1
+    },
+    {
+     "text": "Can they get the pig from the mud?",
+     "level": 45,
+     "page": 2
+    },
+    {
+     "text": "They tug the pig!",
+     "level": 45,
+     "page": 3
+    },
+    {
+     "text": "At last they got the pig from the mud.",
+     "level": 45,
+     "page": 5
+    },
+    {
+     "text": "They are stuck in the mud.",
+     "level": 45,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp3-tag-the-dog-can-rap",
+  "title": "Tag the dog can rap",
+  "author": "SPELD SA (Jolly Phonics Set 3)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 37,
+   "unique": 22,
+   "ready95": 20,
+   "readyPreteach": 20,
+   "preteach": [
+    "too"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "I am Tag.",
+     "level": 15,
+     "page": 0
+    },
+    {
+     "text": "I sit on a mat.",
+     "level": 16,
+     "page": 2
+    },
+    {
+     "text": "I get a big hat.",
+     "level": 20,
+     "page": 3
+    },
+    {
+     "text": "I am a bug.",
+     "level": 20,
+     "page": 4
+    },
+    {
+     "text": "I hop on a rug.",
+     "level": 17,
+     "page": 5
+    },
+    {
+     "text": "I get a red cap.",
+     "level": 15,
+     "page": 6
+    },
+    {
+     "text": "I, too, can rap.",
+     "level": 101,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic2-the-van",
+  "title": "The Van",
+  "author": "SPELD SA (Initial Code Set 2)",
+  "pages": 6,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 45,
+   "unique": 24,
+   "ready95": 22,
+   "readyPreteach": 20,
+   "preteach": [
+    "van",
+    "for"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "The van is set.",
+     "level": 22,
+     "page": 0
+    },
+    {
+     "text": "Tag is my pet dog.",
+     "level": 20,
+     "page": 1
+    },
+    {
+     "text": "Dad, Tag and I set off in the van.",
+     "level": 22,
+     "page": 2
+    },
+    {
+     "text": "The fan is on in the van.",
+     "level": 22,
+     "page": 3
+    },
+    {
+     "text": "Tag has a nap.",
+     "level": 15,
+     "page": 3
+    },
+    {
+     "text": "Not for you, Tag!",
+     "level": 64,
+     "page": 4
+    },
+    {
+     "text": "Dad is not mad.",
+     "level": 16,
+     "page": 4
+    },
+    {
+     "text": "Tag is fed.",
+     "level": 19,
+     "page": 4
+    },
+    {
+     "text": "My dog Tag is fit.",
+     "level": 20,
+     "page": 5
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic2-liz-and-jeff",
+  "title": "Liz and Jeff",
+  "author": "SPELD SA (Initial Code Set 2)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 105,
+   "unique": 45,
+   "ready95": 90,
+   "readyPreteach": 21,
+   "preteach": [
+    "have",
+    "some",
+    "drink",
+    "liz",
+    "come"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Jeff has no hump on top.",
+     "level": 21,
+     "page": 0
+    },
+    {
+     "text": "His pals are grand and stroll the land.",
+     "level": 20,
+     "page": 0
+    },
+    {
+     "text": "His pals have a hump on top.",
+     "level": 117,
+     "page": 0
+    },
+    {
+     "text": "A hump on top!",
+     "level": 17,
+     "page": 2
+    },
+    {
+     "text": "The sand slips off.",
+     "level": 19,
+     "page": 3
+    },
+    {
+     "text": "Jeff sits in a slump.",
+     "level": 21,
+     "page": 4
+    },
+    {
+     "text": "Jeff still has no hump on top.",
+     "level": 21,
+     "page": 4
+    },
+    {
+     "text": "Liz has no hump.",
+     "level": 90,
+     "page": 5
+    },
+    {
+     "text": "Can Liz help?",
+     "level": 90,
+     "page": 5
+    },
+    {
+     "text": "Liz has a big grin.",
+     "level": 90,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic2-zig-zag-wag",
+  "title": "Zig-zag, wag",
+  "author": "SPELD SA (Initial Code Set 2)",
+  "pages": 7,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 52,
+   "unique": 30,
+   "ready95": 64,
+   "readyPreteach": 21,
+   "preteach": [
+    "zac",
+    "for",
+    "win"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Jen and Jan sit in the sun.",
+     "level": 21,
+     "page": 0
+    },
+    {
+     "text": "Zac the pup begs Ken to run.",
+     "level": 90,
+     "page": 1
+    },
+    {
+     "text": "The pup is fun.",
+     "level": 19,
+     "page": 2
+    },
+    {
+     "text": "It can run and run!",
+     "level": 17,
+     "page": 2
+    },
+    {
+     "text": "Zac had fun on his run.",
+     "level": 90,
+     "page": 3
+    },
+    {
+     "text": "The bug can sit on Jan.",
+     "level": 21,
+     "page": 4
+    },
+    {
+     "text": "Cam has a job to nip at the bug.",
+     "level": 21,
+     "page": 5
+    },
+    {
+     "text": "A bug for a pal is a win.",
+     "level": 64,
+     "page": 6
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic2-jim-held-his-hat",
+  "title": "Jim held his hat",
+  "author": "SPELD SA (Initial Code Set 2)",
+  "pages": 6,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 47,
+   "unique": 22,
+   "ready95": 37,
+   "readyPreteach": 23,
+   "preteach": [
+    "car",
+    "bang"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Bump went the car as it bent the lamp.",
+     "level": 62,
+     "page": 0
+    },
+    {
+     "text": "Jim held his hat as the lamp went bang!",
+     "level": 37,
+     "page": 1
+    },
+    {
+     "text": "It was best the duck left the nest.",
+     "level": 20,
+     "page": 2
+    },
+    {
+     "text": "Jim said, The bus went bump!",
+     "level": 23,
+     "page": 3
+    },
+    {
+     "text": "The car bent the lamp.",
+     "level": 62,
+     "page": 4
+    },
+    {
+     "text": "I held my hat as the duck left the nest.",
+     "level": 20,
+     "page": 5
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic2-snug-in-a-swag",
+  "title": "Snug in a swag",
+  "author": "SPELD SA (Initial Code Set 2)",
+  "pages": 6,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 57,
+   "unique": 28,
+   "ready95": 38,
+   "readyPreteach": 24,
+   "preteach": [
+    "some",
+    "pink",
+    "for"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "A crab!",
+     "level": 20,
+     "page": 1
+    },
+    {
+     "text": "Nip, step, nip, step on the sand.",
+     "level": 16,
+     "page": 1
+    },
+    {
+     "text": "I grin as I swim in the swell with Dad.",
+     "level": 24,
+     "page": 2
+    },
+    {
+     "text": "I smell some pink buds as I skip.",
+     "level": 113,
+     "page": 3
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic1-a-bug-in-a-mug",
+  "title": "A bug in a mug",
+  "author": "SPELD SA (Initial Code Set 1)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 75,
+   "unique": 26,
+   "ready95": 38,
+   "readyPreteach": 38,
+   "preteach": [
+    "cold"
+   ],
+   "names": [
+    "glug"
+   ],
+   "sentences": [
+    {
+     "text": "Frank spots his big mug on the sink.",
+     "level": 38,
+     "page": 0
+    },
+    {
+     "text": "Frank grabs the mug.",
+     "level": 38,
+     "page": 1
+    },
+    {
+     "text": "Can you spot the bug in the mug?",
+     "level": 20,
+     "page": 2
+    },
+    {
+     "text": "The bug is not in the mug.",
+     "level": 20,
+     "page": 6
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp4-a-grub-and-a-bun",
+  "title": "A grub and a bun",
+  "author": "SPELD SA (Jolly Phonics Set 4)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 60,
+   "unique": 27,
+   "ready95": 64,
+   "readyPreteach": 59,
+   "preteach": [
+    "into",
+    "drain",
+    "for",
+    "again"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Jim has a bun.",
+     "level": 21,
+     "page": 1
+    },
+    {
+     "text": "It has red jam in it.",
+     "level": 21,
+     "page": 1
+    },
+    {
+     "text": "He bit into the bun.",
+     "level": 71,
+     "page": 2
+    },
+    {
+     "text": "He cannot see red jam.",
+     "level": 59,
+     "page": 3
+    },
+    {
+     "text": "He can see green!",
+     "level": 59,
+     "page": 3
+    },
+    {
+     "text": "He has a drink but feels ill.",
+     "level": 59,
+     "page": 6
+    },
+    {
+     "text": "No jam bun for him again.",
+     "level": 112,
+     "page": 7
+    },
+    {
+     "text": "Jim has a pie!",
+     "level": 51,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp4-an-egg-in-a-nest",
+  "title": "An egg in a nest",
+  "author": "SPELD SA (Jolly Phonics Set 4)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 60,
+   "unique": 28,
+   "ready95": 59,
+   "readyPreteach": 59,
+   "preteach": [
+    "laid",
+    "where"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "A big gum tree is on a hill.",
+     "level": 59,
+     "page": 0
+    },
+    {
+     "text": "The nest is in the gum tree.",
+     "level": 59,
+     "page": 3
+    },
+    {
+     "text": "She has laid lots of eggs.",
+     "level": 73,
+     "page": 5
+    },
+    {
+     "text": "In fact, she has laid ten eggs.",
+     "level": 73,
+     "page": 6
+    },
+    {
+     "text": "But can you see?",
+     "level": 59,
+     "page": 7
+    },
+    {
+     "text": "Just 1 egg is in the nest.",
+     "level": 21,
+     "page": 7
+    },
+    {
+     "text": "Where are the rest of the eggs?",
+     "level": 96,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp4-what-is-in-the-sack",
+  "title": "What is in the sack?",
+  "author": "SPELD SA (Jolly Phonics Set 4)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 116,
+   "unique": 39,
+   "ready95": 73,
+   "readyPreteach": 64,
+   "preteach": [
+    "road",
+    "what",
+    "come",
+    "tail",
+    "asleep"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "A truck is on the road.",
+     "level": 76,
+     "page": 0
+    },
+    {
+     "text": "Clinton Green has a sack in the back.",
+     "level": 59,
+     "page": 1
+    },
+    {
+     "text": "What is in the sack?",
+     "level": 96,
+     "page": 2
+    },
+    {
+     "text": "What is in the sack?",
+     "level": 96,
+     "page": 2
+    },
+    {
+     "text": "Can I peek?",
+     "level": 59,
+     "page": 3
+    },
+    {
+     "text": "I can see a lump in the sack.",
+     "level": 59,
+     "page": 3
+    },
+    {
+     "text": "Can I peek?",
+     "level": 59,
+     "page": 3
+    },
+    {
+     "text": "Is it a bat or a rat?",
+     "level": 64,
+     "page": 4
+    },
+    {
+     "text": "Is it a rock or a log?",
+     "level": 64,
+     "page": 4
+    },
+    {
+     "text": "Is it a bat or a rat?",
+     "level": 64,
+     "page": 4
+    },
+    {
+     "text": "Is it a rock or a log?",
+     "level": 64,
+     "page": 4
+    },
+    {
+     "text": "I can just see a tail!",
+     "level": 73,
+     "page": 5
+    },
+    {
+     "text": "I can just see a tail!",
+     "level": 73,
+     "page": 5
+    },
+    {
+     "text": "It is a dog.",
+     "level": 16,
+     "page": 6
+    },
+    {
+     "text": "The pup fell asleep in the sack.",
+     "level": 65,
+     "page": 6
+    },
+    {
+     "text": "Get up!",
+     "level": 17,
+     "page": 7
+    },
+    {
+     "text": "The kids and the pup run and jump.",
+     "level": 21,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic1-zac-the-dog",
+  "title": "Zac the dog",
+  "author": "SPELD SA (Initial Code Set 1)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 73,
+   "unique": 36,
+   "ready95": 90,
+   "readyPreteach": 64,
+   "preteach": [
+    "zac"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Zac the dog is Jan’s pet.",
+     "level": 90,
+     "page": 0
+    },
+    {
+     "text": "He is a big pup.",
+     "level": 20,
+     "page": 0
+    },
+    {
+     "text": "Zac the dog gets wet for fun!",
+     "level": 90,
+     "page": 3
+    },
+    {
+     "text": "He is hot, so he has a dip.",
+     "level": 16,
+     "page": 4
+    },
+    {
+     "text": "Zac is a wet dog.",
+     "level": 90,
+     "page": 5
+    },
+    {
+     "text": "Zac and Jan sit in the hot sun.",
+     "level": 90,
+     "page": 6
+    },
+    {
+     "text": "Zac gets a pat.",
+     "level": 90,
+     "page": 6
+    },
+    {
+     "text": "Zac has had a lot of fun.",
+     "level": 90,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp3-an-ant-nest",
+  "title": "An ant nest",
+  "author": "SPELD SA (Jolly Phonics Set 3)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 77,
+   "unique": 39,
+   "ready95": 71,
+   "readyPreteach": 65,
+   "preteach": [
+    "into",
+    "onto",
+    "stamped",
+    "them",
+    "some"
+   ],
+   "names": [
+    "mim"
+   ],
+   "sentences": [
+    {
+     "text": "They sat on a rug and had snacks and drinks.",
+     "level": 45,
+     "page": 1
+    },
+    {
+     "text": "Anna hit the ants but they did not go.",
+     "level": 65,
+     "page": 4
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp1-nana",
+  "title": "Nana",
+  "author": "SPELD SA (Jolly Phonics Set 1)",
+  "pages": 6,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 22,
+   "unique": 7,
+   "ready95": 65,
+   "readyPreteach": 65,
+   "preteach": [],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Sit Nana We sit.",
+     "level": 65,
+     "page": 1
+    },
+    {
+     "text": "Nana Sip We sip.",
+     "level": 65,
+     "page": 2
+    },
+    {
+     "text": "Tap Nana We tap.",
+     "level": 65,
+     "page": 3
+    },
+    {
+     "text": "Nana In We sit in.",
+     "level": 65,
+     "page": 4
+    },
+    {
+     "text": "Nap Nana We nap.",
+     "level": 65,
+     "page": 5
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp4-the-lost-list",
+  "title": "The lost list",
+  "author": "SPELD SA (Jolly Phonics Set 4)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 125,
+   "unique": 57,
+   "ready95": 72,
+   "readyPreteach": 65,
+   "preteach": [
+    "loaf",
+    "soap",
+    "when",
+    "pays",
+    "loads"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Mum sends Jill to the store.",
+     "level": 64,
+     "page": 0
+    },
+    {
+     "text": "She has a list of the ten things to get.",
+     "level": 37,
+     "page": 0
+    },
+    {
+     "text": "Jill gets a bag and sets off.",
+     "level": 21,
+     "page": 2
+    },
+    {
+     "text": "She has the list in a jacket pocket.",
+     "level": 21,
+     "page": 2
+    },
+    {
+     "text": "As she runs to the store, Jill drops the list.",
+     "level": 64,
+     "page": 3
+    },
+    {
+     "text": "When Jill is at the store, she gets a basket.",
+     "level": 95,
+     "page": 4
+    },
+    {
+     "text": "But Jill has not got the list.",
+     "level": 21,
+     "page": 4
+    },
+    {
+     "text": "Can you help Jill?",
+     "level": 21,
+     "page": 5
+    },
+    {
+     "text": "She has forgotten ______.",
+     "level": 65,
+     "page": 5
+    },
+    {
+     "text": "Jill forgot the milk.",
+     "level": 65,
+     "page": 7
+    },
+    {
+     "text": "Was her mum cross?",
+     "level": 65,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp3-what-am-i",
+  "title": "What am I?",
+  "author": "SPELD SA (Jolly Phonics Set 3)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 63,
+   "unique": 21,
+   "ready95": 96,
+   "readyPreteach": 65,
+   "preteach": [
+    "have",
+    "what"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "I am big.",
+     "level": 20,
+     "page": 0
+    },
+    {
+     "text": "Am I a truck?",
+     "level": 17,
+     "page": 0
+    },
+    {
+     "text": "I have legs.",
+     "level": 117,
+     "page": 1
+    },
+    {
+     "text": "Am I a desk?",
+     "level": 14,
+     "page": 1
+    },
+    {
+     "text": "Am I a pig?",
+     "level": 15,
+     "page": 2
+    },
+    {
+     "text": "I can run.",
+     "level": 17,
+     "page": 3
+    },
+    {
+     "text": "Am I a dog?",
+     "level": 16,
+     "page": 3
+    },
+    {
+     "text": "I am big.",
+     "level": 20,
+     "page": 4
+    },
+    {
+     "text": "What am I?",
+     "level": 96,
+     "page": 4
+    },
+    {
+     "text": "Am I a camel?",
+     "level": 65,
+     "page": 5
+    },
+    {
+     "text": "What am I?",
+     "level": 96,
+     "page": 7
+    },
+    {
+     "text": "I am an ________.",
+     "level": 12,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp4-mud-mud-mud",
+  "title": "Mud, mud, mud",
+  "author": "SPELD SA (Jolly Phonics Set 4)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 84,
+   "unique": 44,
+   "ready95": 121,
+   "readyPreteach": 71,
+   "preteach": [
+    "elephant",
+    "why",
+    "does",
+    "coat",
+    "elephant's"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "The sun is hot.",
+     "level": 17,
+     "page": 0
+    },
+    {
+     "text": "It lies in the mud.",
+     "level": 51,
+     "page": 3
+    },
+    {
+     "text": "The mud sticks to its skin.",
+     "level": 17,
+     "page": 3
+    },
+    {
+     "text": "Is it for fun?",
+     "level": 64,
+     "page": 5
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp2-simon-says",
+  "title": "Simon Says",
+  "author": "SPELD SA (Jolly Phonics Set 2)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 72,
+   "unique": 21,
+   "ready95": 72,
+   "readyPreteach": 72,
+   "preteach": [
+    "out"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Simon says stand.",
+     "level": 72,
+     "page": 0
+    },
+    {
+     "text": "Simon says stand.",
+     "level": 72,
+     "page": 0
+    },
+    {
+     "text": "The kids did it.",
+     "level": 13,
+     "page": 0
+    },
+    {
+     "text": "Simon says tap.",
+     "level": 72,
+     "page": 1
+    },
+    {
+     "text": "Simon says tap.",
+     "level": 72,
+     "page": 1
+    },
+    {
+     "text": "The kids did a tap.",
+     "level": 13,
+     "page": 1
+    },
+    {
+     "text": "Simon says stamp.",
+     "level": 72,
+     "page": 2
+    },
+    {
+     "text": "Simon says stamp.",
+     "level": 72,
+     "page": 2
+    },
+    {
+     "text": "Stamp, stamp, stamp.",
+     "level": 14,
+     "page": 2
+    },
+    {
+     "text": "Simon says spin.",
+     "level": 72,
+     "page": 3
+    },
+    {
+     "text": "Simon says spin.",
+     "level": 72,
+     "page": 3
+    },
+    {
+     "text": "The kids did a spin.",
+     "level": 14,
+     "page": 3
+    },
+    {
+     "text": "Nick did a kick.",
+     "level": 13,
+     "page": 4
+    },
+    {
+     "text": "He was out.",
+     "level": 78,
+     "page": 4
+    },
+    {
+     "text": "Nick sat and had a rest.",
+     "level": 14,
+     "page": 5
+    },
+    {
+     "text": "Simon says stand, tap, stamp, spin, kick.",
+     "level": 72,
+     "page": 6
+    },
+    {
+     "text": "Simon says stand, tap, stamp, spin, kick.",
+     "level": 72,
+     "page": 6
+    },
+    {
+     "text": "A mess!",
+     "level": 12,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp4-pink-prints-on-the-road",
+  "title": "Pink prints on the road",
+  "author": "SPELD SA (Jolly Phonics Set 4)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 63,
+   "unique": 34,
+   "ready95": 76,
+   "readyPreteach": 73,
+   "preteach": [
+    "all",
+    "come",
+    "road",
+    "why"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Jeff has a big red truck.",
+     "level": 21,
+     "page": 0
+    },
+    {
+     "text": "All of a sudden, Jeff stops.",
+     "level": 92,
+     "page": 2
+    },
+    {
+     "text": "Cans of paint tip off the back of the truck.",
+     "level": 73,
+     "page": 3
+    },
+    {
+     "text": "Jeff runs across the road.",
+     "level": 76,
+     "page": 5
+    },
+    {
+     "text": "His feet left a trail of pink prints.",
+     "level": 73,
+     "page": 5
+    },
+    {
+     "text": "Why did Jeff stop the truck?",
+     "level": 95,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp4-sant-on-a-snail",
+  "title": "Sant on a snail",
+  "author": "SPELD SA (Jolly Phonics Set 4)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 49,
+   "unique": 28,
+   "ready95": 76,
+   "readyPreteach": 73,
+   "preteach": [
+    "soap",
+    "toast",
+    "your"
+   ],
+   "names": [
+    "sant"
+   ],
+   "sentences": [
+    {
+     "text": "Keep your feet off the bee!",
+     "level": 110,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp4-stuck-in-a-rut",
+  "title": "Stuck in a rut",
+  "author": "SPELD SA (Jolly Phonics Set 4)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 102,
+   "unique": 52,
+   "ready95": 112,
+   "readyPreteach": 76,
+   "preteach": [
+    "allan",
+    "there",
+    "tries",
+    "some",
+    "it's",
+    "hey",
+    "come",
+    "again"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Allan lends Jon and Lee his jeep.",
+     "level": 92,
+     "page": 0
+    },
+    {
+     "text": "Jon and Lee set off in the jeep.",
+     "level": 59,
+     "page": 1
+    },
+    {
+     "text": "It begins to rain.",
+     "level": 73,
+     "page": 2
+    },
+    {
+     "text": "Jon tries to get the jeep back on the road.",
+     "level": 119,
+     "page": 4
+    },
+    {
+     "text": "But he fails.",
+     "level": 73,
+     "page": 4
+    },
+    {
+     "text": "Jon and Lee need help.",
+     "level": 59,
+     "page": 5
+    },
+    {
+     "text": "They sit and wait.",
+     "level": 73,
+     "page": 5
+    },
+    {
+     "text": "Jon and Lee get some sleep as they wait.",
+     "level": 113,
+     "page": 5
+    },
+    {
+     "text": "Jon sees a truck.",
+     "level": 59,
+     "page": 6
+    },
+    {
+     "text": "He stops.",
+     "level": 16,
+     "page": 6
+    },
+    {
+     "text": "Do you need a hand?",
+     "level": 71,
+     "page": 6
+    },
+    {
+     "text": "Jon and Lee set off again.",
+     "level": 112,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic2-jess-and-bess",
+  "title": "Jess and Bess",
+  "author": "SPELD SA (Initial Code Set 2)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 84,
+   "unique": 23,
+   "ready95": 89,
+   "readyPreteach": 89,
+   "preteach": [
+    "here"
+   ],
+   "names": [
+    "fizz",
+    "bess"
+   ],
+   "sentences": [
+    {
+     "text": "Is it a hill?",
+     "level": 18,
+     "page": 2
+    },
+    {
+     "text": "Is it a fox?",
+     "level": 89,
+     "page": 2
+    },
+    {
+     "text": "Yes, it is a fox on a hill.",
+     "level": 89,
+     "page": 3
+    },
+    {
+     "text": "Jess did well.",
+     "level": 23,
+     "page": 4
+    },
+    {
+     "text": "The fox is on a hill.",
+     "level": 89,
+     "page": 4
+    },
+    {
+     "text": "The fox is fat!",
+     "level": 89,
+     "page": 4
+    },
+    {
+     "text": "A fat fox on a hill.",
+     "level": 89,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-ic1-the-big-box",
+  "title": "The big box",
+  "author": "SPELD SA (Initial Code Set 1)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 96,
+   "unique": 38,
+   "ready95": 90,
+   "readyPreteach": 89,
+   "preteach": [
+    "what",
+    "buzz",
+    "all"
+   ],
+   "names": [
+    "bess",
+    "tiff",
+    "yip"
+   ],
+   "sentences": [
+    {
+     "text": "She had a big box.",
+     "level": 89,
+     "page": 0
+    },
+    {
+     "text": "What was in the box?",
+     "level": 96,
+     "page": 0
+    },
+    {
+     "text": "What was in the box?",
+     "level": 96,
+     "page": 1
+    },
+    {
+     "text": "The big box had a lid on top.",
+     "level": 89,
+     "page": 2
+    },
+    {
+     "text": "What was in the box?",
+     "level": 96,
+     "page": 4
+    },
+    {
+     "text": "Is it a pup?",
+     "level": 17,
+     "page": 5
+    },
+    {
+     "text": "Is it a pup?",
+     "level": 17,
+     "page": 5
+    },
+    {
+     "text": "The lid fell off!",
+     "level": 19,
+     "page": 6
+    },
+    {
+     "text": "In the box was Buzz.",
+     "level": 90,
+     "page": 6
+    },
+    {
+     "text": "Yes, it is a pup!",
+     "level": 84,
+     "page": 6
+    },
+    {
+     "text": "Buzz was a hit!",
+     "level": 90,
+     "page": 7
+    },
+    {
+     "text": "All of the kids had fun.",
+     "level": 92,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp3-can-you-spot-it-2",
+  "title": "Can you spot it? [2]",
+  "author": "SPELD SA (Jolly Phonics Set 3)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 82,
+   "unique": 36,
+   "ready95": 96,
+   "readyPreteach": 92,
+   "preteach": [
+    "apple",
+    "what",
+    "here",
+    "some"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "Can you spot a bun?",
+     "level": 20,
+     "page": 0
+    },
+    {
+     "text": "If you can, tap the bun.",
+     "level": 20,
+     "page": 0
+    },
+    {
+     "text": "Can you spot an apple and a lemon?",
+     "level": 108,
+     "page": 1
+    },
+    {
+     "text": "Tap the apple and the lemon.",
+     "level": 108,
+     "page": 2
+    },
+    {
+     "text": "What is left?",
+     "level": 96,
+     "page": 2
+    },
+    {
+     "text": "Can you spot the milk, soft drink and ham?",
+     "level": 38,
+     "page": 3
+    },
+    {
+     "text": "Can you drink milk?",
+     "level": 38,
+     "page": 3
+    },
+    {
+     "text": "Can you spot the eggs, ham and milk?",
+     "level": 20,
+     "page": 4
+    },
+    {
+     "text": "What can you crack?",
+     "level": 96,
+     "page": 4
+    },
+    {
+     "text": "Here is a melon, some nuts and a plum.",
+     "level": 113,
+     "page": 5
+    },
+    {
+     "text": "Can you tap all the nuts?",
+     "level": 92,
+     "page": 6
+    },
+    {
+     "text": "Here are some packets.",
+     "level": 113,
+     "page": 7
+    },
+    {
+     "text": "Tap the packet of gum.",
+     "level": 20,
+     "page": 7
+    },
+    {
+     "text": "Is it black or red?",
+     "level": 64,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp4-what-are-they",
+  "title": "What are they?",
+  "author": "SPELD SA (Jolly Phonics Set 4)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 117,
+   "unique": 39,
+   "ready95": 96,
+   "readyPreteach": 92,
+   "preteach": [
+    "what"
+   ],
+   "names": [
+    "raincoat"
+   ],
+   "sentences": [
+    {
+     "text": "Pigs, dogs, cats and goats, what are they?",
+     "level": 96,
+     "page": 0
+    },
+    {
+     "text": "Pigs, dogs, cats and goats are all _______.",
+     "level": 92,
+     "page": 0
+    },
+    {
+     "text": "Beef pie, popcorn, carrots and pumpkin, what are they?",
+     "level": 96,
+     "page": 1
+    },
+    {
+     "text": "Beef pie, popcorn, carrots and pumpkin are all ______.",
+     "level": 92,
+     "page": 1
+    },
+    {
+     "text": "Truck, boat, jeep, train, bus and rocket, what are they?",
+     "level": 96,
+     "page": 2
+    },
+    {
+     "text": "Truck, boat, jeep, train, bus and rocket are all ______.",
+     "level": 92,
+     "page": 2
+    },
+    {
+     "text": "Hail, rain, frost and storm, what are they?",
+     "level": 96,
+     "page": 4
+    },
+    {
+     "text": "Hail, rain, frost and storm are all ______.",
+     "level": 92,
+     "page": 4
+    },
+    {
+     "text": "Leg, skull, hand, feet and neck, what are they?",
+     "level": 96,
+     "page": 5
+    },
+    {
+     "text": "Leg, skull, hand, feet and neck are all _______.",
+     "level": 92,
+     "page": 5
+    },
+    {
+     "text": "Hop, jump, creep, skip, run and limp, what are they?",
+     "level": 96,
+     "page": 6
+    },
+    {
+     "text": "Hop, jump, creep, skip, run and limp are all ______.",
+     "level": 92,
+     "page": 7
+    }
+   ]
+  }
+ },
+ {
+  "id": "speld-jp4-what-do-you-need",
+  "title": "What do you need?",
+  "author": "SPELD SA (Jolly Phonics Set 4)",
+  "pages": 8,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 71,
+   "unique": 32,
+   "ready95": 96,
+   "readyPreteach": 92,
+   "preteach": [
+    "what",
+    "umbrella",
+    "cold"
+   ],
+   "names": [],
+   "sentences": [
+    {
+     "text": "For the rain, what do you need?",
+     "level": 96,
+     "page": 0
+    },
+    {
+     "text": "For softball, what do you need?",
+     "level": 96,
+     "page": 1
+    },
+    {
+     "text": "A bed, a net or a bat?",
+     "level": 64,
+     "page": 2
+    },
+    {
+     "text": "To camp, what do you need?",
+     "level": 96,
+     "page": 3
+    },
+    {
+     "text": "For tennis, what do you need?",
+     "level": 96,
+     "page": 5
+    },
+    {
+     "text": "A racket, a rocket or a cricket bat?",
+     "level": 64,
+     "page": 6
+    }
+   ]
+  }
+ },
+ {
   "id": "green-eggs-and-ham",
   "title": "Green Eggs and Ham",
   "author": "Dr. Seuss",
@@ -37,7 +3311,7 @@
     },
     {
      "text": "Do you like green eggs and ham?",
-     "level": 85,
+     "level": 71,
      "page": 5
     },
     {
@@ -207,7 +3481,7 @@
     },
     {
      "text": "You will see.",
-     "level": 85,
+     "level": 59,
      "page": 14
     },
     {
@@ -227,7 +3501,7 @@
     },
     {
      "text": "You let me be.",
-     "level": 85,
+     "level": 20,
      "page": 15
     },
     {
@@ -312,7 +3586,7 @@
     },
     {
      "text": "Let me be!",
-     "level": 82,
+     "level": 18,
      "page": 17
     },
     {
@@ -442,7 +3716,7 @@
     },
     {
      "text": "You do not like green eggs and ham?",
-     "level": 85,
+     "level": 71,
      "page": 20
     },
     {
@@ -472,7 +3746,7 @@
     },
     {
      "text": "I will not, will not, with a goat.",
-     "level": 76,
+     "level": 24,
      "page": 23
     },
     {
@@ -502,7 +3776,7 @@
     },
     {
      "text": "You let me be!",
-     "level": 85,
+     "level": 20,
      "page": 23
     },
     {
@@ -552,7 +3826,7 @@
     },
     {
      "text": "So you say.",
-     "level": 85,
+     "level": 72,
      "page": 26
     },
     {
@@ -567,7 +3841,7 @@
     },
     {
      "text": "And you may.",
-     "level": 85,
+     "level": 72,
      "page": 26
     },
     {
@@ -582,12 +3856,12 @@
     },
     {
      "text": "You will see.",
-     "level": 85,
+     "level": 59,
      "page": 27
     },
     {
      "text": "I like green eggs and ham!",
-     "level": 70,
+     "level": 59,
      "page": 29
     },
     {
@@ -672,17 +3946,17 @@
     },
     {
      "text": "I do so like green eggs and ham!",
-     "level": 83,
+     "level": 71,
      "page": 31
     },
     {
      "text": "Thank you!",
-     "level": 85,
+     "level": 38,
      "page": 31
     },
     {
      "text": "Thank you, Sam-I-am!",
-     "level": 85,
+     "level": 38,
      "page": 31
     }
    ]
@@ -720,12 +3994,12 @@
     },
     {
      "text": "Get out of my way!",
-     "level": 96,
+     "level": 78,
      "page": 2
     },
     {
      "text": "Get out of my way!",
-     "level": 96,
+     "level": 78,
      "page": 3
     },
     {
@@ -802,7 +4076,7 @@
     },
     {
      "text": "Frog likes to jog.",
-     "level": 71,
+     "level": 52,
      "page": 3
     },
     {
@@ -812,12 +4086,12 @@
     },
     {
      "text": "Out of the fog runs Pup the dog.",
-     "level": 96,
+     "level": 78,
      "page": 4
     },
     {
      "text": "He bumps into Frog's log.",
-     "level": 82,
+     "level": 71,
      "page": 4
     },
     {
@@ -832,7 +4106,7 @@
     },
     {
      "text": "Frog is back up on his log.",
-     "level": 39,
+     "level": 20,
      "page": 6
     },
     {
@@ -842,7 +4116,7 @@
     },
     {
      "text": "Now he bumps into Frog's log...",
-     "level": 82,
+     "level": 77,
      "page": 6
     },
     {
@@ -857,7 +4131,7 @@
     },
     {
      "text": "Bump into my log!",
-     "level": 93,
+     "level": 71,
      "page": 8
     },
     {
@@ -922,12 +4196,12 @@
     },
     {
      "text": "Go to sleep, Sam Sheep!",
-     "level": 83,
+     "level": 59,
      "page": 3
     },
     {
      "text": "I need to see Fat Cat.",
-     "level": 71,
+     "level": 59,
      "page": 3
     },
     {
@@ -942,12 +4216,12 @@
     },
     {
      "text": "Go to sleep!",
-     "level": 83,
+     "level": 59,
      "page": 4
     },
     {
      "text": "You need to see Ted in his red bed.",
-     "level": 85,
+     "level": 59,
      "page": 4
     },
     {
@@ -1017,7 +4291,7 @@
    "sentences": [
     {
      "text": "UP PUP Pup is up.",
-     "level": 39,
+     "level": 17,
      "page": 2
     },
     {
@@ -1042,7 +4316,7 @@
     },
     {
      "text": "HE ME He is after me.",
-     "level": 82,
+     "level": 65,
      "page": 9
     },
     {
@@ -1052,12 +4326,12 @@
     },
     {
      "text": "SEE BEE We see a bee.",
-     "level": 82,
+     "level": 59,
      "page": 10
     },
     {
      "text": "SEE BEE THREE Now we see three.",
-     "level": 82,
+     "level": 77,
      "page": 10
     },
     {
@@ -1072,7 +4346,7 @@
     },
     {
      "text": "RED BED I am in bed.",
-     "level": 70,
+     "level": 20,
      "page": 12
     },
     {
@@ -1082,17 +4356,17 @@
     },
     {
      "text": "PAT SAT Pat sat on hat.",
-     "level": 26,
+     "level": 16,
      "page": 14
     },
     {
      "text": "PAT CAT Pat sat on cat.",
-     "level": 26,
+     "level": 16,
      "page": 15
     },
     {
      "text": "PAT BAT Pat sat on bat.",
-     "level": 26,
+     "level": 20,
      "page": 15
     },
     {
@@ -1102,7 +4376,7 @@
     },
     {
      "text": "He had a bad day.",
-     "level": 82,
+     "level": 72,
      "page": 17
     },
     {
@@ -1132,17 +4406,17 @@
     },
     {
      "text": "HOP POP We like to hop.",
-     "level": 82,
+     "level": 52,
      "page": 21
     },
     {
      "text": "We like to hop on top of Pop.",
-     "level": 96,
+     "level": 52,
      "page": 21
     },
     {
      "text": "STOP You must not hop on Pop.",
-     "level": 85,
+     "level": 20,
      "page": 21
     },
     {
@@ -1167,7 +4441,7 @@
     },
     {
      "text": "Brown is out of town.",
-     "level": 96,
+     "level": 78,
      "page": 24
     },
     {
@@ -1197,27 +4471,27 @@
     },
     {
      "text": "FAST PAST He went past fast.",
-     "level": 82,
+     "level": 23,
      "page": 27
     },
     {
      "text": "WENT TENT SENT He went into the tent.",
-     "level": 82,
+     "level": 71,
      "page": 27
     },
     {
      "text": "I sent him out of the tent.",
-     "level": 96,
+     "level": 78,
      "page": 27
     },
     {
      "text": "HILL WILL Will went up the hill.",
-     "level": 50,
+     "level": 23,
      "page": 29
     },
     {
      "text": "WILL HILL STILL Will is up the hill still.",
-     "level": 39,
+     "level": 23,
      "page": 29
     },
     {
@@ -1275,17 +4549,17 @@
     },
     {
      "text": "Are you stuck?",
-     "level": 85,
+     "level": 20,
      "page": 3
     },
     {
      "text": "Bad luck!",
-     "level": 39,
+     "level": 20,
      "page": 3
     },
     {
      "text": "I am stuck.",
-     "level": 70,
+     "level": 17,
      "page": 4
     },
     {
@@ -1310,7 +4584,7 @@
     },
     {
      "text": "Play with me!",
-     "level": 82,
+     "level": 72,
      "page": 7
     },
     {
@@ -1320,7 +4594,7 @@
     },
     {
      "text": "Bake a cake with me, says Jake Snake.",
-     "level": 82,
+     "level": 72,
      "page": 8
     },
     {
@@ -1345,7 +4619,7 @@
     },
     {
      "text": "You are no fun, says Ted.",
-     "level": 85,
+     "level": 72,
      "page": 9
     },
     {
@@ -1355,164 +4629,13 @@
     },
     {
      "text": "She hops up off her mat.",
-     "level": 82,
+     "level": 65,
      "page": 10
     },
     {
      "text": "Clever Fat Cat!",
      "level": 65,
      "page": 11
-    }
-   ]
-  }
- },
- {
-  "id": "the-eye-book",
-  "title": "The Eye Book",
-  "author": "Theo. LeSieg",
-  "pages": 10,
-  "cover": "00.jpg",
-  "analysis": {
-   "tokens": 137,
-   "unique": 61,
-   "ready95": 115,
-   "readyPreteach": 115,
-   "preteach": [
-    "old"
-   ],
-   "names": [
-    "hooray"
-   ],
-   "sentences": [
-    {
-     "text": "My eyes see.",
-     "level": 115,
-     "page": 1
-    },
-    {
-     "text": "His eyes see.",
-     "level": 115,
-     "page": 1
-    },
-    {
-     "text": "I see him.",
-     "level": 70,
-     "page": 2
-    },
-    {
-     "text": "And he sees me.",
-     "level": 82,
-     "page": 2
-    },
-    {
-     "text": "Our eyes see blue.",
-     "level": 115,
-     "page": 3
-    },
-    {
-     "text": "Our eyes see red.",
-     "level": 115,
-     "page": 3
-    },
-    {
-     "text": "They see a bird.",
-     "level": 66,
-     "page": 3
-    },
-    {
-     "text": "They see a bed.",
-     "level": 59,
-     "page": 3
-    },
-    {
-     "text": "They see the sun.",
-     "level": 59,
-     "page": 4
-    },
-    {
-     "text": "They see the moon.",
-     "level": 101,
-     "page": 4
-    },
-    {
-     "text": "They see a fork a knife a spoon.",
-     "level": 114,
-     "page": 4
-    },
-    {
-     "text": "They see a girl.",
-     "level": 66,
-     "page": 5
-    },
-    {
-     "text": "They see a man..",
-     "level": 59,
-     "page": 5
-    },
-    {
-     "text": "They look down holes.",
-     "level": 102,
-     "page": 6
-    },
-    {
-     "text": "They look up poles.",
-     "level": 102,
-     "page": 6
-    },
-    {
-     "text": "Our eyes see trees.",
-     "level": 115,
-     "page": 7
-    },
-    {
-     "text": "They look at clocks.",
-     "level": 102,
-     "page": 7
-    },
-    {
-     "text": "They look at bees.",
-     "level": 102,
-     "page": 7
-    },
-    {
-     "text": "They look at socks.",
-     "level": 102,
-     "page": 7
-    },
-    {
-     "text": "Our eyes see flies.",
-     "level": 115,
-     "page": 8
-    },
-    {
-     "text": "Our eyes see ants.",
-     "level": 115,
-     "page": 8
-    },
-    {
-     "text": "Our eyes see rings.",
-     "level": 115,
-     "page": 9
-    },
-    {
-     "text": "Our eyes see strings.",
-     "level": 115,
-     "page": 9
-    },
-    {
-     "text": "They see so many, many things!",
-     "level": 100,
-     "page": 9
-    },
-    {
-     "text": "So many things!",
-     "level": 100,
-     "page": 9
-    },
-    {
-     "text": "Like rain and pie...",
-     "level": 73,
-     "page": 9
     }
    ]
   }
@@ -1527,12 +4650,12 @@
    "tokens": 699,
    "unique": 100,
    "ready95": 116,
-   "readyPreteach": 116,
+   "readyPreteach": 114,
    "preteach": [
     "oh",
+    "baby",
     "something",
     "away",
-    "was",
     "walk",
     "find",
     "have",
@@ -1566,12 +4689,12 @@
     },
     {
      "text": "He will want to eat.",
-     "level": 82,
+     "level": 75,
      "page": 2
     },
     {
      "text": "I will be back!",
-     "level": 82,
+     "level": 23,
      "page": 3
     },
     {
@@ -1611,7 +4734,7 @@
     },
     {
      "text": "He did not see her.",
-     "level": 82,
+     "level": 65,
      "page": 9
     },
     {
@@ -1621,7 +4744,7 @@
     },
     {
      "text": "He did not see her.",
-     "level": 82,
+     "level": 65,
      "page": 10
     },
     {
@@ -1636,11 +4759,16 @@
     },
     {
      "text": "Down, out of the tree he went.",
-     "level": 96,
+     "level": 78,
      "page": 13
     },
     {
      "text": "Down, down, down!",
+     "level": 77,
+     "page": 14
+    },
+    {
+     "text": "It was a long way down.",
      "level": 77,
      "page": 14
     },
@@ -1661,12 +4789,12 @@
     },
     {
      "text": "He did not see her.",
-     "level": 82,
+     "level": 65,
      "page": 17
     },
     {
      "text": "He came to a kitten.",
-     "level": 82,
+     "level": 56,
      "page": 18
     },
     {
@@ -1685,6 +4813,11 @@
      "page": 19
     },
     {
+     "text": "The kitten was not his mother, so he went on.",
+     "level": 97,
+     "page": 20
+    },
+    {
      "text": "Then he came to a hen.",
      "level": 97,
      "page": 21
@@ -1696,8 +4829,18 @@
     },
     {
      "text": "No, said the hen.",
-     "level": 86,
+     "level": 20,
      "page": 21
+    },
+    {
+     "text": "The kitten was not his mother.",
+     "level": 97,
+     "page": 22
+    },
+    {
+     "text": "The hen was not his mother.",
+     "level": 97,
+     "page": 23
     },
     {
      "text": "So the baby bird went on.",
@@ -1736,8 +4879,23 @@
     },
     {
      "text": "I am a dog, said the dog.",
-     "level": 86,
+     "level": 20,
      "page": 26
+    },
+    {
+     "text": "The kitten was not his mother.",
+     "level": 97,
+     "page": 27
+    },
+    {
+     "text": "The hen was not his mother.",
+     "level": 97,
+     "page": 28
+    },
+    {
+     "text": "The dog was not his mother.",
+     "level": 97,
+     "page": 29
     },
     {
      "text": "So the baby bird went on.",
@@ -1746,7 +4904,7 @@
     },
     {
      "text": "Now he came to a cow.",
-     "level": 82,
+     "level": 77,
      "page": 30
     },
     {
@@ -1791,17 +4949,17 @@
     },
     {
      "text": "I will.",
-     "level": 70,
+     "level": 23,
      "page": 36
     },
     {
      "text": "I WILL!",
-     "level": 70,
+     "level": 23,
      "page": 36
     },
     {
      "text": "He ran!",
-     "level": 82,
+     "level": 14,
      "page": 37
     },
     {
@@ -1821,7 +4979,7 @@
     },
     {
      "text": "He ran on and on.",
-     "level": 82,
+     "level": 16,
      "page": 39
     },
     {
@@ -1946,7 +5104,7 @@
     },
     {
      "text": "I want to go home!",
-     "level": 83,
+     "level": 70,
      "page": 54
     },
     {
@@ -1955,34 +5113,190 @@
      "page": 54
     },
     {
+     "text": "The baby bird was home!",
+     "level": 116,
+     "page": 56
+    },
+    {
      "text": "Just then the mother bird came back to the tree.",
      "level": 97,
      "page": 57
     },
     {
      "text": "You are not a kitten.",
-     "level": 85,
+     "level": 20,
      "page": 59
     },
     {
      "text": "You are not a hen.",
-     "level": 85,
+     "level": 20,
      "page": 59
     },
     {
      "text": "You are not a dog.",
-     "level": 85,
+     "level": 20,
      "page": 59
     },
     {
      "text": "You are not a cow.",
-     "level": 85,
+     "level": 77,
      "page": 59
     },
     {
      "text": "You are a bird, and you are my mother.",
      "level": 97,
      "page": 61
+    }
+   ]
+  }
+ },
+ {
+  "id": "the-eye-book",
+  "title": "The Eye Book",
+  "author": "Theo. LeSieg",
+  "pages": 10,
+  "cover": "00.jpg",
+  "analysis": {
+   "tokens": 137,
+   "unique": 61,
+   "ready95": 115,
+   "readyPreteach": 115,
+   "preteach": [
+    "old"
+   ],
+   "names": [
+    "hooray"
+   ],
+   "sentences": [
+    {
+     "text": "My eyes see.",
+     "level": 115,
+     "page": 1
+    },
+    {
+     "text": "His eyes see.",
+     "level": 115,
+     "page": 1
+    },
+    {
+     "text": "I see him.",
+     "level": 59,
+     "page": 2
+    },
+    {
+     "text": "And he sees me.",
+     "level": 59,
+     "page": 2
+    },
+    {
+     "text": "Our eyes see blue.",
+     "level": 115,
+     "page": 3
+    },
+    {
+     "text": "Our eyes see red.",
+     "level": 115,
+     "page": 3
+    },
+    {
+     "text": "They see a bird.",
+     "level": 66,
+     "page": 3
+    },
+    {
+     "text": "They see a bed.",
+     "level": 59,
+     "page": 3
+    },
+    {
+     "text": "They see the sun.",
+     "level": 59,
+     "page": 4
+    },
+    {
+     "text": "They see the moon.",
+     "level": 101,
+     "page": 4
+    },
+    {
+     "text": "They see a fork a knife a spoon.",
+     "level": 114,
+     "page": 4
+    },
+    {
+     "text": "They see a girl.",
+     "level": 66,
+     "page": 5
+    },
+    {
+     "text": "They see a man..",
+     "level": 59,
+     "page": 5
+    },
+    {
+     "text": "They look down holes.",
+     "level": 102,
+     "page": 6
+    },
+    {
+     "text": "They look up poles.",
+     "level": 102,
+     "page": 6
+    },
+    {
+     "text": "Our eyes see trees.",
+     "level": 115,
+     "page": 7
+    },
+    {
+     "text": "They look at clocks.",
+     "level": 102,
+     "page": 7
+    },
+    {
+     "text": "They look at bees.",
+     "level": 102,
+     "page": 7
+    },
+    {
+     "text": "They look at socks.",
+     "level": 102,
+     "page": 7
+    },
+    {
+     "text": "Our eyes see flies.",
+     "level": 115,
+     "page": 8
+    },
+    {
+     "text": "Our eyes see ants.",
+     "level": 115,
+     "page": 8
+    },
+    {
+     "text": "Our eyes see rings.",
+     "level": 115,
+     "page": 9
+    },
+    {
+     "text": "Our eyes see strings.",
+     "level": 115,
+     "page": 9
+    },
+    {
+     "text": "They see so many, many things!",
+     "level": 100,
+     "page": 9
+    },
+    {
+     "text": "So many things!",
+     "level": 100,
+     "page": 9
+    },
+    {
+     "text": "Like rain and pie...",
+     "level": 73,
+     "page": 9
     }
    ]
   }
@@ -2047,7 +5361,7 @@
     },
     {
      "text": "But Pup and Fat Cat...",
-     "level": 39,
+     "level": 20,
      "page": 10
     },
     {

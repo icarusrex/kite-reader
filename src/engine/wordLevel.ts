@@ -1,6 +1,8 @@
 /**
  * Estimates the curriculum level (1–120, 121 = beyond / Stage 6) at which a word
- * becomes decodable, using the full scope & sequence from "Curriculum v1".
+ * becomes decodable, using the scope & sequence from "Curriculum v1". Levels 1–20 follow the Jolly Phonics order
+ * (s a t i p n → c k ck e h r m d → g o u l f b), with -s endings and a few sight words early, so real beginner
+ * decodable books (SPELD SA, Jolly readers) are readable in the first levels. Re-sequenced 2026-09-17.
  * Heuristic by design: English spelling is ambiguous, so explicit word lists
  * resolve the common exceptions. Used for the book library audit and content checks.
  */
@@ -8,8 +10,12 @@
 export const BEYOND = 121;
 
 export const HEART_WORDS: Record<string, number> = {
-  a: 1, the: 25, is: 35, as: 35, has: 35, his: 35, they: 45, i: 70, want: 70, to: 71, do: 71, into: 71, onto: 71,
-  you: 85, said: 86, what: 96, where: 96, there: 96, here: 96, of: 96, could: 98, would: 98, should: 98,
+  a: 1, the: 7, is: 7, i: 7,
+  he: 14, she: 14, we: 14, me: 14, be: 14, to: 14, has: 14, his: 14, as: 14,
+  no: 16, go: 16, so: 16,
+  you: 20, are: 20, was: 20, of: 20, said: 20, my: 20,
+  they: 45, want: 70, do: 71, into: 71, onto: 71,
+  what: 96, where: 96, there: 96, here: 96, could: 98, would: 98, should: 98,
   any: 100, many: 100, tomorrow: 109, today: 109, father: 109, bye: 110, your: 110, friend: 110,
   again: 112, were: 112, some: 113, horse: 113, hooray: 113, our: 115, eyes: 115, eye: 115, air: 115,
   oh: 117, have: 117, put: 117, away: 117, one: 118, whole: 118, worth: 118, able: 118,
@@ -17,7 +23,7 @@ export const HEART_WORDS: Record<string, number> = {
 
 /** Irregular or ambiguous words not covered by the rules. */
 const EXCEPTIONS: Record<string, number> = {
-  was: BEYOND, who: BEYOND, two: BEYOND, come: BEYOND, done: BEYOND, love: BEYOND, give: BEYOND, live: BEYOND,
+  who: BEYOND, two: BEYOND, come: BEYOND, done: BEYOND, love: BEYOND, give: BEYOND, live: BEYOND,
   other: 97, mother: 97, brother: 97, does: BEYOND, goes: 83, gone: BEYOND, son: BEYOND, won: BEYOND,
   once: BEYOND, only: BEYOND, very: 116, every: 116, pretty: BEYOND, busy: BEYOND, both: BEYOND, most: BEYOND,
   almost: BEYOND, post: BEYOND, find: BEYOND, kind: BEYOND, mind: BEYOND, behind: BEYOND, child: BEYOND, wild: BEYOND,
@@ -34,22 +40,21 @@ const SHORT_OO = new Set(['look', 'book', 'books', 'good', 'foot', 'wood', 'cook
 const VOICED_TH = new Set(['this', 'that', 'then', 'them', 'than', 'these', 'those', 'though', 'together', 'weather', 'feather', 'either', 'whether', 'thus']);
 const HARD_G = new Set(['get', 'gets', 'give', 'gift', 'girl', 'gig', 'giggle', 'begin', 'together', 'forget', 'target', 'tiger', 'geese', 'gear', 'jiggle', 'wiggle', 'wriggle', 'buggy', 'foggy', 'doggy', 'piggy', 'soggy']);
 
-const ONSETS: Record<string, number> = {
-  sn: 32, sw: 33, fl: 34, fr: 36, sk: 40, sc: 43, sp: 42, st: 31, bl: 46, gl: 46, sl: 46, sm: 46, cl: 47, gr: 47, pr: 47,
-  pl: 48, tw: 48, str: 48, br: 49, tr: 49, cr: 50, dr: 50, spl: 50, spr: 50, scr: 50, squ: 88, thr: 50, shr: 50,
-};
-const CODAS: Record<string, number> = { nd: 27, mp: 29, ft: 30, st: 31, sk: 40, sp: 42 };
+// Two-consonant clusters (stop, sand) from the level 14 review, once their letters are known; three-letter onsets at 20
+const CLUSTER = 14;
+const ONSETS: Record<string, number> = { str: 20, spl: 20, spr: 20, scr: 20, squ: 88, thr: 50, shr: 50 };
+const CODAS: Record<string, number> = {};
 
 const SINGLE: Record<string, number> = {
-  a: 1, m: 2, s: 3, t: 4, f: 6, d: 7, g: 8, i: 9, n: 10, p: 11, h: 12, b: 13, l: 14, j: 15, c: 16, v: 17, w: 18,
-  r: 19, k: 20, o: 26, u: 39, e: 44, y: 84, x: 89, z: 90, q: 88,
+  a: 1, t: 2, s: 3, i: 4, p: 5, n: 6, c: 8, k: 8, e: 9, h: 10, r: 11, m: 12, d: 13, g: 15, o: 16, u: 17, l: 18,
+  f: 19, b: 20, j: 21, v: 22, w: 23, y: 84, x: 89, z: 90, q: 88,
 };
 
 // Ordered longest-first; each entry: pattern, level
 const MULTI: [string, number][] = [
   ['ough', BEYOND], ['eigh', BEYOND], ['tion', BEYOND], ['ture', BEYOND],
   ['ouse', 104], ['igh', 107], ['air', 115], ['ear', BEYOND], ['all', 92], ['are', 63], ['ore', 64], ['tch', BEYOND], ['dge', BEYOND],
-  ['ck', 21], ['sh', 22], ['ch', 23], ['th', 24], ['ng', 37], ['nk', 38], ['wh', 95], ['qu', 88], ['kn', 114], ['wr', 114], ['ph', BEYOND],
+  ['ck', 8], ['sh', 22], ['ch', 23], ['th', 24], ['ng', 37], ['nk', 38], ['wh', 95], ['qu', 88], ['kn', 114], ['wr', 114], ['ph', BEYOND],
   ['ee', 59], ['ea', 75], ['oa', 76], ['ai', 73], ['ay', 72], ['oi', 80], ['oy', 81], ['ou', 78], ['ow', 77], ['aw', 91], ['ew', 111],
   ['oo', 101], ['ie', 51], ['oe', 53], ['ue', 57], ['ey', BEYOND], ['au', BEYOND], ['ui', BEYOND], ['gh', BEYOND],
   ['ar', 62], ['or', 64], ['er', 65], ['ir', 66], ['ur', 67],
@@ -105,12 +110,14 @@ function core(w: string, reasons: string[]): number {
   if (on.length >= 2) {
     const key = on.startsWith('squ') ? 'squ' : on;
     if (ONSETS[key]) bump(ONSETS[key], `onset ${key}`);
-    else if (!['sh', 'ch', 'th', 'wh', 'kn', 'wr', 'ph', 'qu'].includes(on) && !/^(sh|ch|th|wh)[r]$/.test(on)) bump(50, `onset ${on}`);
+    else if (!['sh', 'ch', 'th', 'wh', 'kn', 'wr', 'ph', 'qu'].includes(on) && !/^(sh|ch|th|wh)[r]$/.test(on)) bump(on.length === 2 ? CLUSTER : 50, `onset ${on}`);
     if (/^(shr|thr)$/.test(on)) bump(50, `onset ${on}`);
   }
   const coda = w.match(/[^aeiouy]+$/)?.[0] ?? '';
   const cd = coda.replace(/^(r)/, '').replace(/(ck|sh|ch|th|ng|nk|ss|ll|ff|zz|tt|dd|gg)$/, '');
-  if (cd.length >= 2) bump(CODAS[cd] ?? 50, `coda ${cd}`);
+  // a pair plus an -s ending (pants, spins' "ns", nests) is still a level-14 cluster
+  const pairPlusS = cd.length === 3 && cd.endsWith('s');
+  if (cd.length >= 2) bump(CODAS[cd] ?? (cd.length === 2 || pairPlusS ? CLUSTER : 50), `coda ${cd}`);
 
   // graphemes
   let i = 0;
@@ -133,7 +140,8 @@ function core(w: string, reasons: string[]): number {
 
   const syl = syllables(w);
   if (syl >= 3) bump(BEYOND, '3+ syllables');
-  else if (syl === 2) bump(65, '2 syllables');
+  // two short, closed syllables made of taught letters (laptop, helmet, happen) come right after the single letters
+  else if (syl === 2) bump(/^([^aeiouy]+[aeiou][^aeiouy]+){2}$/.test(w) || /^[aeiou][^aeiouy]+[aeiou][^aeiouy]+$/.test(w) ? 20 : 65, '2 syllables');
   return level;
 }
 
@@ -156,13 +164,15 @@ export function wordLevel(raw: string): WordLevel {
   if (word.includes("'")) {
     const [base, tail] = word.split("'");
     const b = wordLevel(base).level;
-    if (tail === 's' && !['it', 'he', 'she', 'let', 'that', 'what', 'there', 'here'].includes(base)) { reasons.push("possessive 's"); return res(Math.max(b, 28)); }
+    if (tail === 's' && !['it', 'he', 'she', 'let', 'that', 'what', 'there', 'here'].includes(base)) { reasons.push("possessive 's"); return res(Math.max(b, 7)); }
     reasons.push('contraction');
     const alias: Record<string, string> = { don: 'do', can: 'can', won: 'will' };
     return res(Math.max(wordLevel(alias[base] ?? base).level, BEYOND));
   }
 
   if (word in EXCEPTIONS) { reasons.push('exception'); return res(EXCEPTIONS[word]); }
+  // Sound words that are one letter held: "Mmm!", "Sss", "Zzz"
+  if (/^([a-z])\1+$/.test(word) && SINGLE[word[0]]) { reasons.push('held sound'); return res(SINGLE[word[0]]); }
 
   // compounds: sometimes, himself, anywhere, upside
   for (let k = 2; k <= word.length - 2; k++) {
@@ -173,7 +183,8 @@ export function wordLevel(raw: string): WordLevel {
     const la = wordLevel(a).level, lb = wordLevel(b).level;
     if (la < BEYOND && lb < BEYOND) {
       reasons.push(`compound ${a}+${b}`);
-      return res(Math.max(la, lb, 65));
+      // two simple words (lap+top, sun+set) are ready right after the single letters; longer compounds later
+      return res(Math.max(la, lb, la <= 20 && lb <= 20 ? 20 : 65));
     }
   }
 
@@ -190,7 +201,7 @@ export function wordLevel(raw: string): WordLevel {
     // "gas", "yes", "bus": what's left isn't a word, so the s belongs to the word rather than being an ending.
     const base = word.slice(0, -1);
     const isWord = base.length === 2 ? ['it', 'up', 'at', 'in', 'on', 'go', 'do', 'no', 'so', 'me', 'we', 'he'].includes(base) : !DICT || DICT.has(base) || base in HEART_WORDS;
-    if (isWord) { const r = tryBase(base, 28, '-s'); if (r) return r; }
+    if (isWord) { const r = tryBase(base, 7, '-s'); if (r) return r; }
   }
   if (word.endsWith('ed') && word.length > 4) {
     const stem = word.slice(0, -2);

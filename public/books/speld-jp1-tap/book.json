@@ -1,0 +1,79 @@
+{
+ "id": "speld-jp1-tap",
+ "title": "Tap",
+ "author": "SPELD SA (Jolly Phonics Set 1)",
+ "pages": [
+  {
+   "text": "tap",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "tap",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "pan",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "pan",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "tin",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "tin",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "pip",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "pip",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "pin",
+   "image": "08.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "pin",
+   "image": "09.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "spin",
+   "image": "10.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "spin",
+   "image": "11.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

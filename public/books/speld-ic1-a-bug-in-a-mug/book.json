@@ -1,0 +1,55 @@
+{
+ "id": "speld-ic1-a-bug-in-a-mug",
+ "title": "A bug in a mug",
+ "author": "SPELD SA (Initial Code Set 1)",
+ "pages": [
+  {
+   "text": "Frank spots his big mug on\nthe sink.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Frank grabs the mug. He gets\na cold drink from a jug.\nGlug! Glug! Glug!",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "A plump bug is in the drink.\nCan you spot the bug in the\nmug?",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Frank can not spot the plump\nbug in the mug.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Frank swigs the drink from\nthe big mug.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Can you still spot the plump\nbug in the mug?",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "No! The bug is not in the\nmug.",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "The plump bug is in Frank!",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

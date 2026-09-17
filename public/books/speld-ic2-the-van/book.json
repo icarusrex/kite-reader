@@ -1,0 +1,43 @@
+{
+ "id": "speld-ic2-the-van",
+ "title": "The Van",
+ "author": "SPELD SA (Initial Code Set 2)",
+ "pages": [
+  {
+   "text": "The van is set.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Tag is my pet dog.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Dad, Tag and I set off in\nthe van.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "The fan is on in the van.\nTag has a nap.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "“Not for you, Tag!” Dad\nis not mad. Tag is fed.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "My dog Tag is fit.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

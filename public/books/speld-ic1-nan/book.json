@@ -1,0 +1,55 @@
+{
+ "id": "speld-ic1-nan",
+ "title": "Nan",
+ "author": "SPELD SA (Initial Code Set 1)",
+ "pages": [
+  {
+   "text": "Tom, Nan and Mim.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Nan sat.\n“Sit, Tom.”\n“Sit, Mim.”\nSit",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Nan\nSip\nTom and Mim\nsit and sip.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Tap\nTom, Nan and Mim tap.\nTap, tap, tap.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "In\nTom and Nan sit in.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "A pot is on top.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Mim and Tom nap.",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

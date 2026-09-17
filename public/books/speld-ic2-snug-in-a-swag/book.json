@@ -1,0 +1,43 @@
+{
+ "id": "speld-ic2-snug-in-a-swag",
+ "title": "Snug in a swag",
+ "author": "SPELD SA (Initial Code Set 2)",
+ "pages": [
+  {
+   "text": "Snug as a bug as I camp\nin a swag.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "A crab! Nip, step, nip,\nstep on the sand.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I grin as I swim in the\nswell with Dad.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I smell some pink buds as\nI skip.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "A grin for Biff and Buff,\nthe crab, pink buds and a\nswim with Dad.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Rest in a swag and stroll\non the land.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

@@ -1,0 +1,55 @@
+{
+ "id": "speld-jp3-what-am-i",
+ "title": "What am I?",
+ "author": "SPELD SA (Jolly Phonics Set 3)",
+ "pages": [
+  {
+   "text": "I am big.\nAm I a truck? No.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I have legs.\nAm I a desk? No.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I have tusks.\nAm I a pig? No.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I can run.\nAm I a dog? No.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I am big. I have legs,\ntusks and can run.\nWhat am I?",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Am I a camel?",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "A camel is big, has\nlegs, runs but has no\ntusks.",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "What am I?\nI am an ________.",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

@@ -1,0 +1,55 @@
+{
+ "id": "speld-ic2-jess-and-bess",
+ "title": "Jess and Bess",
+ "author": "SPELD SA (Initial Code Set 2)",
+ "pages": [
+  {
+   "text": "“Miss Fizz! It is a fox, a\nbox, a bell and a hill.”",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Here is Jess and Bess.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Miss Fizz will mull. Is it a\nhill? Is it a fox?",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Yes, it is a fox on a hill.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Jess did well. The fox is\non a hill. The fox is fat!",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Bess will mix the fox, box\nand bell on the hill.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Will Miss Fizz fuss?",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "A fat fox on a hill. A mix of\na fox, a box, and a bell on a\nhill.",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

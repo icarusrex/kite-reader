@@ -1,0 +1,55 @@
+{
+ "id": "speld-ic1-the-big-box",
+ "title": "The big box",
+ "author": "SPELD SA (Initial Code Set 1)",
+ "pages": [
+  {
+   "text": "Bess sat on the bus. She had\na big box. What was in the\nbox?",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Bess did not tell Max and\nTiff. What was in the box?",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "The big box had a lid on top.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Bess had the box on her lap.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Huff! Puff! Yip! Yap!\nWhat was in the box?\nBess did not tell Tiff yet.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Is it\na pup?\nYip, yap! Yip, yap! Bess did\nnot tell Max and Tiff. Is it a\npup?",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "The lid fell off! In the box\nwas Buzz. “Yes, it is a pup!”",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Buzz was a hit! All of the kids\nhad fun.",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

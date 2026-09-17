@@ -1,0 +1,55 @@
+{
+ "id": "speld-ic1-tan",
+ "title": "Tan",
+ "author": "SPELD SA (Initial Code Set 1)",
+ "pages": [
+  {
+   "text": "Gab, Pip and Tan-Tan.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "“Sit Tan-Tan.” Gab can\nget Tan-Tan to sit.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Tan-Tan can not hop.\nTan-Tan can sit.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Gab can pat Tan-Tan.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "“Sit Tan-Tan, sit.” Pip can\nget Tan-Tan to sit.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "“Sit Tan-Tan.”",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Pip can pat him.\nPat, pat, pat!",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Tan-Tan sits.",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

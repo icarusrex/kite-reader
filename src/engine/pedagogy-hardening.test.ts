@@ -30,7 +30,7 @@ describe('pedagogy hardening', () => {
     for (const phase of ['checkout', 'cold'] as const) {
       const required = buildCheckout(13, phase).filter((s) => s.required);
       expect(required).toHaveLength(2);
-      expect(required.map((s) => [s.kind, s.g])).toEqual(expect.arrayContaining([['hearTap', 'b'], ['seeSay', 'b']]));
+      expect(required.map((s) => [s.kind, s.g])).toEqual(expect.arrayContaining([['hearTap', 'd'], ['seeSay', 'd']]));
     }
   });
 

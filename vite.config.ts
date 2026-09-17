@@ -13,9 +13,12 @@ export default defineConfig({
       workbox: {
         // Books included so the tablet can read them offline.
         globPatterns: ['**/*.{js,css,html,svg,woff2,json,mp3,wav,jpg}'],
+        // Book page pictures (~60 MB for all books) are cached when a book is first opened, not downloaded up front
+        globIgnores: ['books/*/*.jpg'],
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         // Words generated on demand by the server: keep them on the device once heard (offline use)
-        runtimeCaching: [{ urlPattern: /\/api\/say\?/, handler: 'CacheFirst', options: { cacheName: 'say', expiration: { maxEntries: 5000 }, cacheableResponse: { statuses: [200] } } }],
+        runtimeCaching: [
+          { urlPattern: /\/books\/[^/]+\/[^/]+\.jpg$/, handler: 'CacheFirst', options: { cacheName: 'book-pages', expiration: { maxEntries: 2000 }, cacheableResponse: { statuses: [200] } } },{ urlPattern: /\/api\/say\?/, handler: 'CacheFirst', options: { cacheName: 'say', expiration: { maxEntries: 5000 }, cacheableResponse: { statuses: [200] } } }],
       },
       manifest: {
         name: 'Kite Reader',

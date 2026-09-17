@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../app/store';
 import { LEVELS, MAX_LEVEL, levelByN } from '../content/levels';
-import { GRAPHEMES } from '../content/phonemes';
+import { SOUNDS as GRAPHEMES } from '../content/phonemes';
 import { PROMPTS } from '../content/prompts';
 import { checkText } from '../engine/decodable';
 import { currentBasics, currentLevel, freshProgress, jumpTo, Progress, setTrack, today } from '../engine/progress';

@@ -1,0 +1,49 @@
+{
+ "id": "speld-ic2-zig-zag-wag",
+ "title": "Zig-zag, wag",
+ "author": "SPELD SA (Initial Code Set 2)",
+ "pages": [
+  {
+   "text": "Jen and Jan sit in the\nsun.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Zac the pup begs Ken to\nrun.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "The pup is fun. It can run\nand run!",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Zac had fun on his run.\nWag, wag, wag.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "The bug can sit on Jan.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Cam has a job to nip at\nthe bug.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "A bug for a pal is a win.",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

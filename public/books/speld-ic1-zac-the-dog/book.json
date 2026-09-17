@@ -1,0 +1,55 @@
+{
+ "id": "speld-ic1-zac-the-dog",
+ "title": "Zac the dog",
+ "author": "SPELD SA (Initial Code Set 1)",
+ "pages": [
+  {
+   "text": "Zac the dog is Jan’s pet.\nHe is a big pup.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Zac can wag and he can\nsip.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "He can jog up to Jim,\nJan and Gaz at the top.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Zac the dog gets wet for\nfun!",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "He is hot, so he has a\ndip.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Zac is a wet dog. He can\nzig-zag and run for fun.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Zac and Jan sit in the\nhot sun. Zac gets a pat.",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Zac has had a lot of fun.",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

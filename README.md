@@ -6,12 +6,13 @@ Curriculum spec: `Curriculum v1.md` in the Obsidian vault (`04-personal/Mentava 
 
 ## Status — v0.2
 
-- **Basics track** (before level 1, where new learners start): 10 guided lessons, one letter sound each (m s a f n l t), say-it-fast (compound → syllables → stretched sounds), rhyme shown then asked, left-to-right game, "watch me" demo before every game; 10-minute sessions (`src/content/basics.ts`, `src/engine/basics.ts`)
+- **Basics track** (before level 1, where new learners start): 10 guided lessons, one letter sound each (s a t i p n m), say-it-fast (compound → syllables → stretched sounds), rhyme shown then asked, left-to-right game, "watch me" demo before every game; 10-minute sessions (`src/content/basics.ts`, `src/engine/basics.ts`)
 - Readiness check (dogfish/fishdog directionality + oral blending, using only unambiguous pictures) (gates level 1)
-- Levels 1–20 (Stage 1): a, m, s, t, review, f, d, g, i, n, p, h, b, l, j, c, v, w, r, k
+- Levels 1–20 in the **Jolly Phonics order** (re-sequenced 2026-09-17): a, t, s, i, p, n, review (the/is/I, -s), c k ck, e, h, r, m, d, review (clusters; he/she/we/me/be/to/has/his/as), g, o, u, l, f, b (you/are/was/of/said/my). Most beginner decodable books use this order; the Mentava order made almost none readable
 - Activities: Ear Game (rhyme, onset-rime, blending, first and final sound), Sound Reveal, Hear & Tap (+ confusable pairs b/d, f/v, r/w), See & Say, Hold It, Glide Blend + Say It Fast, Alien Names, Read & Match, Which Word, Build It, Sentence Read, **Story** (levels 5–20), Heart Word (modelled first, then read cold; tricky part marked)
 - Watercolour illustrations for every picture word and story (`npm run pictures`, Gemini with approved character sheets)
-- Themed stories remixed from public-domain characters: Pooh and Pig (Winnie-the-Pooh), Tin Man (Oz). Vocabulary cues from *Teach Your Child to Read in 100 Easy Lessons*; no text copied.
+- **SPELD SA free decodable readers** (60 books, `~/Documents/eBooks/SPELD SA`) on his shelf, each unlocking at the level he can read it (31 readable by level 20, 37 with pre-teaching)
+- Themed stories: Pooh and Pip the piglet (Winnie-the-Pooh), Tin Man (Oz). Vocabulary cues from *Teach Your Child to Read in 100 Easy Lessons*; no text copied.
 - Mastery engine: in-session re-injection of misses, Leitner spaced review, 10-item level checkout + next-day cold check, fatigue stop, active-time session cap, level-complete celebration
 - DI error correction: My turn → Together → Your turn. No points/streaks/currency
 - Grown-ups area (press and hold 🔒 top-left 1.5 s): progress, trouble spots, record pure sounds and **export them into the app** (`npm run sounds`), books, settings, backup/import

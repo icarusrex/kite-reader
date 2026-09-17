@@ -5,11 +5,11 @@ What's left for you, in order. Items marked **(tell Claude)** are quicker if you
 In the app: hold 🔒 (top-left) for 1.5 s → **Grown-ups**. The **Status** tab shows this checklist's progress (sounds recorded, readiness, pictures) and what gets built next; **Lessons** lets you practise any level again without changing progress.
 
 ## How he starts: Basics (added 2026-09-17)
-He starts on **Basics**: 10 short lessons for a child who doesn't know letters yet, modelled on the first lessons of *Teach Your Child to Read in 100 Easy Lessons*. One letter **sound** per lesson (m, s, a, f, n, l, t, not letter names), “say it fast” listening games (sun…flower → sunflower), rhyme shown before it's asked (from lesson 5) and a left-to-right game. Every game starts with “watch me”. Sessions are 10 minutes.
+He starts on **Basics**: 10 short lessons for a child who doesn't know letters yet, modelled on the first lessons of *Teach Your Child to Read in 100 Easy Lessons*. One letter **sound** per lesson (s, a, t, i, p, n, m, not letter names; the Jolly Phonics order), “say it fast” listening games (sun…flower → sunflower), rhyme shown before it's asked (from lesson 5) and a left-to-right game. Every game starts with “watch me”. Sessions are 10 minutes.
 - A lesson counts as done when he gets about 80% right; otherwise it repeats next time.
 - After lesson 10 he moves to level 1 automatically. Grown-ups → **Lessons** shows where he is; **Practice** replays any lesson; **Settings** can skip Basics or go back to it.
 - **Spoken answers count by themselves** (since 2026-09-17): when he speaks, a green ✓ appears and it moves on. The mic hears *that* he spoke, not *what*, so if the answer was wrong, tap the small **✗** (right side) within that second and the app corrects gently. If he's quiet, it says “Your turn” again; the small ✓ / → moves on if the mic missed him. A pulsing 🎤 means it's listening. To check every answer yourself instead: Settings → “Grown-up checks every spoken answer”.
-- Paper option alongside: *100 Easy Lessons* lessons 1–10 cover the same ground.
+- Paper option alongside: the **SPELD SA** books in `~/Documents/eBooks/SPELD SA` (reading list in the vault: `SPELD SA books.md`). Jolly Phonics Set 1 fits once he knows s a t i p n.
 
 ## Before the first real session
 
@@ -63,7 +63,7 @@ Voice: **Liam** (American man) on ElevenLabs' newest model, chosen 2026-09-16. T
 
 ## Upcoming (tell Claude when your child gets there)
 - **At level ~17:** ask for **levels 21–30** (ck, sh, ch, th, *the*, o, nd, -s, mp, ft). They need engine work (two-letter sounds on one tile, the heart word *the*), so give it about a week of lead time.
-- **Books:** anything new in `~/Documents/eBooks` → "add this book". It gets text-extracted, checked for readability and put on the shelf.
+- **Books:** 60 free SPELD SA books are on his shelf already (they unlock by level). Anything new in `~/Documents/eBooks` → "add this book". It gets text-extracted, checked for readability and put on the shelf.
 - **Android tablet:** open https://reader.viableplanet.eu in Chrome → log in → ⋮ → **Add to Home screen**. Built-in sounds come along automatically. For progress, export on the Mac and import on the tablet.
 
 ## Reference

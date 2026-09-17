@@ -1,0 +1,55 @@
+{
+ "id": "speld-jp2-hats",
+ "title": "Hats",
+ "author": "SPELD SA (Jolly Phonics Set 2)",
+ "pages": [
+  {
+   "text": "A hat",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "A hen in a hat",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "A cat in a hat",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "A rat in a cap",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Tam and Pip in caps",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Tim and Dad in hats",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Hats in a sack",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Kids in hats",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

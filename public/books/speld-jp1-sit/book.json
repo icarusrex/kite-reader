@@ -1,0 +1,79 @@
+{
+ "id": "speld-jp1-sit",
+ "title": "Sit",
+ "author": "SPELD SA (Jolly Phonics Set 1)",
+ "pages": [
+  {
+   "text": "sit",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "sit",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "sap",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "sap",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "nap",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "nap",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "ant",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "ant",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "pat",
+   "image": "08.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "pat",
+   "image": "09.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "spat",
+   "image": "10.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "spat",
+   "image": "11.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

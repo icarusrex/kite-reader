@@ -32,7 +32,7 @@ export function buildBasics(p: Progress, n: number): Step[] {
     if (firstTime) steps.push({ uid: uid(), kind: 'banner', banner: 'new_sound', phase: 'main' });
     steps.push({ uid: uid(), kind: 'meet', g, phase: 'main' });
     if (GRAPHEME_BY_ID[g].continuous) steps.push({ uid: uid(), kind: 'hold', g, phase: 'main' });
-    const other = lesson.review.length ? pick(lesson.review, 1)[0] : 's';
+    const other = lesson.review.length ? pick(lesson.review, 1)[0] : g === 'a' ? 's' : 'a';
     for (let i = 0; i < 4; i++) {
       steps.push({ uid: uid(), kind: 'hearTap', g, options: shuffle([g, i % 2 ? other : pick(['s', 'a', 't'].filter((x) => x !== g), 1)[0]]), itemId: i ? `g:${g}` : undefined, itemKind: 'grapheme', demo: i === 0, phase: 'main' });
     }
@@ -40,7 +40,7 @@ export function buildBasics(p: Progress, n: number): Step[] {
   }
 
   // 4. Review earlier sounds (2 options only); lesson 1 has none, so it practises its new sound once more
-  if (g && !lesson.review.length) steps.push({ uid: uid(), kind: 'hearTap', g, options: shuffle([g, 'a']), itemId: `g:${g}`, itemKind: 'grapheme', phase: 'main' });
+  if (g && !lesson.review.length) steps.push({ uid: uid(), kind: 'hearTap', g, options: shuffle([g, g === 'a' ? 't' : 'a']), itemId: `g:${g}`, itemKind: 'grapheme', phase: 'main' });
   // Review lessons (no new sound) practise every earlier sound twice: find it, then say it
   const review = g ? pick(lesson.review, 3) : shuffle(lesson.review).slice(0, 4).flatMap((r) => [r, r]);
   review.forEach((r, i) => {

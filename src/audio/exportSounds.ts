@@ -3,7 +3,7 @@
  * leading/trailing silence and encoded as 22 kHz mono WAV. `npm run sounds -- <file>` bakes them into
  * public/audio/phonemes so every device gets them and a browser wipe can't lose them.
  */
-import { GRAPHEMES } from '../content/phonemes';
+import { SOUNDS as GRAPHEMES } from '../content/phonemes';
 import { load } from '../engine/storage';
 
 const RATE = 22050;

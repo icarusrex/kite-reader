@@ -1,0 +1,55 @@
+{
+ "id": "speld-jp2-simon-says",
+ "title": "Simon Says",
+ "author": "SPELD SA (Jolly Phonics Set 2)",
+ "pages": [
+  {
+   "text": "Simon says\nstand.\n“Simon says stand.”\nThe kids did it.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Simon says\ntap.\n“Simon says tap.”\nThe kids did a tap.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Simon says\nstamp.\n“Simon says stamp.”\nStamp, stamp, stamp.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Simon says\nspin.\n“Simon says spin.”\nThe kids did a spin.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Kick.\n“Kick.” Nick did a\nkick. He was out.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Nick sat and had\na rest.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Simon says\nstand, tap, stamp,\nspin, kick.\n“Simon says stand,\ntap, stamp, spin, kick.”",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "A mess!",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

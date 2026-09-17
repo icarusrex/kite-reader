@@ -1,0 +1,55 @@
+{
+ "id": "speld-jp3-a-bug-in-a-mug",
+ "title": "A bug in a mug",
+ "author": "SPELD SA (Jolly Phonics Set 3)",
+ "pages": [
+  {
+   "text": "Ben had a big mug.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "He got a drink from a\njug. Glug! Glug! Glug!",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "A bug was in the\nmug. Can you spot\nthe bug in the mug?",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Ben did not spot the\nbug in the mug.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Ben drank the drink\nfrom the mug.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Can you still spot the\nbug in the mug?",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "No! The bug is not\nin the mug.",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "The bug is in Ben.",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

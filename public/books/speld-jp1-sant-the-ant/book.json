@@ -1,0 +1,31 @@
+{
+ "id": "speld-jp1-sant-the-ant",
+ "title": "Sant the ant",
+ "author": "SPELD SA (Jolly Phonics Set 1)",
+ "pages": [
+  {
+   "text": "Sant the ant",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Sant sat in a tin.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Sant sat at the tap.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "a-a-a!\nSant sat on a pin.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

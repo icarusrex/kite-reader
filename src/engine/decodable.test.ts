@@ -9,10 +9,11 @@ describe('decodable', () => {
     expect(displayChunks('Matt')).toEqual(['M', 'a', 'tt']);
   });
   it('gates by level', () => {
-    expect(checkWord('sat', 4).ok).toBe(true);
-    expect(checkWord('sit', 4).ok).toBe(false);
-    expect(checkWord('sit', 9).ok).toBe(true);
-    expect(checkText('Sam sat.', 4).ratio).toBe(1);
+    expect(checkWord('sat', 3).ok).toBe(true);
+    expect(checkWord('sit', 3).ok).toBe(false);
+    expect(checkWord('sit', 4).ok).toBe(true);
+    expect(checkWord('pick', 8).ok).toBe(true);
+    expect(checkText('Pat sat.', 5).ratio).toBe(1);
   });
   it('all level content is decodable at its level', () => {
     const heart: string[] = [];
@@ -24,7 +25,7 @@ describe('decodable', () => {
     }
   });
   it('marks the tricky part of a heart word', () => {
-    expect(trickyParts('Pooh', 11)).toEqual([{ text: 'P', tricky: false }, { text: 'ooh', tricky: true }]);
+    expect(trickyParts('Pooh', 7)).toEqual([{ text: 'P', tricky: false }, { text: 'ooh', tricky: true }]);
     expect(trickyParts('said', 35)).toEqual([{ text: 's', tricky: false }, { text: 'ai', tricky: true }, { text: 'd', tricky: false }]);
   });
 });

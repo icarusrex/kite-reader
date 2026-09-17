@@ -1,0 +1,55 @@
+{
+ "id": "speld-jp1-it",
+ "title": "It",
+ "author": "SPELD SA (Jolly Phonics Set 1)",
+ "pages": [
+  {
+   "text": "Pip, Tan, Pat, Ann, Nat",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Ann is ‘it’.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Ann taps Nat.\nNat sits.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Ann pats Pip.\nPip sits.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Ann pats Tan.\nTan sits.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Ann taps Pat.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Pat pants.\nAnn pants.",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Pat is ‘it’.",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

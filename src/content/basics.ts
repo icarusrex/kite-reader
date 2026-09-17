@@ -1,7 +1,7 @@
 /**
  * Basics track (curriculum Stage 0): for children who don't know letters yet. Short, fully guided lessons modelled on
  * the first lessons of "Teach Your Child to Read in 100 Easy Lessons" and Mentava Basics:
- *   - one new sound per lesson (sounds, not letter names), continuous sounds first, each with a picture anchor
+ *   - one new sound per lesson (sounds, not letter names) in the Jolly Phonics order (s a t i p n m), with a picture anchor
  *   - "say it fast" oral blending that gets gradually harder: compound words → syllables → stretched sounds
  *   - rhyme taught (shown with pictures) before it's asked, from lesson 5
  *   - a left-to-right tracking game early on
@@ -20,21 +20,22 @@ export interface BasicsLesson {
   track: boolean;         // left-to-right game
 }
 
+// Same order as levels 1–20 (Jolly Phonics: s a t i p n …), so level 1 starts with sounds he already knows.
 export const BASICS: BasicsLesson[] = [
-  { n: 1, title: 'm', newSound: 'm', review: [], sayFast: 'compound', rhyme: false, track: true },
-  { n: 2, title: 's', newSound: 's', review: ['m'], sayFast: 'compound', rhyme: false, track: true },
-  { n: 3, title: 'a', newSound: 'a', review: ['m', 's'], sayFast: 'compound', rhyme: false, track: true },
-  { n: 4, title: 'review', review: ['m', 's', 'a'], sayFast: 'syllable', rhyme: false, track: false },
-  { n: 5, title: 'f', newSound: 'f', review: ['m', 's', 'a'], sayFast: 'syllable', rhyme: true, track: false },
-  { n: 6, title: 'n', newSound: 'n', review: ['m', 's', 'a', 'f'], sayFast: 'syllable', rhyme: true, track: false },
-  { n: 7, title: 'l', newSound: 'l', review: ['s', 'a', 'f', 'n'], sayFast: 'stretch', rhyme: true, track: false },
-  { n: 8, title: 'review', review: ['m', 's', 'a', 'f', 'n', 'l'], sayFast: 'stretch', rhyme: true, track: false },
-  { n: 9, title: 't', newSound: 't', review: ['m', 's', 'a', 'f', 'n', 'l'], sayFast: 'stretch', rhyme: true, track: false },
-  { n: 10, title: 'review', review: ['m', 's', 'a', 'f', 'n', 'l', 't'], sayFast: 'stretch', rhyme: true, track: false },
+  { n: 1, title: 's', newSound: 's', review: [], sayFast: 'compound', rhyme: false, track: true },
+  { n: 2, title: 'a', newSound: 'a', review: ['s'], sayFast: 'compound', rhyme: false, track: true },
+  { n: 3, title: 't', newSound: 't', review: ['s', 'a'], sayFast: 'compound', rhyme: false, track: true },
+  { n: 4, title: 'review', review: ['s', 'a', 't'], sayFast: 'syllable', rhyme: false, track: false },
+  { n: 5, title: 'i', newSound: 'i', review: ['s', 'a', 't'], sayFast: 'syllable', rhyme: true, track: false },
+  { n: 6, title: 'p', newSound: 'p', review: ['s', 'a', 't', 'i'], sayFast: 'syllable', rhyme: true, track: false },
+  { n: 7, title: 'n', newSound: 'n', review: ['a', 't', 'i', 'p'], sayFast: 'stretch', rhyme: true, track: false },
+  { n: 8, title: 'review', review: ['s', 'a', 't', 'i', 'p', 'n'], sayFast: 'stretch', rhyme: true, track: false },
+  { n: 9, title: 'm', newSound: 'm', review: ['s', 'a', 't', 'i', 'p', 'n'], sayFast: 'stretch', rhyme: true, track: false },
+  { n: 10, title: 'review', review: ['s', 'a', 't', 'i', 'p', 'n', 'm'], sayFast: 'stretch', rhyme: true, track: false },
 ];
 
-/** Picture word for each sound ("mmm, like in map"). */
-export const ANCHORS: Record<string, string> = { m: 'map', s: 'sun', a: 'apple', f: 'fish', n: 'nest', l: 'leg', t: 'tap' };
+/** Picture word for each sound ("sss, like in sun"). */
+export const ANCHORS: Record<string, string> = { s: 'sun', a: 'apple', t: 'tap', i: 'insect', p: 'pig', n: 'nest', m: 'map' };
 
 /** Say it fast. `split` is what's said slowly (spelled so the voice says the parts naturally). */
 export const COMPOUND: { word: string; split: string }[] = [

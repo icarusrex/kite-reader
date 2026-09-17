@@ -1,0 +1,55 @@
+{
+ "id": "speld-ic2-it-is-big",
+ "title": "It is big!",
+ "author": "SPELD SA (Initial Code Set 2)",
+ "pages": [
+  {
+   "text": "Mac can sit on top.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Cam can tap on it.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Sim is in a gap.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Cam has a pin on his cap.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "The tap is on and Sim\ncan sip.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Mac can get it.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Cam, Mac and Sim can\nsit. It is big!",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "It can get hot!",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

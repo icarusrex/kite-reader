@@ -1,0 +1,55 @@
+{
+ "id": "speld-jp3-tig-naps-a-lot",
+ "title": "Tig naps a lot",
+ "author": "SPELD SA (Jolly Phonics Set 3)",
+ "pages": [
+  {
+   "text": "Tig is a pup.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Tig naps a lot.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "He naps on Dad.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Tig naps on Mum",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "and he naps in a bag.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Tig naps on a rug.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "He naps on Mum’s\nlaptop.",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Tig naps a lot on\nMum’s desk.",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

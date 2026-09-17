@@ -3,13 +3,13 @@
 //   job: { out: "page.jpg", picture: [{file} | {pdf, page}], ocr: [{file} | {pdf, page}] }
 //   Several picture sources are joined side by side (two-page spreads).
 //   result: { out, width, height, lines: [string] }
-// `extract pages <file.pdf>` prints the page count.
+// `extract pages <file.pdf>` prints the page count; `extract text <file.pdf>` prints each page's text.
 import AppKit
 import PDFKit
 import Vision
 
 struct Source: Decodable { let file: String?; let pdf: String?; let page: Int?; let rightHalf: Bool? }
-struct Job: Decodable { let out: String?; let picture: [Source]?; let ocr: [Source] }
+struct Job: Decodable { let out: String?; let picture: [Source]?; let ocr: [Source]; let maxWidth: Int?; let quality: Double? }
 struct Result: Encodable { let out: String?; let width: Int; let height: Int; let lines: [String] }
 
 var pdfs: [String: PDFDocument] = [:]
@@ -71,7 +71,7 @@ func sideBySide(_ imgs: [CGImage]) -> CGImage? {
   return ctx.makeImage()
 }
 
-func writeJpeg(_ img: CGImage, _ path: String, maxW: Int = 1400) -> (Int, Int) {
+func writeJpeg(_ img: CGImage, _ path: String, maxW: Int = 1400, quality: Double = 0.78) -> (Int, Int) {
   let scale = min(1, CGFloat(maxW) / CGFloat(img.width))
   let w = Int(CGFloat(img.width) * scale), h = Int(CGFloat(img.height) * scale)
   let ctx = CGContext(data: nil, width: w, height: h, bitsPerComponent: 8, bytesPerRow: 0,
@@ -79,7 +79,7 @@ func writeJpeg(_ img: CGImage, _ path: String, maxW: Int = 1400) -> (Int, Int) {
   ctx.interpolationQuality = .high
   ctx.draw(img, in: CGRect(x: 0, y: 0, width: w, height: h))
   let rep = NSBitmapImageRep(cgImage: ctx.makeImage()!)
-  try! rep.representation(using: .jpeg, properties: [.compressionFactor: 0.78])!.write(to: URL(fileURLWithPath: path))
+  try! rep.representation(using: .jpeg, properties: [.compressionFactor: quality])!.write(to: URL(fileURLWithPath: path))
   return (w, h)
 }
 
@@ -87,12 +87,19 @@ if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "pages" {
   print(PDFDocument(url: URL(fileURLWithPath: CommandLine.arguments[2]))?.pageCount ?? 0)
   exit(0)
 }
+// `extract text <file.pdf>`: the PDF's own text per page, as a JSON array (for books made digitally)
+if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "text" {
+  let d = PDFDocument(url: URL(fileURLWithPath: CommandLine.arguments[2]))
+  let pages = (0..<(d?.pageCount ?? 0)).map { d?.page(at: $0)?.string ?? "" }
+  print(String(data: try JSONSerialization.data(withJSONObject: pages), encoding: .utf8)!)
+  exit(0)
+}
 
 let jobs = try JSONDecoder().decode([Job].self, from: FileHandle.standardInput.readDataToEndOfFile())
 let enc = JSONEncoder()
 for job in jobs {
   var size = (0, 0)
-  if let p = job.picture, let out = job.out, let img = sideBySide(p.compactMap(cgImage)) { size = writeJpeg(img, out) }
+  if let p = job.picture, let out = job.out, let img = sideBySide(p.compactMap(cgImage)) { size = writeJpeg(img, out, maxW: job.maxWidth ?? 1400, quality: job.quality ?? 0.78) }
   let lines = job.ocr.compactMap(cgImage).flatMap(ocr)
   print(String(data: try enc.encode(Result(out: job.out, width: size.0, height: size.1, lines: lines)), encoding: .utf8)!)
   fflush(stdout)

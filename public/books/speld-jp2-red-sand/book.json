@@ -1,0 +1,55 @@
+{
+ "id": "speld-jp2-red-sand",
+ "title": "Red sand",
+ "author": "SPELD SA (Jolly Phonics Set 2)",
+ "pages": [
+  {
+   "text": "Red sand",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I sit in the red sand.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I tip the sand.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I pat the sand.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Red sand is on\nmy skin.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Sand on my hand,\nsand on my hip, sand\non my neck.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I stand and tip the\nred sand off.",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Red sand",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

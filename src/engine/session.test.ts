@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { buildMain, bookSentencesFor, storyFor } from './session';
+import { levelByN } from '../content/levels';
 import { CLEAR_WORDS } from '../content/pictures';
 import { freshProgress, jumpTo } from './progress';
 
@@ -8,12 +9,12 @@ describe('session builder', () => {
     const p = jumpTo(freshProgress(), 9);
     const steps = buildMain(p, 9, {
       heart: [{ word: 'said', source: 'Book A' }, { word: 'you', source: 'Book A' }, { word: 'was', source: 'Book B' }],
-      sentences: [{ text: 'Sid sat.', source: 'Book A' }, { text: 'The fox hid.', source: 'Book B' }],
+      sentences: [{ text: 'Pip sits in a pen.', source: 'Book A' }, { text: 'The fox hid.', source: 'Book B' }],
     });
     expect(steps.filter((s) => s.kind === 'heart' && !s.model).map((s) => s.word)).toEqual(['said', 'you']);
     expect(steps.filter((s) => s.kind === 'heart' && s.model).map((s) => s.word)).toEqual(['said', 'you']);
     const sentence = steps.find((s) => s.kind === 'sentence')!;
-    expect(['Sid sat.', 'Dad did it.', 'Sam did it.']).toContain(sentence.text);
+    expect(['Pip sits in a pen.', ...levelByN(9).sentences, ...bookSentencesFor(9).map((b) => b.text)]).toContain(sentence.text);
   });
   it('skips heart words already being learned', () => {
     let p = jumpTo(freshProgress(), 9);
@@ -24,13 +25,14 @@ describe('session builder', () => {
   it('public-domain book sentences are strictly decodable', () => {
     for (const n of [10, 12, 20]) for (const s of bookSentencesFor(n)) expect(s.level).toBeLessThanOrEqual(n);
   });
-  it('level 11 teaches Pooh as a heart word: modelled first, then read', () => {
-    const steps = buildMain(jumpTo(freshProgress(), 11), 11);
-    const heart = steps.filter((s) => s.kind === 'heart');
-    expect(heart.map((s) => [s.word, !!s.model])).toEqual([['Pooh', true], ['Pooh', false]]);
+  it('level 7 teaches Pooh (with the, is, I) as heart words: modelled first, then read', () => {
+    const steps = buildMain(jumpTo(freshProgress(), 7), 7);
+    const pooh = steps.filter((s) => s.kind === 'heart' && s.word === 'Pooh');
+    expect(pooh.map((s) => !!s.model)).toEqual([true, false]);
+    expect(steps.filter((s) => s.kind === 'heart' && !s.model).map((s) => s.word)).toEqual(['the', 'is', 'I', 'Pooh']);
   });
   it('confusable letters get Hear & Tap with only those two options', () => {
-    const steps = buildMain(jumpTo(freshProgress(), 13), 13);
+    const steps = buildMain(jumpTo(freshProgress(), 20), 20);
     const bd = steps.filter((s) => s.kind === 'hearTap' && s.options?.length === 2 && s.options.includes('b') && s.options.includes('d'));
     expect(bd.length).toBe(2);
   });

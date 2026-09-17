@@ -2,7 +2,7 @@
  * The grown-up's letter-sound recordings as references for the sound check: this device's recordings first,
  * else the built-in ones. Features + a loudness envelope (for the comparison picture), loaded once.
  */
-import { GRAPHEMES } from '../content/phonemes';
+import { SOUNDS as GRAPHEMES } from '../content/phonemes';
 import { load } from '../engine/storage';
 import { SoundFeatures, extract } from './soundCheck';
 

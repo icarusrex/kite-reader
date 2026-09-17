@@ -89,7 +89,7 @@ export async function say(...parts: Utter[]) {
   for (const part of parts) {
     if (token !== cancelToken) return;
     if ('p' in part) await playKey(`prompt:${part.p}`, PROMPTS[part.p], token);
-    else if ('g' in part) await playKey(`phoneme:${part.g}`, GRAPHEME_BY_ID[part.g]?.tts ?? part.g, token);
+    else if ('g' in part) { const g = GRAPHEME_BY_ID[part.g]?.same ?? part.g; await playKey(`phoneme:${g}`, GRAPHEME_BY_ID[g]?.tts ?? g, token); }
     else if ('w' in part) await playKey(`word:${part.w.toLowerCase()}`, part.w, token);
     else if ('key' in part) await playKey(part.key, part.text, token);
     else await wait(part.pause);

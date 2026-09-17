@@ -1,0 +1,55 @@
+{
+ "id": "speld-jp3-is-it-a",
+ "title": "Is it a ...?",
+ "author": "SPELD SA (Jolly Phonics Set 3)",
+ "pages": [
+  {
+   "text": "Is it a bat, a bag,\na bed?",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "It is a bag.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Is it a mat, a man,\na mug?",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "It is a man.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Is it a hill, a hat,\na hip? It is a hill.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Is it a fin, a fan,\na frog? It is a fan.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Is it a peg, a pig,\nan egg?",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "It is an egg.",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

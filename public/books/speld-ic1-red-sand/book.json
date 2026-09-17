@@ -1,0 +1,55 @@
+{
+ "id": "speld-ic1-red-sand",
+ "title": "Red sand",
+ "author": "SPELD SA (Initial Code Set 1)",
+ "pages": [
+  {
+   "text": "Red sand is in my hand.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I sit in the red sand. Nan has\na rest.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I tip some soft sand in Nan’s\nbig hands.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Nan and I dig a hill in the soft\nsand for fun.",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Red sand is on my legs. I sink\nin the hot sand.",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Sand on my hand, sand on my\nhips, sand on my legs.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "I jump up and the red sand\ntips off.",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Nan and I set off. Nan is the\nbest.",
+   "image": "07.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

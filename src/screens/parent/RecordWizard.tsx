@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { GRAPHEMES } from '../../content/phonemes';
+import { SOUNDS as GRAPHEMES } from '../../content/phonemes';
 import { hasManifest, hasRecording, say } from '../../audio/speaker';
 import { useRecorder } from '../../audio/useRecorder';
 import { exportSounds } from '../../audio/exportSounds';

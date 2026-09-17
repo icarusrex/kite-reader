@@ -1,0 +1,49 @@
+{
+ "id": "speld-ic2-lap-it-up",
+ "title": "Lap it up",
+ "author": "SPELD SA (Initial Code Set 2)",
+ "pages": [
+  {
+   "text": "Ken has a pan.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "The pan is up on top.",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "“Sit, Pat!”\nPat is Ken’s Pal.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "“Sit and beg, Pat.”",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Pat is bad to hop up and\ntip the pan!",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "It is sad to get rid of it.",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Ken let Pat lap up the\npan.",
+   "image": "06.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

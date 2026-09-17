@@ -1,0 +1,43 @@
+{
+ "id": "speld-ic2-jim-held-his-hat",
+ "title": "Jim held his hat",
+ "author": "SPELD SA (Initial Code Set 2)",
+ "pages": [
+  {
+   "text": "Bump went the car as it\nbent the lamp.",
+   "image": "00.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Jim held his hat as the\nlamp went bang!",
+   "image": "01.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "It was best the duck left\nthe nest.",
+   "image": "02.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "Jim said, “The bus went\nbump!”",
+   "image": "03.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "“The car bent the lamp.”",
+   "image": "04.jpg",
+   "w": 700,
+   "h": 993
+  },
+  {
+   "text": "“I held my hat as the\nduck left the nest.”",
+   "image": "05.jpg",
+   "w": 700,
+   "h": 993
+  }
+ ]
+}

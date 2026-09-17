@@ -15,7 +15,7 @@ import { finishClip } from './audio-finish';
 import { join } from 'node:path';
 import { PROMPTS } from '../src/content/prompts';
 import { LEVELS } from '../src/content/levels';
-import { GRAPHEMES } from '../src/content/phonemes';
+import { SOUNDS as GRAPHEMES } from '../src/content/phonemes';
 import { PICTURES } from '../src/content/pictures';
 import { BASICS_PICTURE_WORDS, COMPOUND, SYLLABLE } from '../src/content/basics';
 
