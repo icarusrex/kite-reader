@@ -8,6 +8,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "test": "vitest run",
+    "test:e2e": "node tests/smoke.mjs",
     "validate": "tsx scripts/validate-content.ts",
     "audio": "tsx scripts/gen-audio.ts",
     "mine": "tsx scripts/mine-books.ts",

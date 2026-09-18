@@ -41,7 +41,7 @@ describe('sight words', () => {
   it('mark the part that does not sound like its letters', () => {
     expect(tricky('is', 7)).toBe('i[s]');
     expect(tricky('I', 7)).toBe('[I]');
-    expect(tricky('we', 14)).toBe('w[e]');
+    expect(tricky('we', 14)).toBe('[we]'); // w isn't taught until after level 20, so the whole word is by heart
     expect(tricky('has', 14)).toBe('ha[s]');
     expect(tricky('of', 20)).toBe('[of]');
     expect(tricky('said', 20)).toBe('s[ai]d');

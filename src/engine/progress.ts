@@ -1,5 +1,8 @@
-import { MAX_LEVEL } from '../content/levels';
+import { LEVELS, MAX_LEVEL } from '../content/levels';
 import { BASICS } from '../content/basics';
+
+export const SCHEMA_VERSION = 2 as const;
+export const CURRICULUM_VERSION = 'reading-2026-09-18-v2';
 
 // Leitner intervals in days per box (box index 0..5)
 export const BOX_DAYS = [0, 1, 2, 4, 7, 14];
@@ -7,10 +10,10 @@ export const BOX_DAYS = [0, 1, 2, 4, 7, 14];
 export type ItemKind = 'grapheme' | 'word';
 
 export interface ItemState {
-  id: string;          // e.g. "g:m" or "w:sat"
+  id: string;
   kind: ItemKind;
   box: number;
-  due: string;         // YYYY-MM-DD
+  due: string;
   seen: number;
   correct: number;
   wrong: number;
@@ -20,7 +23,7 @@ export type LevelStatus = 'locked' | 'active' | 'cold' | 'passed';
 
 export interface LevelState {
   status: LevelStatus;
-  sessions: number;      // sessions spent practicing this level
+  sessions: number;
   checkoutPassedOn?: string;
   passedOn?: string;
 }
@@ -32,8 +35,14 @@ export interface SessionLog {
   answered: number;
   correct: number;
   endedBy: 'cap' | 'complete' | 'fatigue' | 'parent';
-  basics?: number;       // Basics lesson (then `level` is 0)
-  practice?: boolean;    // grown-up replayed a level: doesn't move progress or count toward the daily cap
+  basics?: number;
+  practice?: boolean;
+}
+
+export interface ReadinessResult {
+  date: string;
+  blending: number;
+  tracking: number;
 }
 
 export interface Settings {
@@ -41,23 +50,24 @@ export interface Settings {
   capMinutes: number;
   parentScoring: boolean;
   readinessPassed: boolean | null;
-  micSensitivity: number; // 1..5
-  rev?: number;           // settings migrations applied (1 = automatic scoring default, 2026-09-17)
+  micSensitivity: number;
+  rev?: number;
 }
 
 export interface BasicsState { status: 'locked' | 'active' | 'passed'; sessions: number; passedOn?: string }
 
 export interface Progress {
-  version: 1;
-  /** 'basics': letter sounds + listening games before level 1 (children who don't know letters yet). */
+  version: typeof SCHEMA_VERSION;
+  curriculumVersion: string;
   track: 'basics' | 'levels';
   basics: Record<number, BasicsState>;
   settings: Settings;
   levels: Record<number, LevelState>;
   items: Record<string, ItemState>;
   sessions: SessionLog[];
-  errors: Record<string, number>; // trouble spots, e.g. "g:d" -> count
-  readAloud: Record<string, { chapter: number; date: string }[]>; // bookId -> chapters read
+  errors: Record<string, number>;
+  readAloud: Record<string, { chapter: number; date: string }[]>;
+  readiness?: ReadinessResult;
 }
 
 export const today = (d = new Date()) => {
@@ -71,19 +81,50 @@ export const addDays = (date: string, n: number) => {
   return today(d);
 };
 
-export function freshProgress(): Progress {
+export function freshProgress(childName = ''): Progress {
   const levels: Record<number, LevelState> = {};
   for (let n = 1; n <= MAX_LEVEL; n++) levels[n] = { status: n === 1 ? 'active' : 'locked', sessions: 0 };
   return {
-    version: 1,
+    version: SCHEMA_VERSION,
+    curriculumVersion: CURRICULUM_VERSION,
     track: 'basics',
     basics: freshBasics(),
-    settings: { childName: '', capMinutes: 10, parentScoring: false, readinessPassed: null, micSensitivity: 3, rev: 1 },
+    settings: { childName, capMinutes: 10, parentScoring: false, readinessPassed: null, micSensitivity: 3, rev: 2 },
     levels,
     items: {},
     sessions: [],
     errors: {},
     readAloud: {},
+  };
+}
+
+/** Upgrade a legacy single-child progress object without throwing away learning history. */
+export function migrateProgress(raw: unknown): Progress {
+  const p = (raw && typeof raw === 'object' ? raw : {}) as Partial<Progress> & { settings?: Partial<Settings> };
+  const base = freshProgress(p.settings?.childName ?? '');
+  const levels: Record<number, LevelState> = { ...(p.levels ?? {}) } as Record<number, LevelState>;
+  for (let n = 1; n <= MAX_LEVEL; n++) {
+    if (!levels[n]) levels[n] = { status: levels[n - 1]?.status === 'passed' ? 'active' : 'locked', sessions: 0 };
+  }
+  const passedAny = Object.values(levels).some((l) => l.status === 'passed');
+  const track = p.track ?? (passedAny ? 'levels' : 'basics');
+  const basics = { ...freshBasics(), ...(p.basics ?? {}) };
+  const settings: Settings = { ...base.settings, ...(p.settings ?? {}) };
+  if (!p.track && settings.capMinutes === 15) settings.capMinutes = 10;
+  settings.rev = Math.max(settings.rev ?? 0, 2);
+  return {
+    ...base,
+    ...p,
+    version: SCHEMA_VERSION,
+    curriculumVersion: CURRICULUM_VERSION,
+    track,
+    basics,
+    settings,
+    levels,
+    items: p.items ?? {},
+    sessions: p.sessions ?? [],
+    errors: p.errors ?? {},
+    readAloud: p.readAloud ?? {},
   };
 }
 
@@ -96,16 +137,14 @@ export function currentLevel(p: Progress): number {
 }
 
 export function allPassed(p: Progress) {
-  return Object.values(p.levels).every((l) => l.status === 'passed');
+  return Array.from({ length: MAX_LEVEL }, (_, i) => p.levels[i + 1]).every((l) => l?.status === 'passed');
 }
 
-/** Record an answer for an item. Returns new progress (mutates copy). */
 export function recordAnswer(p: Progress, id: string, kind: ItemKind, correct: boolean, date = today()): Progress {
   const prev = p.items[id] ?? { id, kind, box: 0, due: date, seen: 0, correct: 0, wrong: 0 };
   const next: ItemState = { ...prev, seen: prev.seen + 1 };
   if (correct) {
     next.correct += 1;
-    // Only promote once per day: if already promoted today (due in future), keep box.
     if (prev.due <= date) {
       next.box = Math.min(prev.box + 1, BOX_DAYS.length - 1);
       next.due = addDays(date, BOX_DAYS[next.box]);
@@ -128,11 +167,9 @@ export function dueItems(p: Progress, date = today(), limit = 6): ItemState[] {
 }
 
 export function passCheckout(p: Progress, level: number, date = today()): Progress {
-  const levels = { ...p.levels, [level]: { ...p.levels[level], status: 'cold' as const, checkoutPassedOn: date } };
-  return { ...p, levels };
+  return { ...p, levels: { ...p.levels, [level]: { ...p.levels[level], status: 'cold', checkoutPassedOn: date } } };
 }
 
-/** Cold check (next day) passed: level done, unlock next. */
 export function passCold(p: Progress, level: number, date = today()): Progress {
   const levels = { ...p.levels, [level]: { ...p.levels[level], status: 'passed' as const, passedOn: date } };
   if (levels[level + 1] && levels[level + 1].status === 'locked') levels[level + 1] = { ...levels[level + 1], status: 'active' };
@@ -140,18 +177,22 @@ export function passCold(p: Progress, level: number, date = today()): Progress {
 }
 
 export function failCold(p: Progress, level: number): Progress {
-  const levels = { ...p.levels, [level]: { ...p.levels[level], status: 'active' as const, checkoutPassedOn: undefined } };
-  return { ...p, levels };
+  return { ...p, levels: { ...p.levels, [level]: { ...p.levels[level], status: 'active', checkoutPassedOn: undefined } } };
 }
 
-/** Parent test-out / jump: mark all levels below n passed, n active. */
 export function jumpTo(p: Progress, n: number, date = today()): Progress {
   const levels: Record<number, LevelState> = {};
   for (let i = 1; i <= MAX_LEVEL; i++) {
-    const old = p.levels[i] ?? { sessions: 0 };
+    const old: LevelState = p.levels[i] ?? { status: 'locked', sessions: 0 };
     levels[i] = i < n ? { ...old, status: 'passed', passedOn: old.passedOn ?? date } : i === n ? { ...old, status: 'active' } : { ...old, status: 'locked' };
   }
-  return { ...p, levels };
+  // Test-out means prerequisite heart words are known too; otherwise learner-aware text filtering would contradict the jump.
+  const items = { ...p.items };
+  for (const level of LEVELS.filter((l) => l.n < n)) for (const word of level.heartWords) {
+    const id = `h:${word}`;
+    if (!items[id]) items[id] = { id, kind: 'word', box: 3, due: addDays(date, 4), seen: 1, correct: 1, wrong: 0 };
+  }
+  return { ...p, track: 'levels', levels, items };
 }
 
 export function coldCheckDue(p: Progress, level: number, date = today()) {
@@ -160,14 +201,13 @@ export function coldCheckDue(p: Progress, level: number, date = today()) {
 }
 
 export function freshBasics(): Record<number, BasicsState> {
-  return Object.fromEntries(BASICS.map((b) => [b.n, { status: b.n === 1 ? 'active' : 'locked', sessions: 0 }]));
+  return Object.fromEntries(BASICS.map((b) => [b.n, { status: b.n === 1 ? 'active' : 'locked', sessions: 0 }])) as Record<number, BasicsState>;
 }
 
 export function currentBasics(p: Progress): number {
   return BASICS.find((b) => p.basics[b.n]?.status === 'active')?.n ?? BASICS[BASICS.length - 1].n;
 }
 
-/** Basics lesson passed: unlock the next one; after the last one, move on to level 1. */
 export function passBasics(p: Progress, n: number, date = today()): Progress {
   const basics = { ...p.basics, [n]: { ...p.basics[n], status: 'passed' as const, passedOn: date } };
   const next = BASICS.find((b) => b.n > n);
@@ -175,7 +215,6 @@ export function passBasics(p: Progress, n: number, date = today()): Progress {
   return { ...p, basics, track: next ? p.track : 'levels' };
 }
 
-/** Grown-up choice: start (or go back to) Basics lesson n, or skip Basics and go to the levels. */
 export function setTrack(p: Progress, track: Progress['track'], basicsLesson = 1): Progress {
   if (track === 'levels') return { ...p, track };
   const basics = Object.fromEntries(BASICS.map((b) => [b.n, { ...(p.basics[b.n] ?? { sessions: 0 }), status: b.n < basicsLesson ? 'passed' : b.n === basicsLesson ? 'active' : 'locked' }])) as Record<number, BasicsState>;

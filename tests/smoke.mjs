@@ -19,14 +19,27 @@ await page.goto(BASE + '/?simvoice');
 await page.addInitScript(() => { window.speechSynthesis && (window.speechSynthesis.speak = (u) => setTimeout(() => u.onend && u.onend(), 400)); });
 const idb = (fn, arg) => page.evaluate(fn, arg);
 const yesterday = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
+// Seed the household store directly: the app writes `kite:household` on first load, so a legacy `progress`
+// record written afterwards would never be migrated. One profile, on the Levels track, L1 in cold check.
 await idb((y) => new Promise((r) => {
   const req = indexedDB.open('keyval-store');
   req.onupgradeneeded = () => req.result.createObjectStore('keyval');
   req.onsuccess = () => {
-    const levels = {}; for (let n = 1; n <= 10; n++) levels[n] = { status: n === 1 ? 'cold' : 'locked', sessions: n === 1 ? 1 : 0 };
+    const levels = {}; for (let n = 1; n <= 20; n++) levels[n] = { status: n === 1 ? 'cold' : 'locked', sessions: n === 1 ? 1 : 0 };
     levels[1].checkoutPassedOn = y;
-    const p = { version: 1, settings: { childName: 'Test', capMinutes: 15, parentScoring: true, readinessPassed: true, micSensitivity: 3 }, levels, items: {}, sessions: [], errors: {} };
-    const tx = req.result.transaction('keyval', 'readwrite'); tx.objectStore('keyval').put(p, 'progress'); tx.oncomplete = () => r();
+    const basics = {}; for (let n = 1; n <= 10; n++) basics[n] = { status: 'passed', sessions: 1, passedOn: y };
+    const p = {
+      version: 2, curriculumVersion: 'reading-2026-09-18-v2', track: 'levels', basics,
+      settings: { childName: 'Test', capMinutes: 15, parentScoring: true, readinessPassed: true, micSensitivity: 3, rev: 2 },
+      levels, items: {}, sessions: [], errors: {}, readAloud: {}, readiness: { date: y, blending: 4, tracking: 4 },
+    };
+    const household = {
+      version: 1, activeProfileId: 'p-test',
+      profiles: { 'p-test': { id: 'p-test', name: 'Test', createdAt: y + 'T12:00:00.000Z', progress: p } },
+    };
+    const store = req.result.transaction('keyval', 'readwrite').objectStore('keyval');
+    store.put(household, 'kite:household');
+    store.transaction.oncomplete = () => r();
   };
 }), yesterday);
 await page.reload(); await page.waitForTimeout(800);
@@ -75,7 +88,7 @@ async function runSession(label, maxSteps, shots = []) {
   }
   return seen;
 }
-const readProg = () => idb(() => new Promise((r) => { const req = indexedDB.open('keyval-store'); req.onsuccess = () => { const g = req.result.transaction('keyval').objectStore('keyval').get('progress'); g.onsuccess = () => r(g.result); }; }));
+const readProg = () => idb(() => new Promise((r) => { const req = indexedDB.open('keyval-store'); req.onsuccess = () => { const g = req.result.transaction('keyval').objectStore('keyval').get('kite:household'); g.onsuccess = () => { const h = g.result; r(h && h.profiles[h.activeProfileId].progress); }; }; }));
 
 const target = +(process.env.LEVEL ?? 9);
 const s1 = await runSession('cold', 90, []);
@@ -88,7 +101,7 @@ await page.locator('.corner').dispatchEvent('pointerdown');
 await page.waitForTimeout(1800);
 await page.getByText('Settings', { exact: true }).click();
 await page.locator('select').selectOption(String(target));
-await page.getByText('Allow one more session today').click();
+await page.getByText("Clear today's recommendation").click();
 await page.waitForTimeout(500);
 const s2 = await runSession(`L${target}`, 220, ['glide', 'alien', 'build', 'sentence', 'readMatch', 'whichWord', 'hold', 'ear', 'banner', 'heart', 'hearTap']);
 p = await readProg();
@@ -99,7 +112,7 @@ console.log('B misses:', JSON.stringify(p.errors));
 await page.waitForTimeout(9500);
 await page.locator('.corner').dispatchEvent('pointerdown'); await page.waitForTimeout(1800);
 await page.getByText('Settings', { exact: true }).click();
-await page.getByText('Allow one more session today').click();
+await page.getByText("Clear today's recommendation").click();
 await page.waitForTimeout(500);
 const s3 = await runSession(`L${target}b`, 220, ['story', 'banner']);
 p = await readProg();

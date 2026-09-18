@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { meter } from '../audio/mic';
 import { Utter, say, saySegmented, sayYes, stop } from '../audio/speaker';
 import { GRAPHEME_BY_ID } from '../content/phonemes';
-import { displayChunks, segment, trickyParts } from '../engine/decodable';
+import { displayChunks, encodingChunks, hasVoicedFinalS, segment, trickyParts } from '../engine/decodable';
 import { ANCHORS, COMPOUND, SYLLABLE } from '../content/basics';
 import { Caption, Kite, PictureTile, ReplayButton, Tile, Waveform, useTap } from '../ui/components';
 import { useSoundTry, useSpokenScore } from './scoring';
@@ -28,7 +28,7 @@ export function Reveal({ step, onDone }: ActivityProps) {
   }, [g]);
   const next = async () => {
     if (phase === 'you1') { setPhase('model'); await say({ g }, { pause: 200 }, { p: 'your_turn' }); setPhase('you2'); }
-    else if (phase === 'you2') { setPhase('done'); await sayYes(); onDone(null); }
+    else if (phase === 'you2') { setPhase('done'); onDone(null); }
   };
   const { compare } = useSoundTry(g, phase === 'you1' || phase === 'you2', next);
   const tap = useTap(next);
@@ -153,7 +153,6 @@ export function Hold({ step, onDone }: ActivityProps) {
           setWins((w) => {
             const n = w + 1;
             (async () => {
-              await sayYes();
               if (n >= 2) { if (!done.current) { done.current = true; onDone(null); } }
               else { setProgress(0); await say({ g }); setLive(true); }
             })();
@@ -186,6 +185,7 @@ export function Glide({ step, ctx, onDone, setNeutral }: ActivityProps) {
   const word = step.word!;
   const chunks = displayChunks(word);
   const segs = segment(word) ?? [];
+  const voicedSuffix = hasVoicedFinalS(word);
   const lastIsStop = !GRAPHEME_BY_ID[segs[segs.length - 1]]?.continuous;
   const endAt = chunks.length - (lastIsStop ? 0.6 : 0.05);
   const alien = step.kind === 'alien';
@@ -196,7 +196,10 @@ export function Glide({ step, ctx, onDone, setNeutral }: ActivityProps) {
   const [mode, setMode] = useState<'intro' | 'glide' | 'fast'>('intro');
   const fallsRef = useRef(0);
 
-  const model = () => say({ p: 'my_turn' }, { pause: 200 }, ...segs.flatMap((g, i) => (i ? [{ pause: 60 }, { g }] : [{ g }])), { pause: 350 }, { w: word });
+  // Words ending in a voiced -s (pins, digs) must not model an isolated /s/: say the whole word instead
+  const model = () => voicedSuffix
+    ? say({ p: 'my_turn' }, { pause: 200 }, { w: word })
+    : say({ p: 'my_turn' }, { pause: 200 }, ...segs.flatMap((g, i) => (i ? [{ pause: 60 }, { g }] : [{ g }])), { pause: 350 }, { w: word });
 
   useEffect(() => {
     say({ p: alien ? 'alien' : 'glide' }).then(() => setMode('glide'));
@@ -247,7 +250,7 @@ export function Glide({ step, ctx, onDone, setNeutral }: ActivityProps) {
       <div className="track">
         <Kite fall={fall} style={{ left: `calc(${pct}% - 9vmin)`, top: mode === 'fast' ? '-2vmin' : pos > 0 ? '1vmin' : '6vmin' }} />
         {chunks.map((c, i) => (
-          <Tile key={i} label={c} word state={mode === 'fast' ? 'good' : pos > 0 && i === current ? 'selected' : undefined} onTap={() => segs[i] && say({ g: segs[i] })} />
+          <Tile key={i} label={c} word state={mode === 'fast' ? 'good' : pos > 0 && i === current ? 'selected' : undefined} onTap={() => segs[i] && (voicedSuffix && i === chunks.length - 1 ? say({ w: word }) : say({ g: segs[i] }))} />
         ))}
         <div className="arrow" style={{ width: `${pct}%` }} />
       </div>
@@ -293,8 +296,9 @@ export function WhichWord({ step, onDone, setNeutral }: ActivityProps) {
 /* ---------- A9 Build It ---------- */
 export function Build({ step, onDone, setNeutral }: ActivityProps) {
   const word = step.word!;
-  const segs = segment(word)!;
+  const segs = encodingChunks(word);
   const tiles = [...new Set(step.options!)];
+  const tileSound = (t: string) => (t.length === 2 && t[0] === t[1] ? t[0] : t);
   const [filled, setFilled] = useState(0);
   const [hint, setHint] = useState(false);
   const [locked, setLocked] = useState(false);
@@ -308,15 +312,15 @@ export function Build({ step, onDone, setNeutral }: ActivityProps) {
       setHint(false);
       const n = filled + 1;
       setFilled(n);
-      say({ g: t });
+      say({ g: tileSound(t) });
       if (n === segs.length) { setLocked(true); await wait(500); await say({ w: word }); await sayYes(); onDone(!erred.current); }
       return;
     }
     erred.current = true;
     setLocked(true);
     setNeutral(true);
-    await saySegmented(segs, 120);
-    await say({ pause: 200 }, { g: segs[filled] });
+    await saySegmented(segment(word) ?? [], 120);
+    await say({ pause: 200 }, { g: tileSound(segs[filled]) });
     setNeutral(false);
     setHint(true); setLocked(false);
   };
@@ -456,7 +460,7 @@ export function HeartWord({ step, ctx, onDone, setNeutral }: ActivityProps) {
     // eslint-disable-next-line
   }, []);
   const next = useTap(() => onDone(null));
-  useUtterance(meter.ready && ready && !!step.model, () => sayYes().then(() => onDone(null)), 600);
+  useUtterance(meter.ready && ready && !!step.model, () => onDone(null), 600);
   const { strip } = useSpokenScore({
     enabled: ready && !step.model, parentScoring: ctx.settings.parentScoring, onDone, setNeutral,
     correction: () => correctSpoken({ w: word }),
@@ -537,7 +541,7 @@ export function Meet({ step, onDone }: ActivityProps) {
       .then(() => setPhase('you'));
     // eslint-disable-next-line
   }, [g]);
-  const advance = async () => { if (phase !== 'you') return; setPhase('done'); await sayYes(); onDone(null); };
+  const advance = async () => { if (phase !== 'you') return; setPhase('done'); onDone(null); };
   const next = useTap(advance);
   const { compare } = useSoundTry(g, phase === 'you', advance);
   return (

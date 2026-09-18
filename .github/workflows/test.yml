@@ -1,9 +1,9 @@
 name: Test
 
-# Checks every push. Deploys happen from the Mac (`npm run build && npx wrangler deploy`), so there is no deploy step here.
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -19,3 +19,15 @@ jobs:
       - run: npm test
       - run: npm run validate
       - run: npm run build
+      - name: Install browser for smoke test
+        run: npx playwright install --with-deps chromium
+      - name: Browser smoke test
+        shell: bash
+        run: |
+          npm run preview -- --port 4173 --strictPort >/tmp/kite-preview.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:4173/ >/dev/null; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:4173/ >/dev/null || { cat /tmp/kite-preview.log; exit 1; }
+          npm run test:e2e

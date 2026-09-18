@@ -1,93 +1,70 @@
 # Kite Reader
 
-A private, home-built early-reading tutor (Mentava-style systematic phonics, Direct Instruction delivery) for one 4-year-old. Private web app behind Cloudflare Access; works offline once loaded.
+A private, home-built early-reading tutor for a household: systematic phonics, explicit instruction, parent-confirmed scoring, spaced review, connected text and read-aloud books. It is designed to work offline once loaded and is normally served behind Cloudflare Access.
 
-Curriculum spec: `Curriculum v1.md` in the Obsidian vault (`04-personal/Mentava Clone`).
+## Current architecture
 
-## Status — v0.2
-
-- **Basics track** (before level 1, where new learners start): 10 guided lessons, one letter sound each (s a t i p n m), say-it-fast (compound → syllables → stretched sounds), rhyme shown then asked, left-to-right game, "watch me" demo before every game; 10-minute sessions (`src/content/basics.ts`, `src/engine/basics.ts`)
-- Readiness check (dogfish/fishdog directionality + oral blending, using only unambiguous pictures) (gates level 1)
-- Levels 1–20 in the **Jolly Phonics order** (re-sequenced 2026-09-17): a, t, s, i, p, n, review (the/is/I, -s), c k ck, e, h, r, m, d, review (clusters; he/she/we/me/be/to/has/his/as), g, o, u, l, f, b (you/are/was/of/said/my). Most beginner decodable books use this order; the Mentava order made almost none readable
-- Activities: Ear Game (rhyme, onset-rime, blending, first and final sound), Sound Reveal, Hear & Tap (+ confusable pairs b/d, f/v, r/w), See & Say, Hold It, Glide Blend + Say It Fast, Alien Names, Read & Match, Which Word, Build It, Sentence Read, **Story** (levels 5–20), Heart Word (modelled first, then read cold; tricky part marked)
-- Watercolour illustrations for every picture word and story (`npm run pictures`, Gemini with approved character sheets)
-- **SPELD SA free decodable readers** (60 books, `~/Documents/eBooks/SPELD SA`) on his shelf, each unlocking at the level he can read it (31 readable by level 20, 37 with pre-teaching)
-- Themed stories: Pooh and Pip the piglet (Winnie-the-Pooh), Tin Man (Oz). Vocabulary cues from *Teach Your Child to Read in 100 Easy Lessons*; no text copied.
-- Mastery engine: in-session re-injection of misses, Leitner spaced review, 10-item level checkout + next-day cold check, fatigue stop, active-time session cap, level-complete celebration
-- DI error correction: My turn → Together → Your turn. No points/streaks/currency
-- Grown-ups area (press and hold 🔒 top-left 1.5 s): progress, trouble spots, record pure sounds and **export them into the app** (`npm run sounds`), books, settings, backup/import
-- Content validator checks letters taught **and** patterns taught (clusters, -s, heart words) via `wordLevel.ts`
-
-**Manual steps for the grown-up: see `MANUAL-TASKS.md`.**
-
-## Books
-
-Public-domain read-aloud books from the family library live in `src/content/readaloud/` (text only, lazy-loaded):
-
-- *The Wonderful Wizard of Oz* (Baum, 1900): 24 chapters. Source ebook was an OCR scan; auto-corrected, and a few typos may remain. Swap in a clean copy (e.g. Project Gutenberg #55) and re-run the extraction if needed.
-- *Winnie-the-Pooh* (Milne, 1926): introduction + 10 chapters. Public domain in the US; in the EU/Portugal from 1 Jan 2027.
-
-What they power:
-- **Story chair** (📚 on home): grown-up reads aloud; words the child can already decode are highlighted, 3 vocabulary words per chapter, discussion prompts, chapters-read log.
-- **Real-book sentences** in sessions once decodable (`npm run mine` → `src/content/bookSentences.json`).
-- **Readability** per level in Grown-ups → Books.
-
-`src/engine/wordLevel.ts` estimates the curriculum level (1–120) for any English word; `src/content/common-words.txt` enables compound splitting in scripts.
+- **Multiple learner profiles.** Each learner has isolated Basics/Level progress, SRS items, errors, readiness, read-aloud history and session logs. Recorded phoneme audio, bundled books and app assets are shared on the device.
+- **Basics B1–B10.** Oral blending/listening, left-to-right tracking, rhyme, and first letter sounds. New sounds now require both receptive and productive mastery probes before the lesson passes.
+- **Reading Levels 1–20.** Jolly-informed/adapted early sequence, not a claim of exact Jolly fidelity. Kite uses `a,t,s` first to unlock `at`, then converges on the familiar early sound set.
+- **Learner-aware knowledge.** Connected text and book highlighting use what the active learner has actually been taught, especially heart words; being “at Level 14” no longer automatically makes all L14 heart words known.
+- **Heart words.** At most three new heart words are introduced per session. A level cannot enter checkout until every heart word assigned to that level has been introduced and answered correctly at least once.
+- **Three navigation modes.** Guided writes normal progress; Practice is for reached material and may feed SRS but never unlocks levels; Explore is an unlimited sandbox and writes no learner state at all.
+- **Encoding and decoding are separate representations.** Build It preserves orthography (`h-i-ss`, `h-i-ll`, `o-ff`) while blending may collapse doubled consonants phonemically.
+- **Mastery.** In-session reinjection, Leitner spaced review, checkout, next-day cold check, and required probes for newly taught concepts.
+- **Daily/session limits are recommendations, not locks.** A guided session can stop at its active-minute target, but Home always allows another. Explore ignores caps.
 
 ## Run locally
 
 ```bash
 npm install
-npm run dev          # http://127.0.0.1:5173 (mic works on localhost)
-npm test             # unit tests (decoder, spaced repetition)
-npm run validate     # every word/sentence decodable at its level
-npm run build && npm run preview
-node tests/smoke.mjs # end-to-end session with simulated voice (needs preview on :4173)
+npm run dev
+npm test
+npm run validate
+npm run build
+npm run preview -- --port 4173 --strictPort
+npm run test:e2e
 ```
 
+CI runs unit tests, content validation, the production build and the Playwright smoke test.
 
 ## Audio
 
-Priority per sound: **your recording** (Grown-ups → Sounds) → generated mp3 in `public/audio` → device TTS.
+Priority for phonemes is:
 
-- Pure letter sounds: record them in the app (≈10 min). TTS voices add a schwa ("muh"), which breaks blending.
-- Instructions and words: ElevenLabs, generated once and committed:
+1. a grown-up's recording from **Grown-ups → Sounds**
+2. baked audio in `public/audio`
+3. device fallback where available
 
-```bash
-ELEVENLABS_API_KEY=... ELEVENLABS_VOICE_ID=... npm run audio
-git add public/audio && git commit -m "audio" && git push
-```
+The app does **not** use ElevenLabs to judge phoneme correctness. The acoustic checker is deliberately loose and is coaching-only; scored spoken answers require grown-up confirmation.
 
-No API keys are used at runtime.
+`worker/index.ts` can generate missing **word/phrase** audio at runtime using the server-side `ELEVENLABS_API_KEY` secret and KV caching. The secret is never shipped to the browser.
 
-## Running it
+For pure phonemes, record the sounds yourself and bake them into the app with `npm run sounds`. The generator fallback uses IPA; it must never substitute a letter name (for example, `i` must be short /ɪ/, not “aye”).
 
-Web: https://reader.viableplanet.eu, a Cloudflare Worker (`kite-reader`) **behind Cloudflare Access**, so only allowed emails can open it. Private family app.
+## Books
 
-Deploy: `npm run build && npx wrangler deploy` from the Mac. GitHub only runs the tests. Local: `npm run local` → http://127.0.0.1:5173.
+`src/content/readaloud/` contains read-aloud text. `public/books/` may contain page images/text extracted from family-owned commercial books.
 
-## My books (family's own copies)
+Book readiness, Book Check, Story Chair highlighting and session sentence selection now share learner-aware decodability logic. Recurring proper names are pre-teach candidates; they are not silently counted as already readable.
 
-Picture books from `~/Documents/eBooks` are bundled into `public/books/` (page pictures, text, readability):
+## Persistence and backups
 
-```bash
-npm run books                      # rebuild all (macOS: PDFKit + Apple Vision OCR)
-npm run books -- green-eggs-and-ham  # just one
-```
+Kite stores a household object in IndexedDB under `kite:household`. An existing legacy `progress` object is automatically migrated into the first learner profile without discarding history.
 
-- Books are listed in `scripts/books/build.ts`. OCR mistakes are fixed in `scripts/books/overrides.json` (page index → text, `null` hides a page), so fixes survive rebuilds.
-- Each book gets *readable at* (≥95% of words decodable) and *with pre-teaching* (≥90%, ≤10 words). The app puts it on the child's **My books** shelf (decodable words highlighted, tap a word to hear it), marks it **★ Ready** when he can read it, adds its pre-teach words as **heart words** once it's within 10 levels, and uses its decodable sentences in practice.
-- Pages are precached by the service worker, so books work offline on the tablet.
-- Not bundled: *Teach Your Child to Read in 100 Easy Lessons* (a parent's manual, not a reader), and the Oz/Pooh EPUBs (already in `src/content/readaloud/`).
+Backups from **Grown-ups → Backup** contain all learner profiles. Device-level phoneme recordings remain separate and can be exported/baked with the sound workflow.
 
-## Adding levels
+Progress includes both a schema version and a curriculum version so future curriculum resequencing can be migrated deliberately rather than silently reinterpreting old mastery.
 
-1. Add graphemes to `src/content/phonemes.ts`, a level to `src/content/levels.ts`.
-2. `npm run validate` must pass. Add pictures to `src/content/pictures.ts` where useful.
-3. `npm run audio` for new words.
+## Adding curriculum
 
-## Roadmap
-- v0.2: real-device tuning on iPad (mic thresholds, timings), decodable mini-stories per level, story-time polish
-- v0.3: Levels 11–20, parent weekly summary, recordings backup
-- v0.4: Levels 21–50 (digraphs, clusters, heart words), fluency timing
-- Math strand M0 (separate session)
+When adding or resequencing material, preserve these invariants:
+
+- connected text must be readable from actual learner knowledge plus concepts explicitly introduced earlier in that same session;
+- no level may enter checkout while a required concept remains unintroduced/unmastered;
+- encoding tiles represent spelling, not phoneme count;
+- a spelling/pronunciation mismatch must never be modelled with the wrong isolated phoneme;
+- Explore must never write learner state;
+- content validation, Book Check, book highlighting and runtime sentence eligibility should use the same decodability rules where they answer the same question.
+
+See `CHANGELIST.md` for the audit-driven changes in this revision.
