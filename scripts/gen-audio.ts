@@ -9,15 +9,15 @@
  * (Parent > Sounds) still overrides any sound that isn't right.
  */
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { tokenize } from '../src/engine/wordLevel';
-import { withPronunciation } from '../src/content/pronounce';
+import { tokenize } from '../src/modules/reading/engine/wordLevel';
+import { withPronunciation } from '../src/modules/reading/content/pronounce';
 import { finishClip } from './audio-finish';
 import { join } from 'node:path';
-import { PROMPTS } from '../src/content/prompts';
-import { LEVELS } from '../src/content/levels';
-import { SOUNDS as GRAPHEMES } from '../src/content/phonemes';
-import { PICTURES } from '../src/content/pictures';
-import { BASICS_PICTURE_WORDS, COMPOUND, SYLLABLE } from '../src/content/basics';
+import { PROMPTS } from '../src/modules/reading/content/prompts';
+import { LEVELS } from '../src/modules/reading/content/levels';
+import { SOUNDS as GRAPHEMES } from '../src/modules/reading/content/phonemes';
+import { PICTURES } from '../src/modules/reading/content/pictures';
+import { BASICS_PICTURE_WORDS, COMPOUND, SYLLABLE } from '../src/modules/reading/content/basics';
 
 const KEY = process.env.ELEVENLABS_API_KEY;
 // Liam (energetic young American man), chosen by ear on 2026-09-16 over Matilda, Jessica, Sarah, Will and Chris.

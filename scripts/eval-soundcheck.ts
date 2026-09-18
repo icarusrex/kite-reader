@@ -5,7 +5,7 @@
  *   npx tsx scripts/eval-soundcheck.ts [folder with words/*.wav]
  */
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { acceptSound, extract, kindOf, SoundFeatures } from '../src/audio/soundCheck';
+import { acceptSound, extract, kindOf, SoundFeatures } from '../src/modules/reading/audio/soundCheck';
 
 function wav(file: string) {
   const b = readFileSync(file);

@@ -64,8 +64,15 @@ const kindOf = () => page.evaluate(() => {
   return 'hearTap';
 });
 
+// Kite opens on the Reading/Math launcher; step into Reading when it is showing.
+async function openReading() {
+  const card = page.locator('button.card', { hasText: 'Reading' });
+  if (await card.count()) { await card.click(); await page.waitForTimeout(600); }
+}
+
 async function runSession(label, maxSteps, shots = []) {
-  await page.locator('button[aria-label=Start]').dispatchEvent('pointerdown');
+  await openReading();
+  await page.locator('button[aria-label="Start reading"]').dispatchEvent('pointerdown');
   const seen = [];
   for (let i = 0; i < maxSteps; i++) {
     await page.waitForTimeout(1500);
@@ -92,7 +99,7 @@ async function runSession(label, maxSteps, shots = []) {
   }
   return seen;
 }
-const readProg = () => idb(() => new Promise((r) => { const req = indexedDB.open('keyval-store'); req.onsuccess = () => { const g = req.result.transaction('keyval').objectStore('keyval').get('kite:household'); g.onsuccess = () => { const h = g.result; r(h && h.profiles[h.activeProfileId].progress); }; }; }));
+const readProg = () => idb(() => new Promise((r) => { const req = indexedDB.open('keyval-store'); req.onsuccess = () => { const g = req.result.transaction('keyval').objectStore('keyval').get('kite:household'); g.onsuccess = () => { const h = g.result; const pr = h && h.profiles[h.activeProfileId]; r(pr && (pr.modules?.reading ?? pr.progress)); }; }; }));
 
 // Fail fast if the fixture did not take: otherwise the whole run silently exercises a fresh Basics learner.
 const seeded = await readProg();

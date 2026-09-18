@@ -13,7 +13,7 @@ interface Env {
   ELEVENLABS_API_KEY: string;
 }
 
-import { withPronunciation } from '../src/content/pronounce';
+import { withPronunciation } from '../src/modules/reading/content/pronounce';
 
 // Same voice and model as scripts/gen-audio.ts
 const VOICE = 'TX3LPaxmHKxFdv7VOQHJ';

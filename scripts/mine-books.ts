@@ -2,15 +2,15 @@
  * Mine the public-domain read-aloud books:
  *  - sentences decodable at each level (used as "real book" sentences in sessions)
  *  - per-chapter readability at curriculum checkpoints
- * Writes src/content/bookSentences.json and src/content/readaloud/stats.json
+ * Writes src/modules/reading/content/bookSentences.json and src/modules/reading/content/readaloud/stats.json
  *   npm run mine
  */
 import { readFileSync, writeFileSync } from 'node:fs';
-import { tokenize, wordLevel, BEYOND, setDictionary } from '../src/engine/wordLevel';
-setDictionary(readFileSync('src/content/common-words.txt', 'utf8').split('\n'));
+import { tokenize, wordLevel, BEYOND, setDictionary } from '../src/modules/reading/engine/wordLevel';
+setDictionary(readFileSync('src/modules/reading/content/common-words.txt', 'utf8').split('\n'));
 
 interface Book { id: string; title: string; chapters: { n: number; title: string; paragraphs: string[] }[] }
-const BOOKS = ['wizard-of-oz', 'winnie-the-pooh'].map((id) => JSON.parse(readFileSync(`src/content/readaloud/${id}.json`, 'utf8')) as Book);
+const BOOKS = ['wizard-of-oz', 'winnie-the-pooh'].map((id) => JSON.parse(readFileSync(`src/modules/reading/content/readaloud/${id}.json`, 'utf8')) as Book);
 const CHECKPOINTS = [20, 50, 71, 103, 120];
 // Proper nouns a child learns as whole words from the story; treated as pre-taught names.
 const NAMES = new Set(['dorothy', 'toto', 'oz', 'pooh', 'piglet', 'eeyore', 'kanga', 'roo', 'owl', 'rabbit', 'christopher', 'robin', 'em', 'henry']);
@@ -48,8 +48,8 @@ for (const b of BOOKS) {
 }
 
 sentences.sort((a, b) => a.level - b.level || a.words - b.words);
-writeFileSync('src/content/bookSentences.json', JSON.stringify(sentences, null, 0));
-writeFileSync('src/content/readaloud/stats.json', JSON.stringify(stats, null, 1));
+writeFileSync('src/modules/reading/content/bookSentences.json', JSON.stringify(sentences, null, 0));
+writeFileSync('src/modules/reading/content/readaloud/stats.json', JSON.stringify(stats, null, 1));
 
 const byBand = (lo: number, hi: number) => sentences.filter((s) => s.level >= lo && s.level <= hi).length;
 console.log(`sentences: ${sentences.length}`);

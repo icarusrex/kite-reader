@@ -1,8 +1,78 @@
-# Kite Reader
+# Kite
 
-A private, home-built early-reading tutor for a household: systematic phonics, explicit instruction, parent-confirmed scoring, spaced review, connected text and read-aloud books. It is designed to work offline once loaded and is normally served behind Cloudflare Access.
+Kite is a private, home-built early-learning tutor. The product shell is intentionally small and modular: **Core owns the learner and the experience; each learning module owns what learning means.**
 
-## Current architecture
+Current modules:
+
+- **Reading** — systematic phonics/early reading with its existing level, SRS, checkout and cold-check model.
+- **Math** — a separate learning-trajectory engine for early number, operations, geometry and measurement.
+
+This is not a plugin platform. Reading and Math are compiled into one app, share household infrastructure, and remain free to use different pedagogy and progress models.
+
+## Architecture
+
+```text
+src/
+  core/
+    App.tsx
+    app/                 household + store
+    audio/               genuinely generic speech primitive
+    screens/             module launcher
+    ui/                  shared UI primitives
+    storage.ts
+    module.ts             tiny static module registry
+
+  modules/
+    reading/
+      activities/
+      audio/              phoneme/prompt/recording-specific audio
+      books/
+      content/
+      engine/
+      screens/
+      ui/
+
+    math/
+      activities/
+      content/
+      engine/
+      screens/
+```
+
+The boundary is deliberate:
+
+- Core may know that Reading and Math modules exist at the composition/navigation layer.
+- Core does **not** define a generic mastery model, lesson graph, Leitner system, skill state, or curriculum abstraction.
+- Reading keeps its proven `Progress`, levels and checkout semantics.
+- Math keeps its own dependency graph, evidence model, misconceptions, representations and mastery phases.
+- Shared abstractions should be extracted only when two real modules genuinely need the same thing.
+
+## Learner data
+
+Each learner is now stored as:
+
+```ts
+interface LearnerProfile {
+  id: string;
+  name: string;
+  createdAt: string;
+  modules: {
+    reading: ReadingProgress;
+    math: MathProgress;
+  };
+}
+```
+
+Migration supports:
+
+1. old single-user Reading `progress` data;
+2. household v1 profiles containing `progress`;
+3. household v2 profiles containing `progress` + `math`;
+4. the current v3 `modules.reading` + `modules.math` format.
+
+The core store still exposes `progress/update/replace` as temporary Reading compatibility aliases so the stable Reading module did not need a risky mass rewrite during this structural refactor. New code should use `reading/updateReading/replaceReading`.
+
+## Reading module
 
 - **Multiple learner profiles.** Each learner has isolated Basics/Level progress, SRS items, errors, readiness, read-aloud history and session logs. Recorded phoneme audio, bundled books and app assets are shared on the device.
 - **Basics B1–B10.** Oral blending/listening, left-to-right tracking, rhyme, and first letter sounds. New sounds now require both receptive and productive mastery probes before the lesson passes.
@@ -13,6 +83,33 @@ A private, home-built early-reading tutor for a household: systematic phonics, e
 - **Encoding and decoding are separate representations.** Build It preserves orthography (`h-i-ss`, `h-i-ll`, `o-ff`) while blending may collapse doubled consonants phonemically.
 - **Mastery.** In-session reinjection, Leitner spaced review, checkout, next-day cold check, and required probes for newly taught concepts.
 - **Daily/session limits are recommendations, not locks.** A guided session can stop at its active-minute target, but Home always allows another. Explore ignores caps.
+
+## Math currently implemented
+
+The first 20 teachable units are encoded as a dependency graph:
+
+1. verbal count 1–5
+2. one-to-one counting 1–3
+3. cardinality 1–3
+4. perceptual subitizing 1–3
+5. construct 1–3
+6. numeral mapping 1–3
+7. compare quantities 1–3
+8. count/cardinality 1–5
+9. structured subitizing 4–5
+10. compare quantities 1–5
+11. compose/decompose 2–4
+12. compose/decompose 5
+13. numeral mapping 1–5
+14. order 1–5
+15. concrete addition/combine to 5
+16. concrete subtraction/separate to 5
+17. successor/predecessor to 5
+18. basic shape properties
+19. basic shape composition
+20. direct length comparison
+
+Math uses `unseen → introduced → practicing → provisional → secure → maintenance`, evidence across task forms/representations, delayed review, misconceptions and physical transfer. It does not inherit Reading levels or percentage checkout.
 
 ## Run locally
 
@@ -44,7 +141,7 @@ For pure phonemes, record the sounds yourself and bake them into the app with `n
 
 ## Books
 
-`src/content/readaloud/` contains read-aloud text. `public/books/` may contain page images/text extracted from family-owned commercial books.
+`src/modules/reading/content/readaloud/` contains read-aloud text. `public/books/` may contain page images/text extracted from family-owned commercial books.
 
 Book readiness, Book Check, Story Chair highlighting and session sentence selection now share learner-aware decodability logic. Recurring proper names are pre-teach candidates; they are not silently counted as already readable.
 
@@ -68,3 +165,8 @@ When adding or resequencing material, preserve these invariants:
 - content validation, Book Check, book highlighting and runtime sentence eligibility should use the same decodability rules where they answer the same question.
 
 See `CHANGELIST.md` for the audit-driven changes in this revision.
+## Design rule
+
+> **Core owns the learner and the experience. Modules own what learning means.**
+
+For personal use, keep this boring. Do not introduce dynamic plugins, package workspaces, dependency injection, a universal learning engine, or a generic curriculum DSL unless a real future module creates a concrete need.

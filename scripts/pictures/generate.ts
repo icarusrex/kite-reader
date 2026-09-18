@@ -160,7 +160,7 @@ export const SPECS: Record<string, Spec> = {
   gift: object('gift', 'a wrapped present with a big bow.'),
   mop: object('mop', 'a mop in a bucket.'),
 
-  // Story scenes, one per level with a story (src/content/levels.ts). Pip = the piglet sheet.
+  // Story scenes, one per level with a story (src/modules/reading/content/levels.ts). Pip = the piglet sheet.
   'story-5': scene('The little piglet from reference 1 sits next to a garden water tap, and a boy in a green top sits beside him.', ['pig']),
   'story-6': scene('The little piglet from reference 1 sits in a big tin can; a grandma sits in a big pan and a boy sits in a tin pan, all smiling.', ['pig']),
   'story-7': scene('The teddy bear from reference 1 sits in a big tin can; the little piglet from reference 2 sits in a big pan nearby.', ['pooh', 'pig']),

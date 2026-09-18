@@ -11,7 +11,7 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync, existsSync, mkdtempSync
 import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
 import JSZip from 'jszip';
-import { analyzeBook, Book, BookPage, LibraryEntry } from '../../src/books/analyze';
+import { analyzeBook, Book, BookPage, LibraryEntry } from '../../src/modules/reading/books/analyze';
 
 const SRC = process.env.BOOKS_DIR ?? join(homedir(), 'Documents/eBooks');
 const OUT = 'public/books';
@@ -149,7 +149,7 @@ function cleanLines(lines: string[]) {
   return lines.map((l) => l.replace(/\s+/g, ' ').trim()).filter((l) => /[A-Za-z]/.test(l) && !/^\d+$/.test(l)).join('\n');
 }
 
-const dict = new Set(readFileSync('src/content/common-words.txt', 'utf8').split('\n'));
+const dict = new Set(readFileSync('src/modules/reading/content/common-words.txt', 'utf8').split('\n'));
 const overrides: Record<string, Record<string, string | null>> = existsSync('scripts/books/overrides.json') ? JSON.parse(readFileSync('scripts/books/overrides.json', 'utf8')) : {};
 const only = process.argv.slice(2).filter((a) => !a.startsWith('--'));
 const extract = extractor();

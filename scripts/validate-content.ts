@@ -1,6 +1,6 @@
-import { LEVELS } from '../src/content/levels';
-import { checkText } from '../src/engine/decodable';
-import { tokenize, wordLevel } from '../src/engine/wordLevel';
+import { LEVELS } from '../src/modules/reading/content/levels';
+import { checkText } from '../src/modules/reading/engine/decodable';
+import { tokenize, wordLevel } from '../src/modules/reading/engine/wordLevel';
 
 // Two checks: letters taught so far (decodable.ts), and the full scope & sequence (wordLevel.ts), which also
 // catches patterns taught later even when every letter is known (clusters like "and" = nd at L27, "is" = L35).
