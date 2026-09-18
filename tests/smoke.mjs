@@ -3,11 +3,13 @@
 import { chromium } from 'playwright';
 const BASE = process.env.BASE ?? 'http://127.0.0.1:4173';
 const SHOTS = process.env.SHOTS ?? '/tmp/kite-shots';
-import { mkdirSync } from 'node:fs';
+import { existsSync, mkdirSync } from 'node:fs';
 mkdirSync(SHOTS, { recursive: true });
+// Browser choice: CHANNEL=chrome uses the installed Chrome (handy on a Mac), CHROMIUM=/path points at a specific
+// build, and with neither set Playwright launches the chromium it downloaded itself (what CI does).
+const explicitChromium = [process.env.CHROMIUM, '/opt/pw-browsers/chromium'].find((p) => p && existsSync(p));
 const browser = await chromium.launch({
-  // On a Mac with Chrome installed: CHANNEL=chrome node tests/smoke.mjs
-  ...(process.env.CHANNEL ? { channel: process.env.CHANNEL } : { executablePath: process.env.CHROMIUM ?? '/opt/pw-browsers/chromium' }),
+  ...(process.env.CHANNEL ? { channel: process.env.CHANNEL } : explicitChromium ? { executablePath: explicitChromium } : {}),
   args: ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream', '--autoplay-policy=no-user-gesture-required'],
 });
 const ctx = await browser.newContext({ viewport: { width: 1180, height: 820 }, hasTouch: true, permissions: ['microphone'] });
@@ -21,6 +23,8 @@ const idb = (fn, arg) => page.evaluate(fn, arg);
 const yesterday = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
 // Seed the household store directly: the app writes `kite:household` on first load, so a legacy `progress`
 // record written afterwards would never be migrated. One profile, on the Levels track, L1 in cold check.
+// Wait for that first-load write to land, or it races the fixture and the app starts a fresh Basics learner.
+await page.waitForTimeout(1200);
 await idb((y) => new Promise((r) => {
   const req = indexedDB.open('keyval-store');
   req.onupgradeneeded = () => req.result.createObjectStore('keyval');
@@ -42,7 +46,7 @@ await idb((y) => new Promise((r) => {
     store.transaction.oncomplete = () => r();
   };
 }), yesterday);
-await page.reload(); await page.waitForTimeout(800);
+await page.reload(); await page.waitForTimeout(1200);
 
 const kindOf = () => page.evaluate(() => {
   const st = document.querySelector('.stage'); if (!st) return '?';
@@ -89,6 +93,12 @@ async function runSession(label, maxSteps, shots = []) {
   return seen;
 }
 const readProg = () => idb(() => new Promise((r) => { const req = indexedDB.open('keyval-store'); req.onsuccess = () => { const g = req.result.transaction('keyval').objectStore('keyval').get('kite:household'); g.onsuccess = () => { const h = g.result; r(h && h.profiles[h.activeProfileId].progress); }; }; }));
+
+// Fail fast if the fixture did not take: otherwise the whole run silently exercises a fresh Basics learner.
+const seeded = await readProg();
+if (seeded?.track !== 'levels' || seeded.levels[1].status !== 'cold') {
+  throw new Error(`fixture not applied: track=${seeded?.track} L1=${JSON.stringify(seeded?.levels?.[1])}`);
+}
 
 const target = +(process.env.LEVEL ?? 9);
 const s1 = await runSession('cold', 90, []);
