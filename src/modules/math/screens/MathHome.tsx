@@ -4,10 +4,11 @@ import { ParentCorner } from '../../../core/ui/components';
 import { MathSkillId, MATH_SKILL_BY_ID, MATH_SKILLS } from '../content/skills';
 import { mathActiveFrontier } from '../engine/state';
 
-export function MathHome({ onGuided, onPractice, onExplore, onBack, onParent }: {
+export function MathHome({ onGuided, onPractice, onExplore, onLesson, onBack, onParent }: {
   onGuided: () => void;
   onPractice: () => void;
   onExplore: (skillId: MathSkillId) => void;
+  onLesson: (skillId: MathSkillId) => void;
   onBack: () => void;
   onParent: () => void;
 }) {
@@ -30,10 +31,24 @@ export function MathHome({ onGuided, onPractice, onExplore, onBack, onParent }: 
         <button className="btn light" onClick={onBack}>Kite</button>
       </div>
       <div className="card" style={{ width: 'min(820px, 88vw)' }}>
-        <h2 style={{ marginTop: 0 }}>Explore</h2>
-        <p style={{ marginTop: 0 }}>Sandbox mode never changes progress.</p>
-        <div className="row" style={{ justifyContent: 'flex-start', flexWrap: 'wrap', gap: 8 }}>
-          {MATH_SKILLS.map((skill) => <button key={skill.id} className="btn light" onClick={() => onExplore(skill.id)}>{skill.title}</button>)}
+        <h2 style={{ marginTop: 0 }}>All lessons</h2>
+        <p style={{ marginTop: 0 }}>
+          Pick any lesson — <b>Start</b> counts towards progress, <b>try</b> is a sandbox that never changes it.
+          Nothing is locked: if a lesson is too easy, skip past it.
+        </p>
+        <div style={{ display: 'grid', gap: 6 }}>
+          {MATH_SKILLS.map((skill) => {
+            const phase = math.skills[skill.id].phase;
+            const done = phase === 'secure' || phase === 'maintenance';
+            return <div key={skill.id} className="row" style={{ justifyContent: 'space-between', gap: 8, flexWrap: 'nowrap' }}>
+              <span style={{ flex: 1, minWidth: 0, textAlign: 'left', opacity: done ? .6 : 1 }}>
+                {done ? '✓ ' : ''}{skill.title}
+                {phase !== 'unseen' && !done && <small className="muted"> · {phase}</small>}
+              </span>
+              <button className="btn" onClick={() => onLesson(skill.id)}>Start</button>
+              <button className="btn light" onClick={() => onExplore(skill.id)}>try</button>
+            </div>;
+          })}
         </div>
       </div>
     </div>

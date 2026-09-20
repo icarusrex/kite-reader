@@ -152,6 +152,11 @@ function Compare({ task, onDone }: MathTaskViewProps) {
 
 function Partition({ task, onDone }: MathTaskViewProps) {
   const whole = task.target ?? 3;
+  // Declared before the hidden_part branch returns: hooks must run in the same
+  // order on every render, and num.compose.2_4 alternates between the two
+  // partition modes, so an early return above a useState is a crash waiting
+  // for the day this component is not remounted per task.
+  const [right, setRight] = useState(1);
   if (task.partitionMode === 'hidden_part') {
     return <div className="stage" style={{ gap: 24 }}>
       <Prompt task={task} />
@@ -159,7 +164,6 @@ function Partition({ task, onDone }: MathTaskViewProps) {
       <div className="row">{task.options?.map((n) => <button key={n} className="primary soft" style={{ width: 100, height: 100, fontSize: 44 }} onClick={() => onDone({ correct: n === task.hiddenPart, helpLevel: 'none', errorCode: n === task.hiddenPart ? undefined : task.expectedError })}>{n}</button>)}</div>
     </div>;
   }
-  const [right, setRight] = useState(1);
   const left = whole - right;
   return <div className="stage" style={{ gap: 20 }}>
     <Prompt task={task} />

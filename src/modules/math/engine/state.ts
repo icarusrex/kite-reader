@@ -53,6 +53,9 @@ export interface MathSessionLog {
   date: string;
   mode: MathSessionMode;
   skillIds: MathSkillId[];
+  /** The concept the session was actually built around. Optional because
+   *  sessions logged before this field existed do not carry it. */
+  primarySkillId?: MathSkillId;
   activeSeconds: number;
   attempts: number;
 }
@@ -210,6 +213,47 @@ export function recordMathAttempt(progress: MathProgress, attempt: MathAttempt):
 
 export function recordMathSession(progress: MathProgress, log: MathSessionLog): MathProgress {
   return { ...progress, sessions: [...progress.sessions, log] };
+}
+
+/** The concept the previous guided session was built around, so the planner can
+ *  avoid serving the same lesson twice in a row. */
+export function mathLastGuidedPrimary(progress: MathProgress): MathSkillId | undefined {
+  for (let i = progress.sessions.length - 1; i >= 0; i--) {
+    const s = progress.sessions[i];
+    if (s.mode === 'guided') return s.primarySkillId;
+  }
+  return undefined;
+}
+
+/** Grown-up override: "she already knows this". Mirrors Reading's
+ *  "Jump to level (marks earlier levels passed)" — it opens the frontier
+ *  immediately instead of making the child re-earn a concept they have. */
+export function mathMarkKnown(progress: MathProgress, skillId: MathSkillId, when = new Date().toISOString()): MathProgress {
+  const previous = progress.skills[skillId] ?? freshMathSkillState(skillId);
+  return {
+    ...progress,
+    skills: {
+      ...progress.skills,
+      [skillId]: {
+        ...previous,
+        phase: 'secure',
+        provisionalAt: previous.provisionalAt ?? when,
+        securedAt: previous.securedAt ?? when,
+        lastEvidenceAt: when,
+        nextReviewAt: mathAddDays(when.slice(0, 10), 21),
+        unresolvedErrors: [],
+      },
+    },
+  };
+}
+
+/** Undo of the above, and the way to send a concept back for more work. */
+export function mathResetSkill(progress: MathProgress, skillId: MathSkillId): MathProgress {
+  return {
+    ...progress,
+    skills: { ...progress.skills, [skillId]: freshMathSkillState(skillId) },
+    attempts: progress.attempts.filter((a) => a.skillId !== skillId),
+  };
 }
 
 export function mathSkillIsPrerequisiteReady(progress: MathProgress, skillId: MathSkillId) {

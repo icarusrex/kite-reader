@@ -37,6 +37,7 @@ export function MathSession({ mode = 'guided', skillId, onExit, onParent }: {
         date: mathToday(),
         mode,
         skillIds: [...new Set(plan.tasks.map((t) => t.skillId))],
+        primarySkillId: plan.primarySkillId,
         activeSeconds: active.current,
         attempts: attempts.current,
       }));

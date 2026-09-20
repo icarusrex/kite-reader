@@ -108,7 +108,7 @@ function Shell() {
   />;
   if (view === 'stories') return <StoryChair onClose={() => setView('reading-home')} />;
   if (view === 'readiness') return <Readiness onDone={() => setView('reading-home')} />;
-  if (view === 'math-home') return <MathHome onGuided={() => openMath('guided')} onPractice={() => openMath('practice')} onExplore={(id) => openMath('explore', id)} onBack={() => setView('launcher')} onParent={() => setView('math-progress')} />;
+  if (view === 'math-home') return <MathHome onGuided={() => openMath('guided')} onPractice={() => openMath('practice')} onExplore={(id) => openMath('explore', id)} onLesson={(id) => openMath('guided', id)} onBack={() => setView('launcher')} onParent={() => setView('math-progress')} />;
   if (view === 'math-progress') return <MathProgressScreen onClose={() => setView('math-home')} />;
   if (view === 'math-session') return <MathSession key={`${mathMode}:${mathSkill ?? 'auto'}`} mode={mathMode} skillId={mathSkill} onExit={() => setView('math-home')} onParent={() => setView('math-progress')} />;
   if (view === 'reading-session') return <Session

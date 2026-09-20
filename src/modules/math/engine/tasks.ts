@@ -90,7 +90,12 @@ const base = (
 export function modelTask(skillId: MathSkillId): MathTask {
   const spec = MATH_SKILL_BY_ID[skillId];
   return {
-    ...base(skillId, 'model', spec.goal, spec.taskFamilies[0], spec.representations[0], 'recognize', 'guided'),
+    // The heading is read aloud, so it uses the child-facing `title`
+    // ("Counting words to 5"), not `goal` — which is the curriculum statement
+    // written for grown-ups and was being spoken at a four-year-old:
+    // "Produce the stable number-word sequence from one to five."
+    // The teaching sentence under it still explains the idea in child language.
+    ...base(skillId, 'model', spec.title, spec.taskFamilies[0], spec.representations[0], 'recognize', 'guided'),
     model: true,
   };
 }

@@ -1,5 +1,5 @@
 import { MathSkillId, MATH_SKILL_BY_ID, MATH_SKILLS } from '../content/skills';
-import { MathProgress, MathSessionMode, mathActiveFrontier, mathDueSkills } from './state';
+import { MathProgress, MathSessionMode, mathActiveFrontier, mathDueSkills, mathLastGuidedPrimary } from './state';
 import { MathTask, buildPhysicalTask, buildSkillTasks } from './tasks';
 
 export interface MathSessionPlan {
@@ -14,7 +14,25 @@ function lastSeen(progress: MathProgress, skillId: MathSkillId) {
 
 function chooseGuidedSkill(progress: MathProgress): MathSkillId {
   const frontier = mathActiveFrontier(progress);
-  const developing = frontier.filter((id) => progress.skills[id].phase === 'introduced' || progress.skills[id].phase === 'practicing');
+
+  // A concept still needs evidence from two separate sessions before it can go
+  // provisional, but it does not have to be the very next lesson. Serving it
+  // back-to-back made every second session a repeat, and a child who was not
+  // yet fluent could see the same lesson many times with no way past it.
+  // Interleaving keeps the spacing requirement (and spaces the practice, which
+  // is better for retention anyway) while each new session opens new material.
+  const justDone = mathLastGuidedPrimary(progress);
+  const notJustDone = (ids: MathSkillId[]) => {
+    const rest = ids.filter((id) => id !== justDone);
+    return rest.length ? rest : ids;
+  };
+
+  const developing = notJustDone(frontier.filter((id) => progress.skills[id].phase === 'introduced' || progress.skills[id].phase === 'practicing'));
+  const unseenNow = frontier.filter((id) => progress.skills[id].phase === 'unseen');
+  // After a lesson, prefer opening something new over repeating the same one.
+  if (justDone && developing.length && developing.every((id) => id === justDone) && unseenNow.length) {
+    return [...unseenNow].sort((a, b) => MATH_SKILL_BY_ID[a].priority - MATH_SKILL_BY_ID[b].priority)[0];
+  }
   if (developing.length) {
     return [...developing].sort((a, b) => lastSeen(progress, a).localeCompare(lastSeen(progress, b)) || MATH_SKILL_BY_ID[a].priority - MATH_SKILL_BY_ID[b].priority)[0];
   }
