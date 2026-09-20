@@ -8,6 +8,17 @@ export const PROMPTS = {
   your_turn: 'Your turn.',
   tap_sound: 'Tap the sound',
   say_sound: 'What sound?',
+  // A3 See & Say asks the child to produce a sound from the letter in front of
+  // them. "What sound?" on its own does not tell a four-year-old that the
+  // question is about the letter on the screen, or that it is their turn to
+  // speak. This says both, without saying the answer.
+  // Deliberately not "say the letter S": the whole inventory is phoneme-first
+  // (tts: 'sss', recordTip: 'No "suh"'), so letter names are never spoken.
+  // NOTE: this id is intentionally absent from public/audio/manifest.json, so
+  // it is voiced by /api/say (same ElevenLabs voice) until `npm run audio`
+  // bakes it. Editing say_sound's text instead would have changed nothing —
+  // the baked clip would still say the old words.
+  say_sound_letter: 'Look at the letter. What sound does it make?',
   hold_it: 'Hold the sound. Keep your voice on, and the kite flies!',
   glide: 'Keep your voice on. Slide through the sounds!',
   say_fast: 'Say it fast!',

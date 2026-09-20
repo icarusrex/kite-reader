@@ -108,16 +108,18 @@ function HearTapLive({ step, onDone, setNeutral }: ActivityProps) {
 export function SeeSay({ step, ctx, onDone, setNeutral }: ActivityProps) {
   const g = step.g!;
   const [ready, setReady] = useState(false);
-  useEffect(() => { say({ p: 'say_sound' }).then(() => setReady(true)); }, [g]);
+  useEffect(() => { say({ p: 'say_sound_letter' }).then(() => setReady(true)); }, [g]);
   const { strip, attempt, compare } = useSpokenScore({
     enabled: ready, parentScoring: ctx.settings.parentScoring, onDone, setNeutral, sound: g,
     correction: () => correctSpoken({ g }),
   });
   return (
     <div className="stage">
-      <Tile big label={g} />
+      <Tile big label={g} onTap={() => say({ p: 'say_sound_letter' })} />
       {compare ?? <Waveform />}
-      <Caption>{attempt === 2 ? 'Your turn' : ''}</Caption>
+      {/* The instruction was previously spoken once and never shown, so a child
+          who missed it had nothing to go on. Tapping the letter repeats it. */}
+      <Caption>{attempt === 2 ? 'Your turn' : 'What sound does this letter make?'}</Caption>
       {strip}
     </div>
   );

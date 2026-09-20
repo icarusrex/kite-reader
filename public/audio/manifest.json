@@ -1158,5 +1158,6 @@
   "word:yip": "words/yip.mp3",
   "word:zac": "words/zac.mp3",
   "word:zag": "words/zag.mp3",
-  "word:zig": "words/zig.mp3"
+  "word:zig": "words/zig.mp3",
+  "prompt:say_sound_letter": "prompts/say_sound_letter.mp3"
 }
