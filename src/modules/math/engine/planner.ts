@@ -60,7 +60,24 @@ function choosePracticeSkill(progress: MathProgress): MathSkillId {
 }
 
 function savedTasks(progress: MathProgress, id: MathSkillId, evidence: Parameters<typeof buildSkillTasks>[1], count: number, model: boolean) {
-  if (id !== 'num.map.numeral.1_5') return buildSkillTasks(id, evidence, count, model);
+  if (id !== 'num.map.numeral.1_5') {
+    const tasks = buildSkillTasks(id, evidence, count, model);
+    const candidates = buildSkillTasks(id, evidence, 20);
+    for (const [i, failure] of (progress.skills[id].reviewFailures ?? []).slice(0, count).entries()) {
+      const matches = (t: MathTask) => t.taskFamily === failure.taskFamily && t.responseDirection === failure.responseDirection && (t.target ?? t.quantity) === failure.target;
+      let retry = candidates.find(matches);
+      if (!retry && failure.taskFamily === 'physical_transfer') {
+        const physical = buildPhysicalTask(id);
+        if (physical?.physicalTemplate === 'bring_n' && failure.target !== undefined) {
+          physical.target = failure.target;
+          physical.prompt = `Bring me ${failure.target} small things from nearby.`;
+        }
+        if (physical && matches(physical)) retry = physical;
+      }
+      if (retry) tasks[i + (model ? 1 : 0)] = retry;
+    }
+    return tasks;
+  }
   const counts = Array.from({ length: 10 }, (_, index) => {
     const target = 1 + index % 5;
     const direction = index % 2 === 0 ? 'symbol_to_quantity' : 'quantity_to_symbol';

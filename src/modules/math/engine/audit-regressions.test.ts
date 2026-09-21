@@ -68,3 +68,16 @@ describe('audited math journeys', () => {
     expect(p.skills[numeral].nextReviewAt).toBe('2026-12-06');
   });
 });
+
+it('revisits a failed counting target during ordinary guided review and clears it on recovery', () => {
+  const skillId = 'num.count.cardinal.1_5';
+  let p = freshMathProgress();
+  p.skills[skillId] = { ...p.skills[skillId], phase: 'secure', securedAt: '2026-09-01T10:00:00Z' };
+  p = recordMathAttempt(p, { id: 'wrong-count', sessionId: 'failed', skillId, target: 4, taskFamily: 'count_objects', representation: 'random_dots', responseDirection: 'recognize', evidenceKind: 'independent', correct: false, helpLevel: 'none', occurredAt: '2026-09-02T10:00:00Z' });
+  const plan = buildMathSessionPlan(p, 'guided', 'geo.shape.properties.basic');
+  const retry = plan.tasks.find(t => t.skillId === skillId)!;
+  expect(retry).toMatchObject({ quantity: 4, taskFamily: 'count_objects', responseDirection: 'recognize' });
+  p = recordMathAttempt(p, { id: 'retry-count', sessionId: 'later', skillId, target: retry.target ?? retry.quantity, taskFamily: retry.taskFamily, representation: retry.representation, responseDirection: retry.responseDirection, evidenceKind: retry.evidenceKind, correct: true, helpLevel: 'none', occurredAt: '2026-09-03T10:00:00Z' });
+  expect(p.skills[skillId].reviewFailures).toEqual([]);
+  expect(p.skills[skillId].nextReviewAt).toBe('2026-09-24');
+});
