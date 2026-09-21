@@ -54,7 +54,10 @@ try {
     } else await page.getByRole('button', { name: String(target), exact: true }).click();
   }
   await page.getByRole('heading', { name: 'Math', exact: true }).waitFor();
-  const afterMath = await waitSaved(h => h.profiles[h.activeProfileId].modules.math.attempts.length === 4);
+  const afterMath = await waitSaved(h => {
+    const math = h.profiles[h.activeProfileId].modules.math;
+    return math.attempts.length === 4 && math.sessions.length === 1;
+  });
   const math = afterMath.profiles[afterMath.activeProfileId].modules.math;
   assert.equal(math.sessions.length, 1);
   assert.deepEqual(math.attempts.map(a => a.target), [1, 2, 3, 4]);
