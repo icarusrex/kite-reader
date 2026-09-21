@@ -87,7 +87,7 @@ async function runSession(label, maxSteps, shots = []) {
     }
     if (['glide', 'alien', 'bigtile', 'hold', 'sentence', 'story', 'heart'].includes(kind)) await page.evaluate(() => window.__voice && window.__voice(2600));
     if (['glide', 'alien'].includes(kind)) await page.waitForTimeout(2800);
-    const story = page.getByText('We read it ✓');
+    const story = page.getByRole('button', { name: 'We read it', exact: true });
     if (await story.count()) { await story.dispatchEvent('pointerdown', { clientX: 500 + i, clientY: 600 }); continue; }
     if (await page.locator('.chip.next').count()) {
       for (let k = 0; k < 8 && await page.locator('.chip.next').count(); k++) { await page.locator('.chip.next').dispatchEvent('pointerdown', { clientX: 200 + k * 60, clientY: 300 + i }); await page.waitForTimeout(120); }
@@ -100,6 +100,8 @@ async function runSession(label, maxSteps, shots = []) {
     const right = page.locator('[data-c="1"]:not(.good)');
     if (await right.count()) { await right.first().dispatchEvent('pointerdown', { clientX: 300 + i * 7, clientY: 500 + (i % 5) }); continue; }
   }
+  console.log(`${label} activity path:`, seen.join(' > '));
+  if (!seen.includes('DONE')) console.log(`${label} stopped on:`, await page.locator('body').innerText());
   return seen;
 }
 const readProg = () => idb(() => new Promise((r) => { const req = indexedDB.open('keyval-store'); req.onsuccess = () => { const g = req.result.transaction('keyval').objectStore('keyval').get('kite:household'); g.onsuccess = () => { const h = g.result; const pr = h && h.profiles[h.activeProfileId]; r(pr && (pr.modules?.reading ?? pr.progress)); }; }; }));
