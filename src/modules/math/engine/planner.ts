@@ -59,6 +59,25 @@ function choosePracticeSkill(progress: MathProgress): MathSkillId {
   return reached[0]?.id ?? chooseGuidedSkill(progress);
 }
 
+function savedTasks(progress: MathProgress, id: MathSkillId, evidence: Parameters<typeof buildSkillTasks>[1], count: number, model: boolean) {
+  if (id !== 'num.map.numeral.1_5') return buildSkillTasks(id, evidence, count, model);
+  const counts = Array.from({ length: 10 }, (_, index) => {
+    const target = 1 + index % 5;
+    const direction = index % 2 === 0 ? 'symbol_to_quantity' : 'quantity_to_symbol';
+    return progress.attempts.filter(a => a.skillId === id && a.target === target && a.responseDirection === direction && a.correct && a.helpLevel === 'none').length;
+  });
+  const tasks = model ? buildSkillTasks(id, evidence, 0, true) : [];
+  // A retention retry takes priority, then select the least-assessed pairs.
+  const failures = progress.skills[id].reviewFailures ?? [];
+  const retryIndices = failures.map(a => Array.from({ length: 10 }, (_, i) => i).find(i => 1 + i % 5 === a.target && (i % 2 === 0 ? 'symbol_to_quantity' : 'quantity_to_symbol') === a.responseDirection)).filter((i): i is number => i !== undefined);
+  for (let n = 0; n < count; n++) {
+    const index = retryIndices[n] ?? counts.indexOf(Math.min(...counts));
+    tasks.push(...buildSkillTasks(id, evidence, 1, false, index));
+    counts[index] += 1;
+  }
+  return tasks;
+}
+
 export function buildMathSessionPlan(progress: MathProgress, mode: MathSessionMode, requestedSkillId?: MathSkillId): MathSessionPlan {
   const primarySkillId = requestedSkillId ?? (mode === 'practice' ? choosePracticeSkill(progress) : chooseGuidedSkill(progress));
   const reviewSkillIds = mode === 'guided' ? mathDueSkills(progress).filter((id) => id !== primarySkillId).slice(0, 2) : [];
@@ -67,13 +86,13 @@ export function buildMathSessionPlan(progress: MathProgress, mode: MathSessionMo
   for (const id of reviewSkillIds) {
     const state = progress.skills[id];
     const evidence = state.phase === 'provisional' ? 'cold' : 'independent';
-    tasks.push(...buildSkillTasks(id, evidence, 1, false));
+    tasks.push(...savedTasks(progress, id, evidence, 1, false));
   }
 
   const primaryState = progress.skills[primarySkillId];
   const unseen = mode === 'explore' || primaryState.phase === 'unseen';
   const evidence = mode === 'practice' ? 'independent' : primaryState.phase === 'provisional' ? 'cold' : 'independent';
-  tasks.push(...buildSkillTasks(primarySkillId, evidence, mode === 'explore' ? 5 : 4, unseen));
+  tasks.push(...(mode === 'explore' ? buildSkillTasks(primarySkillId, evidence, 5, unseen) : savedTasks(progress, primarySkillId, evidence, 4, unseen)));
 
   if (mode === 'guided' && progress.settings.physicalPrompts) {
     const guidedSessions = progress.sessions.filter((s) => s.mode === 'guided').length;

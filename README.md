@@ -170,3 +170,19 @@ See `CHANGELIST.md` for the audit-driven changes in this revision.
 > **Core owns the learner and the experience. Modules own what learning means.**
 
 For personal use, keep this boring. Do not introduce dynamic plugins, package workspaces, dependency injection, a universal learning engine, or a generic curriculum DSL unless a real future module creates a concrete need.
+
+### Recovery and save errors
+
+Backup import validates the file and previews which learners will be replaced. A
+single previous-household recovery copy is stored together with the replacement;
+use **Restore previous household** in Backup to recover after an import or Reading
+reset. This device-local copy supplements regular exported backups.
+
+If storage cannot be read, Kite offers Retry without replacing the household.
+If a write fails, keep the window open and use **Retry saving** or **Export household**
+in the warning. A successful retry saves the latest changes.
+
+Numerals 1–5 now records the assessed quantity and rotates both mapping directions
+across short sessions. Older earned mastery is retained and labelled for a coverage
+check where its historical evidence cannot prove all targets were assessed. Failed
+retention checks return the following day instead of waiting the full long interval.

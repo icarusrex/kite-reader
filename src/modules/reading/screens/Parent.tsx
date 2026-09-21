@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { useStore } from '../../../core/app/store';
+import { exportHousehold, useStore } from '../../../core/app/store';
+import { parseBackup } from '../../../core/app/backup';
 import { LEVELS, MAX_LEVEL, levelByN } from '../content/levels';
 import { SOUNDS as GRAPHEMES } from '../content/phonemes';
 import { PROMPTS } from '../content/prompts';
@@ -98,9 +99,31 @@ function SettingsTab({ onReadiness, onExtraSession }: { onReadiness: () => void;
 }
 
 function BackupTab() {
-  const { household, progress, replace, replaceHousehold } = useStore();
+  const { household, recovery, progress, replace, replaceHousehold } = useStore();
   const file = useRef<HTMLInputElement>(null);
-  const exportJson = () => { const blob = new Blob([JSON.stringify(household, null, 2)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `kite-household-${today()}.json`; a.click(); };
-  return <div className="card"><h2>Backup</h2><p>Exports all learner profiles together. Sound recordings remain a separate device-level asset.</p><div className="row" style={{ justifyContent: 'flex-start', gap: 8 }}><button className="btn" onClick={exportJson}>Export household</button><button className="btn light" onClick={() => file.current?.click()}>Import…</button><button className="btn light" onClick={() => { if (confirmReset()) replace(freshProgress(progress.settings.childName)); }}>Reset reading</button></div><input ref={file} type="file" accept="application/json" hidden onChange={async (e) => { const f = e.target.files?.[0]; if (!f) return; try { const raw = JSON.parse(await f.text()); if (raw?.profiles) replaceHousehold(raw); else replace(raw); } catch { window.alert('That file is not a valid Kite backup.'); } }} /></div>;
+  return <div className="card"><h2>Backup</h2>
+    <p>Exports all learner profiles together. Sound recordings remain a separate device-level asset.</p>
+    <div className="row" style={{ justifyContent: 'flex-start', gap: 8 }}>
+      <button className="btn" onClick={() => exportHousehold(household)}>Export household</button>
+      <button className="btn light" onClick={() => file.current?.click()}>Import…</button>
+      <button className="btn light" onClick={() => { if (confirmReset()) replace(freshProgress(progress.settings.childName)); }}>Reset reading</button>
+      {recovery && <button className="btn light" onClick={() => {
+        if (window.confirm('Restore the household saved before your last import or reset? Current progress will become the recovery copy.')) replaceHousehold(recovery);
+      }}>Restore previous household</button>}
+    </div>
+    <input ref={file} type="file" accept="application/json" hidden onChange={async (e) => {
+      const input = e.currentTarget;
+      const f = input.files?.[0]; if (!f) return;
+      try {
+        const parsed = parseBackup(JSON.parse(await f.text()));
+        const summary = parsed.kind === 'household'
+          ? `Replace all current learners with ${Object.values(parsed.household.profiles).map(p => p.name).join(', ')}?`
+          : `Replace Reading progress for ${progress.settings.childName || 'this learner'}? Other learners and Math stay as they are.`;
+        if (!window.confirm(`${summary} A copy of the current household will be kept for recovery.`)) return;
+        if (parsed.kind === 'household') replaceHousehold(parsed.household); else replace(parsed.reading);
+      } catch { window.alert('That file is not a supported Kite backup. Your progress has not been changed.'); }
+      finally { input.value = ''; }
+    }} />
+  </div>;
 }
 function confirmReset() { return window.prompt('Type RESET to erase this learner\'s progress') === 'RESET'; }

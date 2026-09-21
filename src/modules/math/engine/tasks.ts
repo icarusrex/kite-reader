@@ -321,10 +321,10 @@ function taskFor(skillId: MathSkillId, index: number, evidenceKind: MathEvidence
   }
 }
 
-export function buildSkillTasks(skillId: MathSkillId, evidenceKind: MathEvidenceKind, count = 4, includeModel = false): MathTask[] {
+export function buildSkillTasks(skillId: MathSkillId, evidenceKind: MathEvidenceKind, count = 4, includeModel = false, startIndex = 0): MathTask[] {
   const tasks: MathTask[] = [];
   if (includeModel) tasks.push(modelTask(skillId));
-  for (let i = 0; i < count; i++) tasks.push(taskFor(skillId, i, evidenceKind));
+  for (let i = 0; i < count; i++) tasks.push(taskFor(skillId, startIndex + i, evidenceKind));
   return tasks;
 }
 

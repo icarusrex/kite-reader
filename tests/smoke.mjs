@@ -1,6 +1,8 @@
 // End-to-end smoke test: node tests/smoke.mjs (needs `npm run preview` on :4173)
 // Simulates a child voice with tests/voice.wav and a grown-up tapping ✓.
 import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+import { assertSessionComplete, assertNoErrors } from './smoke-assertions.mjs';
 const BASE = process.env.BASE ?? 'http://127.0.0.1:4173';
 const SHOTS = process.env.SHOTS ?? '/tmp/kite-shots';
 import { existsSync, mkdirSync } from 'node:fs';
@@ -12,6 +14,7 @@ const browser = await chromium.launch({
   ...(process.env.CHANNEL ? { channel: process.env.CHANNEL } : explicitChromium ? { executablePath: explicitChromium } : {}),
   args: ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream', '--autoplay-policy=no-user-gesture-required'],
 });
+try {
 const ctx = await browser.newContext({ viewport: { width: 1180, height: 820 }, hasTouch: true, permissions: ['microphone'] });
 const page = await ctx.newPage();
 const errors = [];
@@ -76,7 +79,7 @@ async function runSession(label, maxSteps, shots = []) {
   const seen = [];
   for (let i = 0; i < maxSteps; i++) {
     await page.waitForTimeout(1500);
-    if (await page.getByText('All done for today!').count()) { seen.push('DONE'); break; }
+    if (await page.getByText('Session complete!', { exact: true }).count()) { seen.push('DONE'); break; }
     const kind = await kindOf();
     if (seen[seen.length - 1] !== kind) {
       seen.push(kind);
@@ -108,8 +111,12 @@ if (seeded?.track !== 'levels' || seeded.levels[1].status !== 'cold') {
 }
 
 const target = +(process.env.LEVEL ?? 9);
+const countA = seeded.sessions.length;
 const s1 = await runSession('cold', 90, []);
 let p = await readProg();
+assertSessionComplete(s1, p, countA);
+assert.equal(p.levels[1].status, 'passed', 'Cold check must pass Level 1');
+assert.notEqual(p.levels[2].status, 'locked', 'Level 2 must unlock');
 console.log('A:', s1.join(' > '));
 console.log('A levels 1-2:', JSON.stringify([p.levels[1].status, p.levels[2]]), 'log', JSON.stringify(p.sessions.at(-1)));
 
@@ -120,8 +127,10 @@ await page.getByText('Settings', { exact: true }).click();
 await page.locator('select').selectOption(String(target));
 await page.getByText("Clear today's recommendation").click();
 await page.waitForTimeout(500);
+const countB = p.sessions.length;
 const s2 = await runSession(`L${target}`, 220, ['glide', 'alien', 'build', 'sentence', 'readMatch', 'whichWord', 'hold', 'ear', 'banner', 'heart', 'hearTap']);
 p = await readProg();
+assertSessionComplete(s2, p, countB, target);
 console.log('B:', s2.join(' > '));
 console.log(`B L${target}:`, JSON.stringify(p.levels[target]), 'items', Object.keys(p.items).length, 'log', JSON.stringify(p.sessions.at(-1)));
 console.log('B misses:', JSON.stringify(p.errors));
@@ -131,12 +140,15 @@ await page.locator('.corner').dispatchEvent('pointerdown'); await page.waitForTi
 await page.getByText('Settings', { exact: true }).click();
 await page.getByText("Clear today's recommendation").click();
 await page.waitForTimeout(500);
+const countC = p.sessions.length;
 const s3 = await runSession(`L${target}b`, 220, ['story', 'banner']);
 p = await readProg();
+assertSessionComplete(s3, p, countC, target);
 console.log('C:', s3.join(' > '));
 console.log(`C L${target}:`, JSON.stringify(p.levels[target]), 'log', JSON.stringify(p.sessions.at(-1)));
 await page.waitForTimeout(9500);
 await page.locator('.corner').dispatchEvent('pointerdown'); await page.waitForTimeout(1800);
 await page.screenshot({ path: `${SHOTS}/parent-progress.png`, fullPage: true });
 console.log('errors:', errors);
-await browser.close();
+assertNoErrors(errors);
+} finally { await browser.close(); }
