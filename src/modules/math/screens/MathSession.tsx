@@ -57,6 +57,7 @@ export function MathSession({ mode = 'guided', skillId, onExit, onParent }: {
         representation: task.representation,
         responseDirection: task.responseDirection,
         evidenceKind: task.evidenceKind,
+        target: task.target ?? task.quantity,
         correct: result.correct,
         helpLevel: result.helpLevel,
         errorCode: result.errorCode,

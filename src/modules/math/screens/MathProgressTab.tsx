@@ -17,8 +17,8 @@ export function MathProgressTab() {
         <td><b>{skill.title}</b><div style={{ fontSize: 12, opacity: .65 }}>{skill.goal}</div></td>
         <td>{skill.domain}</td>
         <td><span className={`pill ${state.phase === 'secure' || state.phase === 'maintenance' ? 'good' : state.phase === 'provisional' || state.phase === 'practicing' ? 'warn' : ''}`}>{state.phase}</span></td>
-        <td>{state.independentEvidence} independent · {state.representationCoverage.length} representations</td>
-        <td>{state.unresolvedErrors.length ? state.unresolvedErrors.join(', ') : '—'}</td>
+        <td>{state.independentEvidence} independent · {state.representationCoverage.length} representations{state.needsCoverageCheck && <div>Numeral coverage check needed</div>}</td>
+        <td>{state.reviewFailures?.length ? 'Review again soon' : state.unresolvedErrors.length ? state.unresolvedErrors.join(', ') : 'None'}</td>
         <td><div className="row" style={{ gap: 6, justifyContent: 'flex-start', flexWrap: 'nowrap' }}>
           {state.phase === 'secure' || state.phase === 'maintenance'
             ? <button className="btn light" onClick={() => updateMath((p) => mathResetSkill(p, skill.id))}>Practise again</button>

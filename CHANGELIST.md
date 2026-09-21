@@ -363,3 +363,12 @@ The important outcome is that future subjects can be added without forcing them 
 - Hard-coded `src/content/` paths moved to `src/modules/reading/content/` in `wordLevel.test.ts`, `scripts/mine-books.ts`, `scripts/books/build.ts`, `scripts/pictures/generate.ts`.
 - `tests/smoke.mjs`: steps through the new launcher into Reading, reads `profile.modules.reading` (falls back to `progress`), and uses the renamed `Start reading` button.
 - README: kept the existing Reading/Run/Audio/Books/Persistence/Curriculum sections and merged in the new Architecture, Learner data, Math and Design rule sections.
+
+## 2026-09-21: Audit reliability fixes
+
+- Validate imported Reading and household backups before migration or replacement. Preserve supported old formats, reject malformed/future formats, and show a replacement confirmation.
+- Keep the previous household with the replacement in one IndexedDB transaction. Backup offers restoration after an import or Reading reset.
+- Distinguish failed reads from empty storage. Loading errors no longer initialize over existing data. Serialize saves and show an unsaved warning with retry and export when persistence fails.
+- Rotate saved Numerals 1–5 tasks across every numeral in both directions while retaining four-task sessions. Record assessed targets and require full coverage for new secure status; retain old earned status with an explicit coverage-check note.
+- Schedule next-day reviews after failed secure/maintenance attempts. An easy answer in the same session cannot clear the retry; recovery requires independent success on the failed target/direction in a later session/day.
+- Assert browser session completion, saved logs, cold-check progression and unexpected errors. Add a browser journey for backup validation, recovery, reload, and Math evidence.

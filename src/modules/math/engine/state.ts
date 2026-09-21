@@ -30,6 +30,8 @@ export interface MathAttempt {
   errorCode?: MathErrorCode;
   strategyCode?: MathStrategyCode;
   occurredAt: string;
+  /** Actual assessed quantity; absent in older evidence. */
+  target?: number;
 }
 
 export interface MathSkillState {
@@ -46,6 +48,8 @@ export interface MathSkillState {
   nextReviewAt?: string;
   provisionalAt?: string;
   securedAt?: string;
+  needsCoverageCheck?: boolean;
+  reviewFailures?: Pick<MathAttempt, 'target' | 'taskFamily' | 'responseDirection' | 'sessionId' | 'occurredAt'>[];
 }
 
 export interface MathSessionLog {
@@ -121,7 +125,12 @@ export function migrateMathProgress(raw: unknown): MathProgress {
   const skills = { ...base.skills };
   for (const spec of MATH_SKILLS) {
     const old = p.skills?.[spec.id];
-    if (old) skills[spec.id] = { ...freshMathSkillState(spec.id), ...old, skillId: spec.id };
+    if (old) {
+      skills[spec.id] = { ...freshMathSkillState(spec.id), ...old, skillId: spec.id };
+      if (spec.id === 'num.map.numeral.1_5' && ['secure', 'maintenance'].includes(old.phase)) {
+        skills[spec.id].needsCoverageCheck = !hasNumeralCoverage((p.attempts ?? []).filter(a => a?.skillId === spec.id));
+      }
+    }
   }
   return {
     ...base,
@@ -137,6 +146,11 @@ export function migrateMathProgress(raw: unknown): MathProgress {
 
 const isIndependentQuality = (a: MathAttempt) =>
   a.helpLevel === 'none' && (a.evidenceKind === 'independent' || a.evidenceKind === 'cold' || a.evidenceKind === 'transfer' || a.evidenceKind === 'physical');
+
+export function hasNumeralCoverage(attempts: MathAttempt[]) {
+  const known = new Set(attempts.filter(a => a.correct && isIndependentQuality(a)).map(a => `${a.target}:${a.responseDirection}`));
+  return [1, 2, 3, 4, 5].every(n => ['symbol_to_quantity', 'quantity_to_symbol'].every(direction => known.has(`${n}:${direction}`)));
+}
 
 function unresolvedErrors(attempts: MathAttempt[]): MathErrorCode[] {
   const latestWrong = new Map<MathErrorCode, number>();
@@ -163,6 +177,7 @@ function evaluateSkill(previous: MathSkillState, attempts: MathAttempt[], newest
   const formsRequired = MATH_SKILL_BY_ID[previous.skillId].minFormsForProvisional ?? 2;
   const qualifiesProvisional = last5.length >= 5 && last5.filter((a) => a.correct).length >= 4 && forms.size >= formsRequired && sessions.size >= 2;
 
+  const coverageComplete = previous.skillId !== 'num.map.numeral.1_5' || hasNumeralCoverage(attempts);
   let phase: MathSkillPhase = attempts.length ? (independent.length ? 'practicing' : 'introduced') : 'unseen';
   let provisionalAt = previous.provisionalAt;
   let securedAt = previous.securedAt;
@@ -172,13 +187,23 @@ function evaluateSkill(previous: MathSkillState, attempts: MathAttempt[], newest
     phase = 'provisional';
     provisionalAt ??= newest.occurredAt;
     const delayedKind = newest.evidenceKind === 'cold' || newest.evidenceKind === 'transfer' || newest.evidenceKind === 'physical';
-    if (newest.correct && newest.helpLevel === 'none' && delayedKind && provisionalAt && mathDaysBetween(provisionalAt, newest.occurredAt) >= 2) {
+    if (coverageComplete && newest.correct && newest.helpLevel === 'none' && delayedKind && provisionalAt && mathDaysBetween(provisionalAt, newest.occurredAt) >= 2) {
       phase = 'secure';
       securedAt = newest.occurredAt;
     }
   }
 
-  if (previous.phase === 'secure' && newest.correct && newest.helpLevel === 'none' && previous.securedAt && mathDaysBetween(previous.securedAt, newest.occurredAt) >= 21) {
+  let reviewFailures = [...(previous.reviewFailures ?? [])];
+  if (previous.phase === 'secure' || previous.phase === 'maintenance') {
+    const sameConcept = (a: typeof reviewFailures[number]) => a.target === newest.target && a.taskFamily === newest.taskFamily && a.responseDirection === newest.responseDirection;
+    if (!newest.correct || !isIndependentQuality(newest)) {
+      reviewFailures = reviewFailures.filter(a => !sameConcept(a));
+      reviewFailures.push({ target: newest.target, taskFamily: newest.taskFamily, responseDirection: newest.responseDirection, sessionId: newest.sessionId, occurredAt: newest.occurredAt });
+    } else {
+      reviewFailures = reviewFailures.filter(a => !(sameConcept(a) && a.sessionId !== newest.sessionId && mathDaysBetween(a.occurredAt, newest.occurredAt) >= 1));
+    }
+  }
+  if (previous.phase === 'secure' && !reviewFailures.length && newest.correct && isIndependentQuality(newest) && previous.securedAt && mathDaysBetween(previous.securedAt, newest.occurredAt) >= 21) {
     phase = 'maintenance';
   }
 
@@ -197,7 +222,12 @@ function evaluateSkill(previous: MathSkillState, attempts: MathAttempt[], newest
     physicalEvidence: correctIndependent.filter((a) => a.evidenceKind === 'physical').length,
     unresolvedErrors: unresolvedErrors(attempts),
     lastEvidenceAt,
-    nextReviewAt: nextReviewFor(phase, newest.occurredAt),
+    nextReviewAt: reviewFailures.length
+      ? (previous.nextReviewAt && previous.reviewFailures?.length && previous.nextReviewAt < mathAddDays(newest.occurredAt, 1) && newest.correct && isIndependentQuality(newest)
+        ? previous.nextReviewAt : mathAddDays(newest.occurredAt, 1))
+      : nextReviewFor(phase, newest.occurredAt),
+    needsCoverageCheck: !coverageComplete && (phase === 'secure' || phase === 'maintenance'),
+    reviewFailures,
     provisionalAt,
     securedAt,
   };
@@ -242,6 +272,7 @@ export function mathMarkKnown(progress: MathProgress, skillId: MathSkillId, when
         lastEvidenceAt: when,
         nextReviewAt: mathAddDays(when.slice(0, 10), 21),
         unresolvedErrors: [],
+        reviewFailures: [],
       },
     },
   };
