@@ -145,7 +145,9 @@ await page.waitForTimeout(500);
 const countC = p.sessions.length;
 const s3 = await runSession(`L${target}b`, 220, ['story', 'banner']);
 p = await readProg();
-assertSessionComplete(s3, p, countC, target);
+// The cold check no longer waits for tomorrow: it opens this session, passes, and the session moves on to the next level.
+assertSessionComplete(s3, p, countC, target + 1);
+if (p.levels[target].status !== 'passed') throw new Error(`L${target} should be passed after its same-day cold check: ${JSON.stringify(p.levels[target])}`);
 console.log('C:', s3.join(' > '));
 console.log(`C L${target}:`, JSON.stringify(p.levels[target]), 'log', JSON.stringify(p.sessions.at(-1)));
 await page.waitForTimeout(1500);
