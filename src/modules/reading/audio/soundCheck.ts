@@ -14,7 +14,7 @@ export interface SoundFeatures {
 
 const FRAME = 1024;
 
-function fft(re: Float64Array, im: Float64Array) {
+export function fft(re: Float64Array, im: Float64Array) {
   const n = re.length;
   for (let i = 1, j = 0; i < n; i++) {
     let bit = n >> 1;
@@ -107,7 +107,7 @@ export function kindOf(f: SoundFeatures): SoundKind {
 }
 
 /** Stop sounds (t, p, k…) are too short and varied to judge from a child's voice: any real sound counts. */
-const STOPS = new Set(['t', 'p', 'k', 'c', 'd', 'g', 'b', 'j']);
+export const STOPS = new Set(['t', 'p', 'k', 'c', 'd', 'g', 'b', 'j']);
 
 function distance(a: SoundFeatures, b: SoundFeatures) {
   return Math.hypot(

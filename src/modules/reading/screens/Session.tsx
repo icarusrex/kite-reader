@@ -99,7 +99,6 @@ export function Session({ onExit, onParent, extras, level: requestedLevel, basic
     tallies.current.checkout = emptyTally(); requiredTallies.current.checkout = emptyTally();
     setQueue((q) => [...q.slice(0, index + 1), ...steps]); setIndex((i) => i + 1);
   };
-  const capReached = () => mode === 'guided' && active.current >= progressRef.current.settings.capMinutes * 60;
 
   const phaseComplete = (phase: Step['phase']) => {
     const n = levelRef.current;
@@ -128,7 +127,7 @@ export function Session({ onExit, onParent, extras, level: requestedLevel, basic
       const status = progressRef.current.levels[n]?.status;
       const confident = t.answered >= 8 && ratio >= 0.9;
       const conceptsReady = readyForCheckout(progressRef.current, n, correctItems.current);
-      if (status === 'active' && conceptsReady && (sessions >= 1 || confident) && !capReached()) return appendSteps(buildCheckout(n));
+      if (status === 'active' && conceptsReady && (sessions >= 1 || confident)) return appendSteps(buildCheckout(n));
       return finish('complete', wantsStoryTime());
     }
     if (phase === 'checkout') {
@@ -158,7 +157,6 @@ export function Session({ onExit, onParent, extras, level: requestedLevel, basic
     const stuck = (key && missesByItem.current[key] >= 3) || streakWrong.current >= 5;
     if (mode === 'guided' && stuck && step.phase === 'main') return finish('fatigue');
     const nextStep = q[index + 1];
-    if (step.phase === 'main' && capReached() && (!nextStep || nextStep.phase === 'main')) return finish('cap', wantsStoryTime());
     if (!nextStep || nextStep.phase !== step.phase) { if (!nextStep) return phaseComplete(step.phase); }
     setIndex(index + 1);
   };
@@ -171,7 +169,7 @@ export function Session({ onExit, onParent, extras, level: requestedLevel, basic
       <ParentCorner onOpen={onParent} />
       {mode !== 'guided' && <div className="mode-badge">{mode === 'explore' ? 'Explore · no progress saved' : 'Practice'}</div>}
       <div className="topbar" style={{ paddingLeft: 88 }}><div className="dots"><div style={{ width: `${pct}%` }} /></div></div>
-      <View key={step.uid} step={step} ctx={{ settings: progress.settings, level }} onDone={onDone(step)} setNeutral={setNeutral} />
+      <View key={step.uid} step={step} ctx={{ settings: progress.settings, level, phase: step.phase }} onDone={onDone(step)} setNeutral={setNeutral} />
       <div className="neutral" style={{ opacity: neutral ? 1 : 0 }} />
     </div>
   );

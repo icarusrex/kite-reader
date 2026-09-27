@@ -110,7 +110,7 @@ export function SeeSay({ step, ctx, onDone, setNeutral }: ActivityProps) {
   const [ready, setReady] = useState(false);
   useEffect(() => { say({ p: 'say_sound_letter' }).then(() => setReady(true)); }, [g]);
   const { strip, attempt, compare } = useSpokenScore({
-    enabled: ready, parentScoring: ctx.settings.parentScoring, onDone, setNeutral, sound: g,
+    enabled: ready, ctx, onDone, setNeutral, sound: g,
     correction: () => correctSpoken({ g }),
   });
   return (
@@ -239,7 +239,7 @@ export function Glide({ step, ctx, onDone, setNeutral }: ActivityProps) {
 
   const { strip } = useSpokenScore({
     enabled: mode === 'fast' || (mode === 'glide' && (!meter.ready || falls >= 2)),
-    parentScoring: ctx.settings.parentScoring, setNeutral,
+    ctx, setNeutral,
     correction: () => correctSpoken({ w: word }),
     onDone: (ok) => onDone(ok && fallsRef.current === 0),
   });
@@ -341,7 +341,7 @@ export function Sentence({ step, ctx, onDone, setNeutral }: ActivityProps) {
   const [next, setNext] = useState(0);
   useEffect(() => { say({ p: 'sentence' }); }, []);
   const { strip } = useSpokenScore({
-    enabled: next >= words.length, parentScoring: ctx.settings.parentScoring, setNeutral, onDone, acceptWhenEnabled: true,
+    enabled: next >= words.length, ctx, setNeutral, onDone, acceptWhenEnabled: true,
     correction: async () => { await say({ p: 'my_turn' }); for (const w of words) await say({ w: w.replace(/[^A-Za-z]/g, '') }); await say({ p: 'your_turn' }); setNext(0); },
   });
   return (
@@ -417,10 +417,10 @@ export function Banner({ step, onDone }: ActivityProps) {
   const finish = () => { if (!done.current) { done.current = true; onDone(null); } };
   const tap = useTap(finish);
   const icon = { checkout: '⭐', cold: '🌅', story_time: '📖', new_sound: '🚪', level_done: '🪁' }[b];
-  const text = { checkout: 'Show what you know', cold: 'Remember yesterday?', story_time: 'Story time! Go find someone.', new_sound: 'A new sound!', level_done: 'You finished a level!' }[b];
+  const text = { checkout: 'Show what you know', cold: 'Remember this?', story_time: 'Story time! Go find someone.', new_sound: 'A new sound!', level_done: 'You finished a level!' }[b];
   const story = b === 'story_time' ? step.lines : undefined;
   useEffect(() => {
-    say({ p: b }).then(() => {
+    say({ p: b === 'cold' ? 'remember' : b }).then(() => {
       if (b === 'story_time') say({ pause: 400 }, { p: 'story_tap' });
       else setTimeout(finish, b === 'level_done' ? 1800 : 500);
     });
@@ -464,7 +464,7 @@ export function HeartWord({ step, ctx, onDone, setNeutral }: ActivityProps) {
   const next = useTap(() => onDone(null));
   useUtterance(meter.ready && ready && !!step.model, () => onDone(null), 600);
   const { strip } = useSpokenScore({
-    enabled: ready && !step.model, parentScoring: ctx.settings.parentScoring, onDone, setNeutral,
+    enabled: ready && !step.model, ctx, onDone, setNeutral,
     correction: () => correctSpoken({ w: word }),
   });
   return (
@@ -485,7 +485,7 @@ export function Story({ step, ctx, onDone, setNeutral }: ActivityProps) {
   const [next, setNext] = useState(0);
   useEffect(() => { say({ p: 'story' }); }, []);
   const { strip } = useSpokenScore({
-    enabled: next >= words.length, parentScoring: ctx.settings.parentScoring, setNeutral, onDone, acceptWhenEnabled: true,
+    enabled: next >= words.length, ctx, setNeutral, onDone, acceptWhenEnabled: true,
     correction: async () => { await say({ p: 'my_turn' }); for (const { w } of words) await say({ w: w.replace(/[^A-Za-z]/g, '') }); await say({ p: 'your_turn' }); setNext(0); },
   });
   return (

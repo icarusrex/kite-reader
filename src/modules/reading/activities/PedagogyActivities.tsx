@@ -65,7 +65,7 @@ export function Segment({ step, ctx, onDone, setNeutral }: ActivityProps) {
 
   const { strip, attempt } = useSpokenScore({
     enabled: ready,
-    parentScoring: ctx.settings.parentScoring,
+    ctx,
     onDone,
     setNeutral,
     correction: async () => {

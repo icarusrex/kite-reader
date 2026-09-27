@@ -6,7 +6,7 @@ import { PICTURES, pictureUrl, storyPictureUrl } from '../../content/pictures';
 import { PROMPTS } from '../../content/prompts';
 import { currentBasics, currentLevel } from '../../engine/progress';
 import { BASICS } from '../../content/basics';
-import { hasManifest, hasRecording } from '../../audio/speaker';
+import { hasManifest, hasOwnSound } from '../../audio/speaker';
 
 const STAGES = [
   { name: 'Stage 1 · single letters + blending', from: 1, to: 20 },
@@ -20,7 +20,7 @@ const STAGES = [
 export function StatusTab({ go }: { go: (tab: 'sounds' | 'settings' | 'lessons') => void }) {
   const { progress: p } = useStore();
   const cur = currentLevel(p);
-  const recorded = GRAPHEMES.filter((g) => hasRecording(g.id)).length;
+  const recorded = GRAPHEMES.filter((g) => hasOwnSound(g.id)).length;
   const [pictures, setPictures] = useState<{ ok: number; total: number } | null>(null);
   useEffect(() => {
     const urls = [...Object.keys(PICTURES).map((w) => pictureUrl(w)!), ...LEVELS.filter((l) => l.story).map((l) => storyPictureUrl(l.n))];
@@ -29,7 +29,7 @@ export function StatusTab({ go }: { go: (tab: 'sounds' | 'settings' | 'lessons')
   }, []);
   const levelsLeft = MAX_LEVEL - cur;
   const setup: [boolean, string, (() => void) | null][] = [
-    [recorded === GRAPHEMES.length, `Record the ${GRAPHEMES.length} letter sounds (${recorded} done; the rest use built-in sounds)`, () => go('sounds')],
+    [recorded === GRAPHEMES.length, `Record the ${GRAPHEMES.length} letter sounds (${recorded} done${recorded < GRAPHEMES.length ? '; the rest use built-in sounds' : ''})`, () => go('sounds')],
     ...(p.track === 'levels' ? [[p.settings.readinessPassed !== null, `Readiness check ${p.settings.readinessPassed === null ? 'not done' : p.settings.readinessPassed ? 'passed' : 'not passed yet'}`, () => go('settings')] as [boolean, string, () => void]] : []),
     [!!p.settings.childName, "Child's name set", () => go('settings')],
     [pictures?.ok === pictures?.total, pictures ? `Pictures: ${pictures.ok}/${pictures.total}` : 'Pictures: checking…', null],

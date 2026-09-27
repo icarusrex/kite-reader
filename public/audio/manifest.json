@@ -1159,5 +1159,7 @@
   "word:zac": "words/zac.mp3",
   "word:zag": "words/zag.mp3",
   "word:zig": "words/zig.mp3",
-  "prompt:say_sound_letter": "prompts/say_sound_letter.mp3"
+  "prompt:say_sound_letter": "prompts/say_sound_letter.mp3",
+  "prompt:lesson_done": "prompts/lesson_done.mp3",
+  "prompt:remember": "prompts/remember.mp3"
 }

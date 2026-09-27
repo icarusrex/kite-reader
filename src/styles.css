@@ -80,6 +80,10 @@ button { font-family: inherit; color: inherit; border: 0; background: none; curs
 .pbtn.ok { color: var(--sage-deep); }
 .pbtn.no { color: var(--muted); }
 .pbtn:disabled { opacity: .3; }
+/* Automatic "Yes!" about to go through: make ✗ easy to find. Doubt: the app wants the grown-up to decide. */
+.parent-strip.pending .pbtn.no { color: #C4583A; box-shadow: 0 3px 0 #C4583A; animation: pop .25s ease-out; }
+.parent-strip.pending small, .parent-strip.doubt small { color: var(--ink, #2B2F3A); font-weight: 600; }
+.parent-strip.doubt .pbtn { box-shadow: 0 3px 0 #E8914A; }
 
 /* Glide track */
 .track { position: relative; display: flex; gap: 2vmin; padding-top: 22vmin; }

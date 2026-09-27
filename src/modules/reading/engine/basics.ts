@@ -17,7 +17,7 @@ export function buildBasics(p: Progress, n: number): Step[] {
     const other = pick(pool.filter((w) => w !== word), 1)[0];
     return { uid: uid(), kind: 'sayFast', word, options: shuffle([word, other]), fast: { mode: lesson.sayFast }, demo, phase: 'main' };
   };
-  words.slice(0, 4).forEach((w, i) => steps.push(sayFast(w, i === 0)));
+  words.slice(0, 4).forEach((w, i) => steps.push(sayFast(w, i === 0 && n === 1)));
   if (lesson.track) steps.push({ uid: uid(), kind: 'trackGame', phase: 'main' });
 
   const g = lesson.newSound;
@@ -30,7 +30,7 @@ export function buildBasics(p: Progress, n: number): Step[] {
       steps.push({
         uid: uid(), kind: 'hearTap', g,
         options: shuffle([g, i % 2 ? other : pick(['s', 'a', 't'].filter((x) => x !== g), 1)[0]]),
-        itemId: i ? `g:${g}` : undefined, itemKind: 'grapheme', demo: i === 0,
+        itemId: i ? `g:${g}` : undefined, itemKind: 'grapheme', demo: i === 0 && n === 1,
         required: i === 1, phase: 'main',
       });
     }

@@ -9,7 +9,7 @@ import { StoryChair } from '../modules/reading/screens/StoryChair';
 import { listBooks } from '../modules/reading/books/library';
 import { bookExtras } from '../modules/reading/books/extras';
 import { SessionExtras } from '../modules/reading/engine/session';
-import { allPassed, currentLevel } from '../modules/reading/engine/progress';
+import { allPassed, currentBasics, currentLevel } from '../modules/reading/engine/progress';
 import { MathHome } from '../modules/math/screens/MathHome';
 import { MathSession } from '../modules/math/screens/MathSession';
 import { MathProgressScreen } from '../modules/math/screens/MathProgressScreen';
@@ -18,7 +18,7 @@ import { MathSessionMode } from '../modules/math/engine/state';
 import { KiteModuleId } from './module';
 import { meter } from '../modules/reading/audio/mic';
 import { initAudio, say } from '../modules/reading/audio/speaker';
-import { ParentCorner } from './ui/components';
+import { ParentCorner, useTap } from './ui/components';
 import { requestPersistence } from './storage';
 
 type View =
@@ -127,7 +127,7 @@ function Shell() {
       } else setView('done');
     }}
   />;
-  if (view === 'done') return <Done onHome={() => setView('reading-home')} onParent={() => setView('parent')} />;
+  if (view === 'done') return <Done onNext={startReading} onHome={() => setView('reading-home')} onParent={() => setView('parent')} />;
   if (view === 'reading-home') return <ReadingHome onStart={startReading} onParent={() => setView('parent')} onStories={() => setView('stories')} onBack={() => setView('launcher')} extraAllowed={extra} />;
   return <ModuleLauncher onOpen={openModule} onParent={() => setView('parent')} />;
 }
@@ -145,14 +145,21 @@ function ProfileChooser({ onChoose, onAdd }: { onChoose: (id: string) => void; o
   </div>;
 }
 
-function Done({ onHome, onParent }: { onHome: () => void; onParent: () => void }) {
-  useEffect(() => {
-    say({ p: 'all_done' });
-    const timer = setTimeout(onHome, 7000);
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  return <div className="screen"><ParentCorner onOpen={onParent} /><div className="stage"><div style={{ fontSize: '28vmin' }}>🌙</div><h1 className="title">Session complete!</h1><p className="subtitle">You can do another session whenever you want.</p></div></div>;
+/** Between lessons: progress is already saved, so the child can go straight on to the next one or stop here. */
+function Done({ onNext, onHome, onParent }: { onNext: () => void; onHome: () => void; onParent: () => void }) {
+  const { reading } = useStore();
+  const complete = reading.track === 'levels' && allPassed(reading);
+  const next = useTap(onNext);
+  useEffect(() => { say({ p: complete ? 'all_done' : 'lesson_done' }); }, [complete]);
+  return <div className="screen"><ParentCorner onOpen={onParent} /><div className="stage">
+    <div style={{ fontSize: '22vmin' }}>🪁</div>
+    <h1 className="title">Great job!</h1>
+    {!complete && <p className="subtitle">Next: {reading.track === 'basics' ? `lesson ${currentBasics(reading)}` : `level ${currentLevel(reading)}`}</p>}
+    <div className="row" style={{ gap: 14 }}>
+      {!complete && <button className="primary" onPointerDown={next} aria-label="Next lesson">▶</button>}
+      <button className="btn light" onClick={onHome}>Home</button>
+    </div>
+  </div></div>;
 }
 
 async function localExtras(n: number): Promise<SessionExtras> {

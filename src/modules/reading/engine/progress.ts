@@ -49,6 +49,8 @@ export interface Settings {
   childName: string;
   capMinutes: number;
   parentScoring: boolean;
+  /** App says "Yes!" by itself on practice answers; the grown-up taps ✗ to correct. Off = approve every answer. */
+  autoYes?: boolean;
   readinessPassed: boolean | null;
   micSensitivity: number;
   rev?: number;
@@ -195,9 +197,10 @@ export function jumpTo(p: Progress, n: number, date = today()): Progress {
   return { ...p, track: 'levels', levels, items };
 }
 
-export function coldCheckDue(p: Progress, level: number, date = today()) {
+/** The cold check opens the next session after a passed checkout, on any day: lessons are never held back until tomorrow. */
+export function coldCheckDue(p: Progress, level: number) {
   const l = p.levels[level];
-  return l?.status === 'cold' && !!l.checkoutPassedOn && l.checkoutPassedOn < date;
+  return l?.status === 'cold' && !!l.checkoutPassedOn;
 }
 
 export function freshBasics(): Record<number, BasicsState> {

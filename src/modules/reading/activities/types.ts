@@ -4,6 +4,8 @@ import { Settings } from '../engine/progress';
 export interface ActivityCtx {
   settings: Settings;
   level: number;
+  /** Checkout and cold-check answers decide progression: no automatic "Yes!" there. */
+  phase: Step['phase'];
 }
 
 export interface ActivityProps {

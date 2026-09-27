@@ -1,6 +1,6 @@
 import { LEVELS } from '../content/levels';
 import { BASICS } from '../content/basics';
-import { allPassed, currentLevel, today } from '../engine/progress';
+import { allPassed, currentBasics, currentLevel, today } from '../engine/progress';
 import { useStore } from '../../../core/app/store';
 import { Kite, ParentCorner, useTap } from '../../../core/ui/components';
 
@@ -28,11 +28,12 @@ export function ReadingHome({ onStart, onParent, onStories, onBack, extraAllowed
       ) : (
         <div className="path" aria-label="Levels">{LEVELS.map((l) => { const st = progress.levels[l.n]?.status; const cls = st === 'passed' ? 'passed' : l.n === cur ? (st === 'cold' ? 'cold' : 'current') : ''; return <div key={l.n} className={`stone ${cls}`}>{st === 'passed' ? '★' : l.newGraphemes[0] ?? '↺'}</div>; })}</div>
       )}
+      {!complete && <p className="subtitle">{progress.track === 'basics' ? `Lesson ${currentBasics(progress)} of ${BASICS.length}` : `Level ${cur}`} · tap ▶</p>}
       <div className="row" style={{ gap: 14 }}>
         {!complete && <button className={`primary ${recommendationMet ? 'soft' : ''}`} onPointerDown={start} aria-label="Start reading">▶</button>}
         <button className="btn light" onClick={onBack}>Kite</button>
       </div>
-      {recommendationMet && !complete && <p className="subtitle">Recommended reading practice is complete. Keep going if you want.</p>}
+      {recommendationMet && !complete && <p className="subtitle">Today's recommended practice is done. Keep going as long as you like!</p>}
       {complete && <p className="subtitle">Books and Explore are still available. New reading levels can be added later.</p>}
     </div>
     <button className="home-books" onPointerDown={stories} aria-label="Story chair">📚</button>

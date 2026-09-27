@@ -3,6 +3,8 @@ import { meter } from '../audio/mic';
 
 /** A real attempt needs about 250 ms of actual voiced time. Short noises and echoes do not count. */
 const MIN_VOICED_MS = 250;
+/** Stop sounds (t, p, k…) are over in about a tenth of a second: waiting for 250 ms of voice never heard them. */
+export const SHORT_VOICED_MS = 70;
 /** Do not let a dropped animation frame manufacture a long stretch of speech. */
 const MAX_SAMPLE_GAP_MS = 50;
 
@@ -13,7 +15,7 @@ const MAX_SAMPLE_GAP_MS = 50;
  * Voice duration is measured in elapsed milliseconds rather than animation frames so the threshold behaves the same
  * on 30/60/90/120 Hz displays and under browser jank.
  */
-export function useUtterance(enabled: boolean, onUtterance: (start: number, end: number) => void, endSilenceMs = 700) {
+export function useUtterance(enabled: boolean, onUtterance: (start: number, end: number) => void, endSilenceMs = 700, minVoicedMs = MIN_VOICED_MS) {
   const [spoke, setSpoke] = useState(false);
   const cb = useRef(onUtterance);
   cb.current = onUtterance;
@@ -38,19 +40,19 @@ export function useUtterance(enabled: boolean, onUtterance: (start: number, end:
         }
         if (previousVoiced) voicedMs += sampleGap;
         lastVoice = now;
-        if (voicedMs >= MIN_VOICED_MS) setSpoke(true);
+        if (voicedMs >= minVoicedMs) setSpoke(true);
       }
       lastSample = now;
       previousVoiced = voiced;
 
-      if (voicedMs >= MIN_VOICED_MS && now - lastVoice > endSilenceMs) {
+      if (voicedMs >= minVoicedMs && now - lastVoice > endSilenceMs) {
         fired = true;
         cb.current(start, lastVoice);
-      } else if (start && voicedMs < MIN_VOICED_MS && now - lastVoice > endSilenceMs) {
+      } else if (start && voicedMs < minVoicedMs && now - lastVoice > endSilenceMs) {
         start = 0;
         voicedMs = 0;
       }
     });
-  }, [enabled, endSilenceMs]);
+  }, [enabled, endSilenceMs, minVoicedMs]);
   return spoke;
 }

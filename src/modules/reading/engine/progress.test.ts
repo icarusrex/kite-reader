@@ -18,11 +18,12 @@ describe('progress', () => {
     expect(dueItems(p, '2026-09-03').map((i) => i.id)).toEqual(['g:a']);
   });
 
-  it('checkout -> cold next day -> unlock', () => {
-    let p = passCheckout(freshProgress(), 1, '2026-09-01');
-    expect(coldCheckDue(p, 1, '2026-09-01')).toBe(false);
-    expect(coldCheckDue(p, 1, '2026-09-02')).toBe(true);
-    p = passCold(p, 1, '2026-09-02');
+  it('checkout -> cold check next session, same day allowed -> unlock', () => {
+    let p = freshProgress();
+    expect(coldCheckDue(p, 1)).toBe(false);
+    p = passCheckout(p, 1, '2026-09-01');
+    expect(coldCheckDue(p, 1)).toBe(true);
+    p = passCold(p, 1, '2026-09-01');
     expect(currentLevel(p)).toBe(2);
   });
   it('existing progress with no level passed moves to Basics; a child already past level 1 stays on levels', async () => {

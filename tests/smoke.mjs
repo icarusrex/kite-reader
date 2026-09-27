@@ -79,7 +79,7 @@ async function runSession(label, maxSteps, shots = []) {
   const seen = [];
   for (let i = 0; i < maxSteps; i++) {
     await page.waitForTimeout(1500);
-    if (await page.getByText('Session complete!', { exact: true }).count()) { seen.push('DONE'); break; }
+    if (await page.getByRole('button', { name: 'Next lesson' }).count()) { seen.push('DONE'); break; }
     const kind = await kindOf();
     if (seen[seen.length - 1] !== kind) {
       seen.push(kind);
@@ -122,7 +122,7 @@ assert.notEqual(p.levels[2].status, 'locked', 'Level 2 must unlock');
 console.log('A:', s1.join(' > '));
 console.log('A levels 1-2:', JSON.stringify([p.levels[1].status, p.levels[2]]), 'log', JSON.stringify(p.sessions.at(-1)));
 
-await page.waitForTimeout(9500);
+await page.waitForTimeout(1500);
 await page.locator('.corner').dispatchEvent('pointerdown');
 await page.waitForTimeout(1800);
 await page.getByText('Settings', { exact: true }).click();
@@ -137,7 +137,7 @@ console.log('B:', s2.join(' > '));
 console.log(`B L${target}:`, JSON.stringify(p.levels[target]), 'items', Object.keys(p.items).length, 'log', JSON.stringify(p.sessions.at(-1)));
 console.log('B misses:', JSON.stringify(p.errors));
 // Second session at the same level: the story replaces the sentence
-await page.waitForTimeout(9500);
+await page.waitForTimeout(1500);
 await page.locator('.corner').dispatchEvent('pointerdown'); await page.waitForTimeout(1800);
 await page.getByText('Settings', { exact: true }).click();
 await page.getByText("Clear today's recommendation").click();
@@ -148,7 +148,7 @@ p = await readProg();
 assertSessionComplete(s3, p, countC, target);
 console.log('C:', s3.join(' > '));
 console.log(`C L${target}:`, JSON.stringify(p.levels[target]), 'log', JSON.stringify(p.sessions.at(-1)));
-await page.waitForTimeout(9500);
+await page.waitForTimeout(1500);
 await page.locator('.corner').dispatchEvent('pointerdown'); await page.waitForTimeout(1800);
 await page.screenshot({ path: `${SHOTS}/parent-progress.png`, fullPage: true });
 console.log('errors:', errors);

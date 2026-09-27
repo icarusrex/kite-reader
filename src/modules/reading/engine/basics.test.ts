@@ -19,17 +19,18 @@ describe('basics', () => {
     expect(p.settings.capMinutes).toBe(10);
   });
 
-  it('every lesson opens with a say-it-fast demo, uses 2 choices, and only asks rhyme after showing it', () => {
+  it('only lesson 1 demos say-it-fast and find-the-letter; every lesson uses 2 choices, and only asks rhyme after showing it', () => {
     for (const b of BASICS) {
       const steps = buildBasics(freshProgress(), b.n);
-      expect(steps[0]).toMatchObject({ kind: 'sayFast', demo: true });
+      expect(steps[0]).toMatchObject({ kind: 'sayFast', demo: b.n === 1 });
+      expect(steps.filter((s) => s.kind === 'sayFast' && s.demo)).toHaveLength(b.n === 1 ? 1 : 0);
       for (const s of steps.filter((x) => x.kind === 'sayFast' || x.kind === 'hearTap')) expect(s.options).toHaveLength(2);
       const rhymes = steps.filter((s) => s.kind === 'rhyme');
       if (b.rhyme) { expect(rhymes[0].demo).toBe(true); expect(rhymes.length).toBe(5); } else expect(rhymes).toHaveLength(0);
       if (b.newSound) {
         const tap = steps.filter((s) => s.kind === 'hearTap' && s.g === b.newSound);
         expect(steps.findIndex((s) => s.kind === 'meet')).toBeLessThan(steps.indexOf(tap[0]));
-        expect(tap[0].demo).toBe(true);
+        expect(!!tap[0].demo).toBe(b.n === 1);
       }
     }
   });

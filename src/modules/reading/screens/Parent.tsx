@@ -7,7 +7,7 @@ import { PROMPTS } from '../content/prompts';
 import { canDecodeText, canDecodeWord } from '../engine/knowledge';
 import { currentBasics, currentLevel, freshProgress, jumpTo, Progress, setTrack, today } from '../engine/progress';
 import { BASICS } from '../content/basics';
-import { hasManifest, hasRecording, refreshRecordings, say } from '../audio/speaker';
+import { hasManifest, hasOwnSound, hasRecording, refreshRecordings, say } from '../audio/speaker';
 import { remove } from '../../../core/storage';
 import { meter } from '../audio/mic';
 import { LIBRARY, loadBook } from '../content/readaloud';
@@ -18,6 +18,7 @@ import { LessonsTab } from './parent/LessonsTab';
 import { ProfilesTab } from './parent/ProfilesTab';
 import { RecordWizard } from './parent/RecordWizard';
 import { useRecorder } from '../audio/useRecorder';
+import { KEEP, MIN_EXAMPLES, VoiceStore, forgetVoice, loadVoice } from '../audio/ownVoice';
 
 type Tab = 'status' | 'progress' | 'lessons' | 'profiles' | 'sounds' | 'books' | 'settings' | 'backup';
 
@@ -64,11 +65,26 @@ function ProgressTab() {
   </>;
 }
 
+/** What the app has learnt of this child's letter sounds (audio/ownVoice.ts). */
+function ChildVoice() {
+  const { activeProfileId, progress } = useStore();
+  const [v, setV] = useState<VoiceStore | null>(null);
+  useEffect(() => { loadVoice(activeProfileId).then(setV); }, [activeProfileId]);
+  if (!v) return null;
+  const known = GRAPHEMES.filter((g) => (v.ex[g.id]?.length ?? 0) >= MIN_EXAMPLES).length;
+  const name = progress.settings.childName || 'the child';
+  return <div className="card"><h2>{name}'s voice · {known}/{GRAPHEMES.length} sounds learnt</h2>
+    <p style={{ fontSize: 14 }}>Each letter sound you let through is kept as an example of how {name} says it (up to {KEEP} per sound, on this device). After {MIN_EXAMPLES}, the app checks new tries against them before it says “Yes!” by itself. When a try sounds like a different letter it waits for you instead (🤔). The app said “Yes!” by itself {v.auto} times; you corrected it with ✗ {v.corrected} times.</p>
+    <p style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>{GRAPHEMES.map((g) => { const n = v.ex[g.id]?.length ?? 0; return <span key={g.id} className={`pill ${n >= MIN_EXAMPLES ? 'good' : n ? 'warn' : ''}`}><b style={{ fontFamily: 'Andika' }}>{g.id}</b> {n}</span>; })}</p>
+    <button className="btn light" onClick={async () => { if (window.confirm(`Forget ${name}'s voice examples? The app will learn them again.`)) { await forgetVoice(activeProfileId); setV(await loadVoice(activeProfileId)); } }}>Forget and relearn</button>
+  </div>;
+}
+
 function SoundsTab() {
   const [, force] = useState(0);
   const { recording, start, stop: stopRec } = useRecorder(() => force((n) => n + 1));
-  const recorded = GRAPHEMES.filter((g) => hasRecording(g.id)).length;
-  return <><RecordWizard onChange={() => force((n) => n + 1)} /><div className="card"><h2>All sounds ({recorded}/{GRAPHEMES.length} recorded)</h2><p style={{ fontSize: 14 }}>Your recordings replace built-in sounds on this device and are shared across learner profiles.</p></div>
+  const recorded = GRAPHEMES.filter((g) => hasOwnSound(g.id)).length;
+  return <><ChildVoice /><RecordWizard onChange={() => force((n) => n + 1)} /><div className="card"><h2>All sounds ({recorded}/{GRAPHEMES.length} recorded)</h2><p style={{ fontSize: 14 }}>Your recordings replace built-in sounds on this device and are shared across learner profiles.</p></div>
     <div className="card"><table><thead><tr><th>Sound</th><th>Level</th><th>Key word</th><th>Tip</th><th /></tr></thead><tbody>{GRAPHEMES.map((g) => <tr key={g.id}><td style={{ fontSize: 28, fontFamily: 'Andika' }}>{g.id}</td><td>{g.level}</td><td>{g.example}</td><td style={{ fontSize: 14 }}>{g.recordTip}</td><td style={{ whiteSpace: 'nowrap' }}><button className={`btn rec ${recording === g.id ? 'on' : ''}`} onPointerDown={() => start(g.id)} onPointerUp={stopRec} onPointerLeave={stopRec}>{recording === g.id ? 'Recording…' : 'Hold to record'}</button>{' '}<button className="btn light" onClick={() => say({ g: g.id })}>▶</button>{' '}{hasRecording(g.id) ? <span className="pill good">recorded here</span> : hasManifest(`phoneme:${g.id}`) ? <span className="pill good">built in</span> : <span className="pill warn">device voice</span>}{hasRecording(g.id) && <button className="btn light" style={{ marginLeft: 6 }} onClick={async () => { await remove(`rec:g:${g.id}`); await refreshRecordings(); force((n) => n + 1); }} aria-label="Delete recording">✕</button>}</td></tr>)}</tbody></table></div>
     <div className="card"><h2>Instruction audio</h2><p>{Object.keys(PROMPTS).filter((k) => hasManifest(`prompt:${k}`)).length}/{Object.keys(PROMPTS).length} prompts generated; the rest use the device voice.</p></div></>;
 }
@@ -94,7 +110,7 @@ function SettingsTab({ onReadiness, onExtraSession }: { onReadiness: () => void;
   const { progress: p, update } = useStore();
   const s = p.settings;
   const set = (patch: Partial<Progress['settings']>) => update((x) => ({ ...x, settings: { ...x.settings, ...patch } }));
-  return <><div className="card"><h2>Child</h2><label>Name <input type="text" value={s.childName} onChange={(e) => set({ childName: e.target.value })} /></label><label>Recommended active minutes per guided session <input type="number" min={5} max={30} value={s.capMinutes} onChange={(e) => set({ capMinutes: Math.max(5, Math.min(30, +e.target.value || 10)) })} /></label><label>Grown-up scoring buttons always visible <input type="checkbox" checked={s.parentScoring} onChange={(e) => set({ parentScoring: e.target.checked })} /></label><label>Mic sensitivity (1 strict – 5 sensitive) <input type="range" min={1} max={5} value={s.micSensitivity} onChange={(e) => { set({ micSensitivity: +e.target.value }); meter.sensitivity = +e.target.value; }} /></label></div>
+  return <><div className="card"><h2>Child</h2><label>Name <input type="text" value={s.childName} onChange={(e) => set({ childName: e.target.value })} /></label><label>Recommended active minutes per guided session <input type="number" min={5} max={30} value={s.capMinutes} onChange={(e) => set({ capMinutes: Math.max(5, Math.min(30, +e.target.value || 10)) })} /></label><label>App says “Yes!” by itself on practice answers (tap ✗ when it was wrong) <input type="checkbox" checked={s.autoYes !== false} onChange={(e) => set({ autoYes: e.target.checked })} /></label><label>Mic off: grown-up approves every answer <input type="checkbox" checked={s.parentScoring} onChange={(e) => set({ parentScoring: e.target.checked })} /></label><label>Mic sensitivity (1 strict – 5 sensitive) <input type="range" min={1} max={5} value={s.micSensitivity} onChange={(e) => { set({ micSensitivity: +e.target.value }); meter.sensitivity = +e.target.value; }} /></label></div>
     <div className="card"><h2>Placement</h2><p>Readiness: {p.readiness ? `blending ${p.readiness.blending}/5, tracking ${p.readiness.tracking}/8 (${p.readiness.date})` : s.readinessPassed === null ? 'not done' : s.readinessPassed ? 'passed' : 'not yet'}</p><div className="row" style={{ justifyContent: 'flex-start', gap: 8 }}><button className="btn" onClick={onReadiness}>Run readiness check</button><button className="btn light" onClick={onExtraSession}>Clear today's recommendation</button></div><p>Track: <b>{p.track === 'basics' ? `Basics, lesson ${currentBasics(p)} of ${BASICS.length}` : `Levels, level ${currentLevel(p)}`}</b></p><div className="row" style={{ justifyContent: 'flex-start', gap: 8 }}>{p.track === 'basics' ? <button className="btn light" onClick={() => { if (window.confirm('Skip Basics and start level 1?')) update((x) => setTrack(x, 'levels')); }}>Skip Basics → levels</button> : <button className="btn light" onClick={() => update((x) => setTrack(x, 'basics', 1))}>Go back to Basics</button>}</div><label>Jump to level (marks earlier levels passed)<select value={currentLevel(p)} onChange={(e) => update((x) => jumpTo(x, +e.target.value))}>{Array.from({ length: MAX_LEVEL }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n}</option>)}</select></label></div></>;
 }
 

@@ -34,6 +34,8 @@ export async function refreshRecordings() {
 
 export const hasRecording = (g: string) => recordings.has(`phoneme:${g}`);
 export const hasManifest = (key: string) => key in manifest;
+/** A grown-up's own recording of this sound: on this device, or baked into the app by `npm run sounds` (.wav; generated ones are .mp3). */
+export const hasOwnSound = (g: string) => hasRecording(g) || !!manifest[`phoneme:${g}`]?.endsWith('.wav');
 
 /** Resolves true when the clip played, false if it couldn't load (e.g. offline). */
 function playUrl(url: string, token: number): Promise<boolean> {

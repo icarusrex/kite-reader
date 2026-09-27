@@ -5,7 +5,7 @@
  *   - "say it fast" oral blending that gets gradually harder: compound words → syllables → stretched sounds
  *   - rhyme taught (shown with pictures) before it's asked, from lesson 5
  *   - a left-to-right tracking game early on
- * Every game starts with a "watch me" demo. After lesson 10 the child moves on to level 1.
+ * Every game starts with a "watch me" demo (say it fast and find the letter: lesson 1 only). After lesson 10 the child moves on to level 1.
  */
 
 export type SayFastMode = 'compound' | 'syllable' | 'stretch';
