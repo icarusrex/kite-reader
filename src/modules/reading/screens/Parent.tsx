@@ -18,7 +18,8 @@ import { LessonsTab } from './parent/LessonsTab';
 import { ProfilesTab } from './parent/ProfilesTab';
 import { RecordWizard } from './parent/RecordWizard';
 import { useRecorder } from '../audio/useRecorder';
-import { KEEP, MIN_EXAMPLES, VoiceStore, forgetVoice, loadVoice } from '../audio/ownVoice';
+import { KEEP, MIN_EXAMPLES, VoiceStore, exportClips, forgetVoice, loadVoice } from '../audio/ownVoice';
+import { ChildSoundsWizard } from './parent/ChildSoundsWizard';
 
 type Tab = 'status' | 'progress' | 'lessons' | 'profiles' | 'sounds' | 'books' | 'settings' | 'backup';
 
@@ -69,14 +70,21 @@ function ProgressTab() {
 function ChildVoice() {
   const { activeProfileId, progress } = useStore();
   const [v, setV] = useState<VoiceStore | null>(null);
-  useEffect(() => { loadVoice(activeProfileId).then(setV); }, [activeProfileId]);
+  const [wizard, setWizard] = useState(false);
+  useEffect(() => { if (!wizard) loadVoice(activeProfileId).then(setV); }, [activeProfileId, wizard]);
+  if (wizard) return <ChildSoundsWizard onClose={() => setWizard(false)} />;
   if (!v) return null;
   const known = GRAPHEMES.filter((g) => (v.ex[g.id]?.length ?? 0) >= MIN_EXAMPLES).length;
   const name = progress.settings.childName || 'the child';
   return <div className="card"><h2>{name}'s voice · {known}/{GRAPHEMES.length} sounds learnt</h2>
     <p style={{ fontSize: 14 }}>Each letter sound you let through is kept as an example of how {name} says it (up to {KEEP} per sound, on this device). After {MIN_EXAMPLES}, the app checks new tries against them before it says “Yes!” by itself. When a try sounds like a different letter it waits for you instead (🤔). The app said “Yes!” by itself {v.auto} times; you corrected it with ✗ {v.corrected} times.</p>
     <p style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>{GRAPHEMES.map((g) => { const n = v.ex[g.id]?.length ?? 0; return <span key={g.id} className={`pill ${n >= MIN_EXAMPLES ? 'good' : n ? 'warn' : ''}`}><b style={{ fontFamily: 'Andika' }}>{g.id}</b> {n}</span>; })}</p>
+    <p><b>Quickest start:</b> let {name} copy each sound {MIN_EXAMPLES} times (about 5 minutes; tap ↺ on a try that wasn't right).</p>
+    <div className="row" style={{ justifyContent: 'flex-start', gap: 8, flexWrap: 'wrap' }}>
+    <button className="btn" onClick={() => setWizard(true)}>🎤 Record {name}'s sounds</button>
+    <button className="btn light" onClick={() => exportClips(activeProfileId, progress.settings.childName)}>Export {name}'s tries</button>
     <button className="btn light" onClick={async () => { if (window.confirm(`Forget ${name}'s voice examples? The app will learn them again.`)) { await forgetVoice(activeProfileId); setV(await loadVoice(activeProfileId)); } }}>Forget and relearn</button>
+    </div>
   </div>;
 }
 

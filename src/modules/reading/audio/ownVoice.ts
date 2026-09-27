@@ -35,16 +35,60 @@ export async function loadVoice(profileId: string): Promise<VoiceStore> {
 }
 async function commit(profileId: string, v: VoiceStore) { cache.set(profileId, v); await save(key(profileId), v); }
 
-export async function addExample(profileId: string, sound: string, f: Feats, auto: boolean) {
+export async function addExample(profileId: string, sound: string, f: Feats, auto: boolean, clip?: Clip | null) {
   const v = await loadVoice(profileId);
   await commit(profileId, { ...v, ex: { ...v.ex, [sound]: [...(v.ex[sound] ?? []), f].slice(-KEEP) }, auto: v.auto + (auto ? 1 : 0) });
+  if (clip) await keepClip(profileId, 'ok', sound, clip);
+}
+
+/**
+ * Raw audio of the child's tries (16 kHz, 16-bit), kept so better recognisers can be tested on this child's real
+ * voice later: 'ok' = accepted, 'no' = the grown-up tapped ✗. Separate key so judging never loads it.
+ */
+export type Clip = { samples: Float32Array; rate: number };
+type Clips = Record<'ok' | 'no', Record<string, Int16Array[]>>;
+const CLIPS_KEPT = 12;
+const clipKey = (profileId: string) => `voiceclips:${profileId}`;
+export function to16k({ samples, rate }: Clip): Int16Array {
+  const ratio = rate / RATE, n = Math.floor(samples.length / ratio), out = new Int16Array(n);
+  for (let i = 0; i < n; i++) {
+    const a = Math.floor(i * ratio), b = Math.max(a + 1, Math.floor((i + 1) * ratio));
+    let s = 0; for (let j = a; j < b && j < samples.length; j++) s += samples[j];
+    out[i] = Math.max(-32768, Math.min(32767, Math.round((s / (b - a)) * 32767)));
+  }
+  return out;
+}
+export async function keepClip(profileId: string, kind: 'ok' | 'no', sound: string, clip: Clip) {
+  const c = await load<Clips>(clipKey(profileId), { ok: {}, no: {} });
+  c[kind][sound] = [...(c[kind][sound] ?? []), to16k(clip)].slice(-CLIPS_KEPT);
+  await save(clipKey(profileId), c);
+}
+/** Download every kept try as 16 kHz WAVs in one JSON file ({ ok: { s: [base64 wav…] }, no: {…} }). */
+export async function exportClips(profileId: string, name: string) {
+  const c = await load<Clips>(clipKey(profileId), { ok: {}, no: {} });
+  const wav = (pcm: Int16Array) => {
+    const b = new DataView(new ArrayBuffer(44 + pcm.length * 2));
+    const str = (o: number, s: string) => [...s].forEach((ch, i) => b.setUint8(o + i, ch.charCodeAt(0)));
+    str(0, 'RIFF'); b.setUint32(4, 36 + pcm.length * 2, true); str(8, 'WAVE'); str(12, 'fmt ');
+    b.setUint32(16, 16, true); b.setUint16(20, 1, true); b.setUint16(22, 1, true); b.setUint32(24, RATE, true);
+    b.setUint32(28, RATE * 2, true); b.setUint16(32, 2, true); b.setUint16(34, 16, true); str(36, 'data'); b.setUint32(40, pcm.length * 2, true);
+    pcm.forEach((v, i) => b.setInt16(44 + i * 2, v, true));
+    let bin = ''; const u = new Uint8Array(b.buffer); for (let i = 0; i < u.length; i++) bin += String.fromCharCode(u[i]);
+    return btoa(bin);
+  };
+  const out = Object.fromEntries((['ok', 'no'] as const).map((k) => [k, Object.fromEntries(Object.entries(c[k]).map(([g, list]) => [g, list.map(wav)]))]));
+  const count = Object.values(c.ok).flat().length + Object.values(c.no).flat().length;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(out)], { type: 'application/json' }));
+  a.download = `kite-voice-${name || profileId}.json`; a.click();
+  return count;
 }
 /** The grown-up tapped ✗ during an automatic "Yes!" window. */
 export async function noteCorrected(profileId: string) {
   const v = await loadVoice(profileId);
   await commit(profileId, { ...v, corrected: v.corrected + 1 });
 }
-export async function forgetVoice(profileId: string) { cache.delete(profileId); await remove(key(profileId)); }
+export async function forgetVoice(profileId: string) { cache.delete(profileId); await remove(key(profileId)); await remove(clipKey(profileId)); }
 
 let melBank: number[][] | null = null;
 function mel() {

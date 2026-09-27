@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { meter } from '../audio/mic';
 import { STOPS, acceptSound, extract } from '../audio/soundCheck';
-import { Verdict, addExample, judge, loadVoice, mfcc, noteCorrected } from '../audio/ownVoice';
+import { Clip, Verdict, addExample, judge, keepClip, loadVoice, mfcc, noteCorrected } from '../audio/ownVoice';
 import { useStore } from '../../../core/app/store';
 import { ActivityCtx } from './types';
 import { envelope, loadReferences, Reference } from '../audio/references';
@@ -50,6 +50,7 @@ export function useSpokenScore(opts: {
   const finished = useRef(false);
   const autoTimer = useRef<number | undefined>();
   const tryFeats = useRef<number[][] | null>(null);
+  const tryClip = useRef<Clip | null>(null);
   useEffect(() => () => clearTimeout(autoTimer.current), []);
 
   const settings = opts.ctx.settings;
@@ -64,12 +65,13 @@ export function useSpokenScore(opts: {
     setPending(false); setHeard(false); setDoubt(false);
     if (ok) {
       finished.current = true;
-      if (opts.sound && tryFeats.current) void addExample(activeProfileId, opts.sound, tryFeats.current, auto);
+      if (opts.sound && tryFeats.current) void addExample(activeProfileId, opts.sound, tryFeats.current, auto, tryClip.current);
       await sayYes();
       opts.onDone(attempt === 1);
       return;
     }
-    tryFeats.current = null;
+    if (opts.sound && tryClip.current) void keepClip(activeProfileId, 'no', opts.sound, tryClip.current);
+    tryFeats.current = null; tryClip.current = null;
     if (attempt === 1) {
       setBusy(true);
       opts.setNeutral(true);
@@ -95,6 +97,7 @@ export function useSpokenScore(opts: {
     const clip = target && !meter.simulated ? meter.clip(start - 150, end + 150) : null;
     if (clip && refs?.[target!]) setTryShape({ env: envelope(clip.samples, clip.rate) });
     tryFeats.current = clip ? mfcc(clip.samples, clip.rate) : null;
+    tryClip.current = clip;
     setHeard(true);
     if (!autoAllowed) return;
     let verdict: Verdict = 'match';
