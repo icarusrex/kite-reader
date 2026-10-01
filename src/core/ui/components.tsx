@@ -111,7 +111,9 @@ export function ParentCorner({ onOpen }: { onOpen: () => void }) {
   return (
     <div
       className="corner"
-      onPointerDown={() => { timer.current = window.setTimeout(onOpen, 1500); }}
+      // Chrome on Android turns a long press into a context menu and cancels the pointer; block both
+      onContextMenu={(e) => e.preventDefault()}
+      onPointerDown={(e) => { e.currentTarget.setPointerCapture?.(e.pointerId); timer.current = window.setTimeout(onOpen, 1500); }}
       onPointerUp={() => clearTimeout(timer.current)}
       onPointerLeave={() => clearTimeout(timer.current)}
       aria-label="Grown-ups: press and hold"
