@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { meter } from '../audio/mic';
 import { STOPS, acceptSound, extract } from '../audio/soundCheck';
-import { Clip, Verdict, addExample, judge, keepClip, loadVoice, mfcc, noteCorrected } from '../audio/ownVoice';
+import { Clip, Verdict, VoiceStore, addExample, judge, keepClip, loadVoice, mfcc, noteCorrected } from '../audio/ownVoice';
 import { useStore } from '../../../core/app/store';
 import { ActivityCtx } from './types';
 import { envelope, loadReferences, Reference } from '../audio/references';
@@ -157,13 +157,19 @@ export function useSoundTry(sound: string, enabled: boolean, onGood: () => void)
   const [tryShape, setTryShape] = useState<{ env: number[]; ok: boolean } | null>(null);
   const [busy, setBusy] = useState(false);
   const misses = useRef(0);
+  const { activeProfileId } = useStore();
+  const [voice, setVoice] = useState<VoiceStore>({ ex: {}, auto: 0, corrected: 0 });
   useEffect(() => { if (!meter.simulated) loadReferences().then(setRefs); }, []);
+  useEffect(() => { loadVoice(activeProfileId).then(setVoice); }, [activeProfileId]);
   useEffect(() => { if (enabled) setTryShape(null); }, [enabled]);
   const onSpoke = async (start: number, end: number) => {
     const clip = refs?.[sound] ? meter.clip(start - 150, end + 150) : null;
     const features = clip && extract(clip.samples, clip.rate);
     if (!clip || !features || !refs) { onGood(); return; }
-    const ok = acceptSound(sound, features, Object.fromEntries(Object.entries(refs).map(([g, r]) => [g, r.features])));
+    // The child's own voice decides once it knows the sound; the grown-up's recordings are only the fallback.
+    const own = (() => { const f = mfcc(clip.samples, clip.rate); return f ? judge(sound, f, voice) : 'unsure'; })();
+    const ok = own !== 'unsure' ? own === 'match'
+      : acceptSound(sound, features, Object.fromEntries(Object.entries(refs).map(([g, r]) => [g, r.features])));
     setTryShape({ env: envelope(clip.samples, clip.rate), ok });
     if (ok || misses.current >= 1) { await new Promise((r) => setTimeout(r, 700)); onGood(); return; }
     misses.current++;
