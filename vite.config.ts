@@ -1,8 +1,14 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import { execSync } from 'node:child_process';
+
+// Shown in Grown-ups > Settings so the device can be checked against the latest deploy
+const git = (cmd: string) => { try { return execSync(`git ${cmd}`).toString().trim(); } catch { return ''; } };
+const BUILD = `${new Date().toISOString().slice(0, 16).replace('T', ' ')} UTC · ${git('rev-parse --short HEAD') || 'local'}${git('status --porcelain') ? '+' : ''}`;
 
 export default defineConfig({
+  define: { __BUILD__: JSON.stringify(BUILD) },
   plugins: [
     react(),
     VitePWA({
