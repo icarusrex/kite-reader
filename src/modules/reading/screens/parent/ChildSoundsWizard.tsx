@@ -84,7 +84,7 @@ export function ChildSoundsWizard({ onClose }: { onClose: () => void }) {
   return (
     <div className="screen" style={{ position: 'fixed', inset: 0, zIndex: 100, background: 'var(--bg)' }}>
       <div className="topbar" style={{ justifyContent: 'space-between', padding: '12px 16px' }}>
-        <span className="subtitle">{name}'s sounds · {learnt}/{GRAPHEMES.length}</span>
+        <span className="subtitle">🧒 {name} records · {learnt}/{GRAPHEMES.length}</span>
         <button className="btn" onClick={() => { clearTimeout(timer.current); onClose(); }}>Done</button>
       </div>
       {micError ? <div className="stage"><p className="subtitle">{micError}</p></div>

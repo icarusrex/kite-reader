@@ -76,7 +76,8 @@ function ChildVoice() {
   if (!v) return null;
   const known = GRAPHEMES.filter((g) => (v.ex[g.id]?.length ?? 0) >= MIN_EXAMPLES).length;
   const name = progress.settings.childName || 'the child';
-  return <div className="card"><h2>{name}'s voice · {known}/{GRAPHEMES.length} sounds learnt</h2>
+  return <div className="card"><h2>🧒 {name} records · {known}/{GRAPHEMES.length} sounds learnt</h2>
+    <p className="muted" style={{ fontSize: 13 }}>{name}'s own voice, used only to check {name}'s answers. {name} speaks here, not you.</p>
     <p style={{ fontSize: 14 }}>Each letter sound you let through is kept as an example of how {name} says it (up to {KEEP} per sound, on this device). After {MIN_EXAMPLES}, the app checks new tries against them before it says “Yes!” by itself. When a try sounds like a different letter it waits for you instead (🤔). The app said “Yes!” by itself {v.auto} times; you corrected it with ✗ {v.corrected} times.</p>
     <p style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>{GRAPHEMES.map((g) => { const n = v.ex[g.id]?.length ?? 0; return <span key={g.id} className={`pill ${n >= MIN_EXAMPLES ? 'good' : n ? 'warn' : ''}`}><b style={{ fontFamily: 'Andika' }}>{g.id}</b> {n}</span>; })}</p>
     <p><b>Quickest start:</b> let {name} copy each sound {MIN_EXAMPLES} times (about 5 minutes; tap ↺ on a try that wasn't right).</p>
@@ -92,7 +93,7 @@ function SoundsTab() {
   const [, force] = useState(0);
   const { recording, start, stop: stopRec } = useRecorder(() => force((n) => n + 1));
   const recorded = GRAPHEMES.filter((g) => hasOwnSound(g.id)).length;
-  return <><ChildVoice /><RecordWizard onChange={() => force((n) => n + 1)} /><div className="card"><h2>All sounds ({recorded}/{GRAPHEMES.length} recorded)</h2><p style={{ fontSize: 14 }}>Your recordings replace built-in sounds on this device and are shared across learner profiles.</p></div>
+  return <><ChildVoice /><RecordWizard onChange={() => force((n) => n + 1)} /><div className="card"><h2>🧑 Grown-up voice: all sounds ({recorded}/{GRAPHEMES.length} recorded)</h2><p style={{ fontSize: 14 }}>Your recordings replace built-in sounds on this device and are shared across learner profiles.</p></div>
     <div className="card"><table><thead><tr><th>Sound</th><th>Level</th><th>Key word</th><th>Tip</th><th /></tr></thead><tbody>{GRAPHEMES.map((g) => <tr key={g.id}><td style={{ fontSize: 28, fontFamily: 'Andika' }}>{g.id}</td><td>{g.level}</td><td>{g.example}</td><td style={{ fontSize: 14 }}>{g.recordTip}</td><td style={{ whiteSpace: 'nowrap' }}><button className={`btn rec ${recording === g.id ? 'on' : ''}`} onPointerDown={() => start(g.id)} onPointerUp={stopRec} onPointerLeave={stopRec}>{recording === g.id ? 'Recording…' : 'Hold to record'}</button>{' '}<button className="btn light" onClick={() => say({ g: g.id })}>▶</button>{' '}{hasRecording(g.id) ? <span className="pill good">recorded here</span> : hasManifest(`phoneme:${g.id}`) ? <span className="pill good">built in</span> : <span className="pill warn">device voice</span>}{hasRecording(g.id) && <button className="btn light" style={{ marginLeft: 6 }} onClick={async () => { await remove(`rec:g:${g.id}`); await refreshRecordings(); force((n) => n + 1); }} aria-label="Delete recording">✕</button>}</td></tr>)}</tbody></table></div>
     <div className="card"><h2>Instruction audio</h2><p>{Object.keys(PROMPTS).filter((k) => hasManifest(`prompt:${k}`)).length}/{Object.keys(PROMPTS).length} prompts generated; the rest use the device voice.</p></div></>;
 }

@@ -16,7 +16,8 @@ export function RecordWizard({ onChange }: { onChange: () => void }) {
   const isRec = recording === g.id;
   return (
     <div className="card wizard">
-      <h2>Record the sounds · {recorded}/{GRAPHEMES.length} done</h2>
+      <h2>🧑 Grown-up records · {recorded}/{GRAPHEMES.length} done</h2>
+      <p className="muted" style={{ fontSize: 13 }}>Your voice, not the child's: this is the model sound the app plays to the child.</p>
       <div className="wizard-dots">
         {GRAPHEMES.map((x, k) => (
           <button key={x.id} className={`wdot ${hasOwnSound(x.id) ? 'done' : ''} ${k === i ? 'on' : ''}`} onClick={() => setI(k)} aria-label={`Sound ${x.id}`}>{x.id}</button>
