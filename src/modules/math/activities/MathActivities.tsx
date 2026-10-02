@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type CSSProperties } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { speakText, stopSpeech } from '../../../core/audio/speech';
 import { MathErrorCode } from '../content/skills';
 import { MathHelpLevel } from '../engine/state';
@@ -18,8 +18,8 @@ export interface MathTaskViewProps {
 const speak = (task: MathTask) => speakText(task.prompt);
 const numberWord = (n: number) => ['zero', 'one', 'two', 'three', 'four', 'five'][n] ?? String(n);
 
-function Prompt({ task }: { task: MathTask }) {
-  useEffect(() => { void speak(task); return stopSpeech; }, [task.uid]);
+function Prompt({ task, onSpoken }: { task: MathTask; onSpoken?: () => void }) {
+  useEffect(() => { void speak(task).then(() => onSpoken?.()); return stopSpeech; }, [task.uid]);
   return <div style={{ display: 'flex', alignItems: 'center', gap: 12, justifyContent: 'center' }}>
     <h2 style={{ fontSize: 'clamp(28px, 5vmin, 56px)', margin: 0, textAlign: 'center' }}>{task.prompt}</h2>
     <button className="btn light" onClick={() => speak(task)} aria-label="Repeat">▶</button>
@@ -45,47 +45,61 @@ function Dots({ n, spread = false, hidden = false }: { n: number; spread?: boole
   </div>;
 }
 
-function QuantityVisual({ n, representation, hidden = false, spread = false }: { n: number; representation: MathTask['representation']; hidden?: boolean; spread?: boolean }) {
+function QuantityVisual({ n, representation, hidden = false, spread = false, emoji = '🍎' }: { n: number; representation: MathTask['representation']; hidden?: boolean; spread?: boolean; emoji?: string }) {
   if (hidden) return <Dots n={n} hidden />;
-  if (representation === 'objects') return <div style={{ width: 'min(38vw, 300px)', minHeight: 150, display: 'flex', alignItems: 'center', justifyContent: spread ? 'space-between' : 'center', gap: spread ? 4 : 16, flexWrap: 'wrap', padding: 18, borderRadius: 22, background: '#fff', boxShadow: '0 8px 25px #0001' }}>{Array.from({ length: n }, (_, i) => <span key={i} style={{ fontSize: 52 }}>🍎</span>)}</div>;
+  if (representation === 'objects') return <div style={{ width: 'min(38vw, 300px)', minHeight: 150, display: 'flex', alignItems: 'center', justifyContent: spread ? 'space-between' : 'center', gap: spread ? 4 : 16, flexWrap: 'wrap', padding: 18, borderRadius: 22, background: '#fff', boxShadow: '0 8px 25px #0001' }}>{Array.from({ length: n }, (_, i) => <span key={i} style={{ fontSize: 52 }}>{emoji}</span>)}</div>;
   if (representation === 'five_frame') return <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 58px)', gap: 8, padding: 12, border: '4px solid #254A5D', borderRadius: 14, background: '#fff' }}>{Array.from({ length: 5 }, (_, i) => <span key={i} style={{ width: 58, height: 58, border: '2px solid #aac4ca', borderRadius: 8, display: 'grid', placeItems: 'center' }}>{i < n ? <span style={{ width: 34, height: 34, borderRadius: '50%', background: '#254A5D' }} /> : null}</span>)}</div>;
   if (representation === 'structured_dots') return <div style={{ width: 250, minHeight: 160, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', placeItems: 'center', gap: 18, padding: 18, borderRadius: 22, background: '#fff', boxShadow: '0 8px 25px #0001' }}>{Array.from({ length: n }, (_, i) => <span key={i} style={{ width: 38, height: 38, borderRadius: '50%', background: '#254A5D' }} />)}</div>;
   if (representation === 'fingers') return <div style={{ fontSize: '18vmin', lineHeight: 1 }}>🖐️</div>;
   return <Dots n={n} spread={spread} />;
 }
 
+/** Read aloud to a four-year-old, so every line is in their words. */
+const EXPLAIN: Record<string, string> = {
+  'num.count.verbal.1_5': 'Counting words always go in the same order: one, two, three, four, five.',
+  'num.count.one_to_one.1_3': 'Touch each thing once, and say one number for each one.',
+  'num.cardinality.1_3': 'When you count, the last number you say tells how many there are.',
+  'num.subitize.perceptual.1_3': 'Sometimes you can see how many with one quick look, without counting.',
+  'num.construct.1_3': 'Pick just the right number. Stop when you have enough.',
+  'num.map.numeral.1_3': 'This is how we write numbers. The 2 means two things.',
+  'num.compare.quantity.1_3': 'More means the side with more things, even if they are squashed together.',
+  'num.count.cardinal.1_5': 'Count every one once. The last number tells how many.',
+  'num.subitize.structured.4_5': 'Two and two make four. A full row of five is five.',
+  'num.compare.quantity.1_5': 'Count both sides. Do not let spread-out things trick you.',
+  'num.compose.2_4': 'You can split a group into two parts. All together it is still the same number.',
+  'num.compose.5': 'Five can be four and one, or three and two. It is still five.',
+  'num.map.numeral.1_5': 'Each written number means that many things. The 5 means five things.',
+  'num.order.1_5': 'Numbers go in order. Fewer things come first, more things come after.',
+  'op.add.combine.to5': 'When more things come, there are more. Count how many there are now.',
+  'op.subtract.separate.to5': 'When some go away, there are fewer. Count how many are left.',
+  'num.successor.predecessor.to5': 'One more makes the next number. One less makes the number before.',
+  'geo.shape.properties.basic': 'A shape is still the same shape when you turn it around.',
+  'geo.compose.shapes.basic': 'You can put shapes together to make new shapes.',
+  'measure.length.direct': 'To see which is longer, line up the ends first.',
+};
+
 function Model({ task, onDone }: MathTaskViewProps) {
-  const specExamples: Record<string, string> = {
-    'num.count.verbal.1_5': 'Counting words always stay in the same order: 1, 2, 3, 4, 5.',
-    'num.count.one_to_one.1_3': 'Give each thing exactly one counting word. Touch or move it as you count.',
-    'num.cardinality.1_3': 'The last number you say tells how many there are altogether.',
-    'num.subitize.perceptual.1_3': 'Sometimes you can see one, two or three as a whole without counting each dot.',
-    'num.construct.1_3': 'Stop when you have exactly the number requested.',
-    'num.map.numeral.1_3': 'The written symbol and the amount mean the same number.',
-    'num.compare.quantity.1_3': 'More means the group with the greater number of things; spacing can trick your eyes.',
-    'num.count.cardinal.1_5': 'Count every object once. The final number tells the whole amount.',
-    'num.subitize.structured.4_5': 'Look for useful groups: four can be two and two; five can be a full five-frame.',
-    'num.compare.quantity.1_5': 'Compare how many, not how spread out the groups look.',
-    'num.compose.2_4': 'Moving the same objects into two groups does not change how many there are altogether.',
-    'num.compose.5': 'Five can be split in different ways and still stay five.',
-    'num.map.numeral.1_5': 'A numeral is a symbol for an exact amount. Five dots and the symbol 5 mean the same number.',
-    'num.order.1_5': 'Numbers have an order. A number with fewer objects comes before a number with more objects.',
-    'op.add.combine.to5': 'Addition begins with quantities joining or increasing. Model what changed before using symbols.',
-    'op.subtract.separate.to5': 'Subtraction begins with part of a whole leaving. Keep track of the whole, the part that left and what remains.',
-    'num.successor.predecessor.to5': 'Adding exactly one makes the next number; taking exactly one makes the previous number.',
-    'geo.shape.properties.basic': 'Turning a shape does not change what it is. Look at its sides, corners and curves.',
-    'geo.compose.shapes.basic': 'Shapes can be joined to make new shapes. Two triangles can fit together to make a square.',
-    'measure.length.direct': 'To compare length fairly, put the starting ends together first.',
-  };
+  const text = EXPLAIN[task.skillId];
+  useEffect(() => { void (async () => { await speakText(task.prompt); await speakText(text); })(); return stopSpeech; }, [task.uid, text, task.prompt]);
   return <div className="stage" style={{ gap: 28 }}>
-    <Prompt task={task} />
-    <div className="card" style={{ maxWidth: 700, fontSize: 'clamp(24px, 4vmin, 42px)', textAlign: 'center' }}>{specExamples[task.skillId]}</div>
-    <button className="primary soft" onClick={() => onDone(null)} style={{ width: 100, height: 100 }}>→</button>
+    <h2 style={{ fontSize: 'clamp(28px, 5vmin, 56px)', margin: 0, textAlign: 'center' }}>{task.prompt}</h2>
+    <button className="card" style={{ maxWidth: 700, fontSize: 'clamp(24px, 4vmin, 42px)', textAlign: 'center', border: 0 }} onClick={() => void speakText(text)}>{text}</button>
+    <button className="primary soft" onClick={() => onDone(null)} style={{ width: 100, height: 100 }} aria-label="Next">→</button>
+  </div>;
+}
+
+/** Between parts of a lesson, as Reading's banners: "Now show me what you know!" */
+function Banner({ task, onDone }: MathTaskViewProps) {
+  useEffect(() => { void speakText(task.prompt); return stopSpeech; }, [task.uid, task.prompt]);
+  return <div className="stage" style={{ gap: 28 }}>
+    <div style={{ fontSize: '22vmin', lineHeight: 1 }}>{task.bannerEmoji}</div>
+    <h1 className="title" style={{ textAlign: 'center' }}>{task.prompt}</h1>
+    <button className="primary" onClick={() => onDone(null)} aria-label="Continue">▶</button>
   </div>;
 }
 
 function ParentScoreTask({ task, onDone }: MathTaskViewProps) {
-  return <div className="stage" style={{ gap: 30 }}><Prompt task={task} /><div style={{ fontSize: '18vmin', lineHeight: 1 }}>🔢</div><ParentScore onDone={onDone} /></div>;
+  return <div className="stage" style={{ gap: 30, paddingRight: 150 }}><Prompt task={task} /><div style={{ fontSize: '18vmin', lineHeight: 1 }}>🔢</div><ParentScore onDone={onDone} /></div>;
 }
 
 function TapCount({ task, onDone }: MathTaskViewProps) {
@@ -110,17 +124,19 @@ function TapCount({ task, onDone }: MathTaskViewProps) {
 
 function QuantityChoice({ task, onDone }: MathTaskViewProps) {
   const answer = task.quantity ?? task.target ?? 1;
-  const quick = task.skillId === 'num.subitize.perceptual.1_3';
-  const [hidden, setHidden] = useState(false);
-  useEffect(() => {
-    if (!quick) return;
-    const t = window.setTimeout(() => setHidden(true), 1100);
-    return () => clearTimeout(t);
-  }, [task.uid, quick]);
-  return <div className="stage" style={{ gap: 28 }}>
-    <Prompt task={task} />
-    <QuantityVisual n={answer} representation={task.representation} hidden={hidden} />
-    <div className="row">{task.options?.map((n) => <button key={n} className="primary soft" style={{ width: 100, height: 100, fontSize: 44 }} onClick={() => onDone({ correct: n === answer, helpLevel: 'none', errorCode: n === answer ? undefined : task.expectedError })}>{n}</button>)}</div>
+  // A quick look: the dots appear once the question has been heard, then hide so they cannot be counted.
+  const quick = task.skillId === 'num.subitize.perceptual.1_3' || task.skillId === 'num.subitize.structured.4_5';
+  const [shown, setShown] = useState<'waiting' | 'on' | 'off'>(quick ? 'waiting' : 'on');
+  const timer = useRef<number>();
+  const look = () => { setShown('on'); clearTimeout(timer.current); timer.current = window.setTimeout(() => setShown('off'), 1500); };
+  useEffect(() => () => clearTimeout(timer.current), []);
+  return <div className="stage" style={{ gap: 28, paddingRight: task.spokenAnswer ? 150 : undefined }}>
+    <Prompt task={task} onSpoken={quick ? look : undefined} />
+    {shown === 'waiting' ? <Dots n={answer} hidden /> : <QuantityVisual n={answer} representation={task.representation} hidden={shown === 'off'} />}
+    {quick && shown === 'off' && <button className="btn light" onClick={look}>Look again</button>}
+    {task.spokenAnswer
+      ? <ParentScore onDone={onDone} />
+      : <div className="row">{task.options?.map((n) => <button key={n} className="primary soft" style={{ width: 100, height: 100, fontSize: 44 }} onClick={() => onDone({ correct: n === answer, helpLevel: 'none', errorCode: n === answer ? undefined : task.expectedError })}>{n}</button>)}</div>}
   </div>;
 }
 
@@ -156,7 +172,8 @@ function Partition({ task, onDone }: MathTaskViewProps) {
   // order on every render, and num.compose.2_4 alternates between the two
   // partition modes, so an early return above a useState is a crash waiting
   // for the day this component is not remounted per task.
-  const [right, setRight] = useState(1);
+  // Everything starts on the left, so the asked-for split is never already showing.
+  const [right, setRight] = useState(0);
   if (task.partitionMode === 'hidden_part') {
     return <div className="stage" style={{ gap: 24 }}>
       <Prompt task={task} />
@@ -169,11 +186,14 @@ function Partition({ task, onDone }: MathTaskViewProps) {
     <Prompt task={task} />
     <div style={{ fontSize: 30 }}>Whole: <b>{whole}</b></div>
     <div className="row" style={{ gap: 35 }}>
-      <div className="card" style={{ minWidth: 180, textAlign: 'center' }}><div style={{ fontSize: 64 }}>{'●'.repeat(left)}</div><b>{left}</b></div>
-      <div className="card" style={{ minWidth: 180, textAlign: 'center' }}><div style={{ fontSize: 64 }}>{'●'.repeat(right)}</div><b>{right}</b></div>
+      <div className="card" style={{ minWidth: 180, textAlign: 'center' }}><div style={{ fontSize: 64, minHeight: 90 }}>{'●'.repeat(left)}</div><b>{left}</b></div>
+      <div className="card" style={{ minWidth: 180, textAlign: 'center' }}><div style={{ fontSize: 64, minHeight: 90 }}>{'●'.repeat(right)}</div><b>{right}</b></div>
     </div>
-    <div className="row"><button className="btn light" disabled={right <= 1} onClick={() => setRight((n) => n - 1)}>Move left</button><button className="btn light" disabled={right >= whole - 1} onClick={() => setRight((n) => n + 1)}>Move right</button></div>
-    <button className="btn" onClick={() => onDone({ correct: left > 0 && right > 0 && left + right === whole, helpLevel: 'none' })}>That still makes {whole}</button>
+    <div className="row"><button className="primary soft" style={{ width: 100, height: 90, fontSize: 40 }} disabled={right <= 0} onClick={() => setRight((n) => n - 1)} aria-label="Move one left">◀</button><button className="primary soft" style={{ width: 100, height: 90, fontSize: 40 }} disabled={right >= whole} onClick={() => setRight((n) => n + 1)} aria-label="Move one right">▶</button></div>
+    <button className="btn" onClick={() => {
+      const correct = task.splitLeft === undefined ? left > 0 && right > 0 : left === task.splitLeft;
+      onDone({ correct, helpLevel: 'none', errorCode: correct ? undefined : task.expectedError });
+    }}>Done</button>
   </div>;
 }
 
@@ -201,9 +221,9 @@ function StoryOperation({ task, onDone }: MathTaskViewProps) {
   return <div className="stage" style={{ gap: 26 }}>
     <Prompt task={task} />
     <div className="row" style={{ gap: 26, alignItems: 'center' }}>
-      <QuantityVisual n={start} representation={task.representation} />
+      <QuantityVisual n={start} representation={task.representation} emoji={task.emoji} />
       <div style={{ fontSize: 56 }}>{removed ? '−' : '+'}</div>
-      <QuantityVisual n={change} representation="objects" />
+      <QuantityVisual n={change} representation={task.representation} emoji={task.emoji} />
     </div>
     <div className="row">{task.options?.map((n) => <button key={n} className="primary soft" style={{ width: 100, height: 100, fontSize: 44 }} onClick={() => onDone({ correct: n === answer, helpLevel: 'none', errorCode: n === answer ? undefined : task.expectedError })}>{n}</button>)}</div>
   </div>;
@@ -211,7 +231,7 @@ function StoryOperation({ task, onDone }: MathTaskViewProps) {
 
 function ShapeCompose({ task, onDone }: MathTaskViewProps) {
   const options: { id: NonNullable<MathTask['shapeComposeAnswer']>; label: JSX.Element }[] = [
-    { id: 'two_triangles', label: <svg width="150" height="150" viewBox="0 0 100 100" aria-label="two triangles making a square"><polygon points="0,0 100,0 0,100" fill="#2CCCD3" /><polygon points="100,100 100,0 0,100" fill="#254A5D" /></svg> },
+    { id: 'two_triangles', label: <svg width="190" height="120" viewBox="0 0 160 100" aria-label="two triangles"><polygon points="0,10 70,10 0,80" fill="#2CCCD3" /><polygon points="160,90 160,20 90,90" fill="#2CCCD3" /></svg> },
     { id: 'two_circles', label: <span className="row"><Shape shape="circle" rotation={0} /><Shape shape="circle" rotation={0} /></span> },
     { id: 'rectangle_circle', label: <span className="row"><Shape shape="rectangle" rotation={0} /><Shape shape="circle" rotation={0} /></span> },
   ];
@@ -249,7 +269,7 @@ function LengthCompare({ task, onDone }: MathTaskViewProps) {
 }
 
 function Physical({ task, onDone }: MathTaskViewProps) {
-  return <div className="stage" style={{ gap: 30 }}><Prompt task={task} /><div style={{ fontSize: '18vmin' }}>🏠</div><p className="subtitle">Use real things nearby.</p><ParentScore onDone={onDone} /></div>;
+  return <div className="stage" style={{ gap: 30, paddingRight: 150 }}><Prompt task={task} /><div style={{ fontSize: '18vmin' }}>🏠</div><p className="subtitle">Use real things nearby.</p><ParentScore onDone={onDone} /></div>;
 }
 
 export function MathTaskView(props: MathTaskViewProps) {
@@ -267,5 +287,6 @@ export function MathTaskView(props: MathTaskViewProps) {
     case 'shape_compose': return <ShapeCompose {...props} />;
     case 'length_compare': return <LengthCompare {...props} />;
     case 'physical': return <Physical {...props} />;
+    case 'banner': return <Banner {...props} />;
   }
 }

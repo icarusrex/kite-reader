@@ -47,7 +47,12 @@ async function say(req: Request, env: Env): Promise<Response> {
 
 export default {
   async fetch(req: Request, env: Env): Promise<Response> {
-    if (new URL(req.url).pathname === '/api/say') return say(req, env);
+    const path = new URL(req.url).pathname;
+    if (path === '/api/say') return say(req, env);
+    // Update checks: reaching here means the Cloudflare Access login is still valid.
+    if (path === '/api/ping') return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
+    // After a fresh Access login, back into the app.
+    if (path === '/api/signin') return Response.redirect(new URL('/', req.url).toString(), 302);
     return env.ASSETS.fetch(req);
   },
 };

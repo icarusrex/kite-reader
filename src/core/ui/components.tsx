@@ -106,6 +106,12 @@ export function ReplayButton({ onTap }: { onTap: () => void }) {
 }
 
 /** Hidden long-press area for grown-ups. */
+/** Keep a press-and-hold alive when the finger drifts. Best effort: a pointer the browser no longer
+ *  tracks (or a synthetic event) throws, and that must never stop the hold itself from starting. */
+export function capturePointer(e: React.PointerEvent<Element>) {
+  try { e.currentTarget.setPointerCapture?.(e.pointerId); } catch { /* hold still works without capture */ }
+}
+
 export function ParentCorner({ onOpen }: { onOpen: () => void }) {
   const timer = useRef<number>();
   return (
@@ -113,7 +119,7 @@ export function ParentCorner({ onOpen }: { onOpen: () => void }) {
       className="corner"
       // Chrome on Android turns a long press into a context menu and cancels the pointer; block both
       onContextMenu={(e) => e.preventDefault()}
-      onPointerDown={(e) => { e.currentTarget.setPointerCapture?.(e.pointerId); timer.current = window.setTimeout(onOpen, 1500); }}
+      onPointerDown={(e) => { capturePointer(e); timer.current = window.setTimeout(onOpen, 1500); }}
       onPointerUp={() => clearTimeout(timer.current)}
       onPointerLeave={() => clearTimeout(timer.current)}
       aria-label="Grown-ups: press and hold"

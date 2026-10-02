@@ -32,8 +32,8 @@ export function StoryChair({ onClose }: { onClose: () => void }) {
   if (localId) return <BookReader id={localId} progress={progress} level={level} onBack={() => setLocalId(null)} />;
 
   if (!bookId) return <div className="screen"><Top onBack={close} title="Story chair" /><div className="stage" style={{ justifyContent: 'flex-start', overflow: 'auto' }}>
-    {local.length > 0 && <p className="shelf-label">My books</p>}{local.length > 0 && <div className="row">{local.map((b) => { const a = b.analysis; const ready = a && a.ready95 <= level; return <BookCard key={b.id} cover={b.cover ? '' : '📘'} image={b.cover && imageUrl(b.id, b.cover)} color="#FFFFFF" title={b.title} sub={ready ? 'Likely readable; highlighting uses actual learner knowledge' : a && a.readyPreteach <= level ? 'Almost! A grown-up helps with a few words' : 'Read it together'} badge={ready} onTap={() => setLocalId(b.id)} />; })}</div>}
-    <p className="shelf-label">Read-aloud classics</p><div className="row">{LIBRARY.map((b) => <BookCard key={b.id} cover={b.cover} color={b.color} title={b.title} sub={`${progress.readAloud?.[b.id]?.length ?? 0} chapters read`} onTap={() => setBookId(b.id)} />)}</div><p className="subtitle">A grown-up reads. Highlighted words are ones this learner can actually decode now.</p>
+    {local.length > 0 && <p className="shelf-label">My books</p>}{local.length > 0 && <div className="shelf">{sortShelf(local, level).map((b) => { const a = b.analysis; const ready = a && a.ready95 <= level; return <BookCard key={b.id} cover={b.cover ? '' : '📘'} image={b.cover && imageUrl(b.id, b.cover)} color="#FFFFFF" title={b.title} sub={ready ? 'Likely readable; highlighting uses actual learner knowledge' : a && a.readyPreteach <= level ? 'Almost! A grown-up helps with a few words' : 'Read it together'} badge={ready} onTap={() => setLocalId(b.id)} />; })}</div>}
+    <p className="shelf-label">Read-aloud classics</p><div className="shelf">{LIBRARY.map((b) => <BookCard key={b.id} cover={b.cover} color={b.color} title={b.title} sub={`${progress.readAloud?.[b.id]?.length ?? 0} chapters read`} onTap={() => setBookId(b.id)} />)}</div><p className="subtitle">A grown-up reads. Highlighted words are ones this learner can actually decode now.</p>
   </div></div>;
   if (!book) return <div className="screen"><Top onBack={close} title="…" /></div>;
 
@@ -50,12 +50,18 @@ export function StoryChair({ onClose }: { onClose: () => void }) {
   </div>;
 }
 
+/** Books the learner can read now first, then almost-readable, then the rest. */
+function sortShelf(books: LibraryEntry[], level: number) {
+  const rank = (b: LibraryEntry) => !b.analysis ? 2 : b.analysis.ready95 <= level ? 0 : b.analysis.readyPreteach <= level ? 1 : 2;
+  return [...books].sort((a, b) => rank(a) - rank(b));
+}
 function pickPrompts(n: number) { return [PROMPTS[n % PROMPTS.length], PROMPTS[(n + 2) % PROMPTS.length]]; }
 function ReaderPage({ paragraphs, progress, level, highlight, vocab, footer }: { paragraphs: string[]; progress: Progress; level: number; highlight: boolean; vocab: string[]; footer: React.ReactNode }) {
-  const rendered = useMemo(() => paragraphs.map((p) => p.split(/(\s+)/).map((chunk, i) => { const toks = tokenize(chunk); const w = toks[0]?.toLowerCase(); if (!w) return chunk; const isVocab = vocab.includes(w); const canRead = toks.length === 1 && canDecodeWord(progress, w, level) && w.length > 1; const cls = isVocab ? 'vw' : highlight && canRead ? 'cr' : ''; return cls ? <span key={i} className={cls} onPointerDown={() => say({ w })}>{chunk}</span> : chunk; })), [paragraphs, progress, level, highlight, vocab]);
+  const rendered = useMemo(() => paragraphs.map((p) => p.split(/(\s+)/).map((chunk, i) => { const toks = tokenize(chunk); const w = toks[0]?.toLowerCase(); if (!w) return chunk; const isVocab = vocab.includes(w); const canRead = toks.length === 1 && canDecodeWord(progress, w, level) && w.length > 1; const cls = isVocab ? 'vw' : highlight && canRead ? 'cr' : ''; return cls ? <span key={i} className={cls} onClick={() => say({ w })}>{chunk}</span> : chunk; })), [paragraphs, progress, level, highlight, vocab]);
   return <div className="reader"><div className="reader-text">{rendered.map((r, i) => <p key={i}>{r}</p>)}</div>{footer}</div>;
 }
 function WordCard({ v }: { v: VocabItem }) { const tap = useTap(() => say({ w: v.word }, { pause: 300 }, { w: v.meaning })); return <button className="tile wordcard" onPointerDown={tap}><b>{v.word}</b><small>{v.meaning}</small></button>; }
-function BookCard({ cover, color, title, sub, onTap, image, badge }: { cover: string; color: string; title: string; sub: string; onTap: () => void; image?: string; badge?: boolean }) { const tap = useTap(onTap); return <button className="bookcard" style={{ background: color }} onPointerDown={tap}>{image ? <img src={image} alt="" style={{ maxWidth: '100%', maxHeight: '24vmin', borderRadius: 12 }} /> : <span style={{ fontSize: '14vmin' }}>{cover}</span>}{badge && <span className="badge">★ Ready</span>}<b>{title}</b><small>{sub}</small></button>; }
+// onClick, not pointerdown: a finger landing on a card to scroll the shelf must not open the book.
+function BookCard({ cover, color, title, sub, onTap, image, badge }: { cover: string; color: string; title: string; sub: string; onTap: () => void; image?: string; badge?: boolean }) { return <button className="bookcard" style={{ background: color }} onClick={onTap}>{image ? <img src={image} alt="" loading="lazy" /> : <span style={{ fontSize: '14vmin' }}>{cover}</span>}{badge && <span className="badge">★ Ready</span>}<b>{title}</b><small>{sub}</small></button>; }
 function ChapterRow({ label, title, done, onTap }: { label: string; title: string; done: boolean; onTap: () => void }) { return <button className={`chapter ${done ? 'done' : ''}`} onClick={onTap}><span>{done ? '★' : '○'}</span><span><b>{label}</b>{title && title !== label ? ` — ${title}` : ''}</span></button>; }
 function Top({ onBack, title }: { onBack: (e: React.PointerEvent) => void; title: string }) { return <div className="topbar"><button className="icon-btn" onPointerDown={onBack} aria-label="Back">←</button><div className="topbar-title">{title}</div></div>; }

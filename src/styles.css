@@ -158,11 +158,18 @@ button { font-family: inherit; color: inherit; border: 0; background: none; curs
 .prompts { font-size: 24px; max-width: 760px; text-align: left; }
 .prompts p { margin: 8px 0; }
 .home-books { position: absolute; right: 20px; bottom: 20px; width: 84px; height: 84px; border-radius: 26px; background: var(--card); box-shadow: 0 4px 0 var(--line); font-size: 44px; }
-.local-page { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; padding: 0 20px; align-items: center; }
+.local-page { touch-action: pan-y; flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; padding: 0 20px; align-items: center; }
 .local-page img { width: 100%; height: auto; max-height: calc(100vh - 170px); object-fit: contain; border-radius: 16px; }
 .local-text { font-size: clamp(28px, 4.5vmin, 48px); line-height: 1.5; }
 @media (max-aspect-ratio: 1/1) { .local-page { grid-template-columns: 1fr; } }
-.shelf-label { font-size: 22px; color: var(--muted); margin: 8px 0 0; }
+.shelf-label { font-size: 22px; color: var(--muted); margin: 8px 0 0; width: 100%; max-width: 1200px; }
+/* Compact grid: many books per screen, so the shelf needs far less scrolling. */
+.shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 16px; width: 100%; max-width: 1200px; }
+.shelf .bookcard { width: auto; min-height: 0; padding: 12px; gap: 6px; }
+.shelf .bookcard img { width: 100%; height: 150px; object-fit: contain; border-radius: 10px; }
+.shelf .bookcard > span:first-child { font-size: 64px !important; }
+.shelf .bookcard b { font-size: 18px; }
+.shelf .bookcard small { font-size: 14px; }
 .bookcard .badge { background: var(--sage-deep); color: white; border-radius: 99px; padding: 2px 10px; font-size: 16px; }
 
 /* Story (A13) and story time */

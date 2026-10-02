@@ -43,27 +43,31 @@ try {
   await waitSaved(h => h.profiles[h.activeProfileId].name === before.profiles[before.activeProfileId].name);
   assert.deepEqual(await household(), before, 'Recovery did not restore full history');
   await page.getByRole('button', { name: 'Back to child', exact: true }).click();
+  // Math runs like Reading: lesson 1, checkout, Done screen, then the cold check (same day) opens lesson 2.
+  const lessons = h => h.profiles[h.activeProfileId].modules.math.lessons;
+  const ok = async n => { for (let i = 0; i < n; i++) await page.locator('.pbtn.ok').click(); };
   await page.locator('button.card', { hasText: 'Math' }).click();
-  const lesson = page.locator('.row').filter({ has: page.locator('span', { hasText: 'Numerals 1–5 mean quantities' }) });
-  await lesson.getByRole('button', { name: 'Start', exact: true }).click();
-  await page.getByRole('button', { name: '→', exact: true }).click();
-  for (const target of [1, 2, 3, 4]) {
-    if (target % 2) {
-      for (let n = 0; n < target; n++) await page.getByRole('button', { name: '🍓', exact: true }).nth(n).click();
-      await page.getByRole('button', { name: 'Done', exact: true }).click();
-    } else await page.getByRole('button', { name: String(target), exact: true }).click();
-  }
-  await page.getByRole('heading', { name: 'Math', exact: true }).waitFor();
-  const afterMath = await waitSaved(h => {
-    const math = h.profiles[h.activeProfileId].modules.math;
-    return math.attempts.length === 4 && math.sessions.length === 1;
-  });
+  await page.getByText('Lesson 1 of 20').waitFor();
+  await page.getByRole('button', { name: 'Start math', exact: true }).click();
+  await page.getByRole('button', { name: 'Next', exact: true }).click();
+  await ok(6);
+  await page.getByRole('button', { name: 'Continue', exact: true }).click();
+  await ok(6);
+  await page.getByRole('heading', { name: 'Great job!', exact: true }).waitFor();
+  await waitSaved(h => lessons(h)['num.count.verbal.1_5'].status === 'cold' && h.profiles[h.activeProfileId].modules.math.sessions.length === 1);
+  await page.getByRole('button', { name: 'Next lesson', exact: true }).click();
+  await page.getByRole('button', { name: 'Continue', exact: true }).click();
+  await ok(5);
+  const afterMath = await waitSaved(h => lessons(h)['num.count.verbal.1_5'].status === 'passed' && lessons(h)['num.count.one_to_one.1_3'].status === 'active');
+  await page.getByRole('heading', { name: 'You finished a lesson! Here comes a new one.' }).waitFor();
   const math = afterMath.profiles[afterMath.activeProfileId].modules.math;
-  assert.equal(math.sessions.length, 1);
-  assert.deepEqual(math.attempts.map(a => a.target), [1, 2, 3, 4]);
+  assert.equal(math.attempts.length, 17);
   assert.ok(math.attempts.every(a => a.correct));
   await page.reload(); await page.locator('button.card', { hasText: 'Math' }).waitFor();
-  assert.deepEqual((await household()).profiles[afterMath.activeProfileId].modules.math, math, 'Reload lost Math evidence');
+  const reloaded = (await household()).profiles[afterMath.activeProfileId].modules.math;
+  assert.deepEqual(reloaded.lessons, math.lessons, 'Reload lost Math lessons');
+  await page.locator('button.card', { hasText: 'Math' }).click();
+  await page.getByText('Lesson 2 of 20').waitFor();
   assertNoErrors(errors);
-  console.log('Backup rejection, recovery, reload, Math evidence: passed');
+  console.log('Backup rejection, recovery, reload, Math lesson progression: passed');
 } finally { await browser.close(); }

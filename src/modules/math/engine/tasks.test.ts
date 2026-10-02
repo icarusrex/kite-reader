@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { MATH_SKILLS } from '../content/skills';
+import { MATH_LESSONS, mathLessonNumber } from '../content/lessons';
 import { buildSkillTasks } from './tasks';
 
 describe('math task generation', () => {
@@ -28,5 +29,31 @@ describe('math task generation', () => {
     const tasks = buildSkillTasks('geo.shape.properties.basic', 'independent', 4);
     const rotations = tasks.flatMap((t) => t.shapeOptions?.map((o) => o.rotation) ?? []);
     expect(rotations.some((r) => r !== 0)).toBe(true);
+  });
+});
+
+describe('math content audit', () => {
+  const all = (id: Parameters<typeof buildSkillTasks>[0]) => buildSkillTasks(id, 'independent', 12);
+
+  it('the words match the picture', () => {
+    for (const t of all('num.count.one_to_one.1_3')) expect(t.prompt.includes('dot')).toBe(t.representation === 'random_dots');
+    for (const t of all('op.add.combine.to5')) expect(t.prompt.includes('frog')).toBe(t.representation === 'objects');
+    for (const t of all('op.subtract.separate.to5')) expect(t.prompt.includes('apple')).toBe(t.representation === 'objects');
+    for (const t of all('num.order.1_5')) expect(t.prompt.includes('dots')).toBe(t.representation !== 'numeral');
+  });
+
+  it('answers are not always the same', () => {
+    const hidden = all('num.compose.2_4').filter((t) => t.partitionMode === 'hidden_part').map((t) => t.hiddenPart);
+    expect(new Set(hidden).size).toBeGreaterThan(1);
+    for (const id of ['num.count.cardinal.1_5', 'num.subitize.structured.4_5'] as const) expect(new Set(all(id).map((t) => t.quantity)).size).toBeGreaterThan(2);
+    for (const t of [...all('num.compose.2_4'), ...all('num.compose.5')].filter((t) => t.partitionMode === 'make_split')) expect(t.splitLeft).toBeLessThan(t.target!);
+  });
+
+  it('numerals are only tapped once a lesson has taught them; before that the child says the answer', () => {
+    MATH_LESSONS.forEach((id, i) => {
+      const n = i + 1;
+      const taught = n >= mathLessonNumber('num.map.numeral.1_5') ? 5 : n >= mathLessonNumber('num.map.numeral.1_3') ? 3 : 0;
+      for (const t of all(id)) for (const o of t.options ?? []) expect(o, `${id}: option ${o}`).toBeLessThanOrEqual(taught);
+    });
   });
 });

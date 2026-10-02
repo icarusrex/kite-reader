@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { MathAttempt, freshMathProgress, mathActiveFrontier, mathAddDays, recordMathAttempt } from './state';
+import { MathAttempt, freshMathProgress, migrateMathProgress, recordMathAttempt } from './state';
 
 const attempt = (patch: Partial<MathAttempt> = {}): MathAttempt => ({
   id: patch.id ?? Math.random().toString(36),
@@ -17,17 +17,6 @@ const attempt = (patch: Partial<MathAttempt> = {}): MathAttempt => ({
 });
 
 describe('math learner state', () => {
-  it('starts with parallel eligible number/geometry/measurement frontiers', () => {
-    const p = freshMathProgress();
-    expect(mathActiveFrontier(p)).toEqual(expect.arrayContaining([
-      'num.count.verbal.1_5',
-      'num.subitize.perceptual.1_3',
-      'geo.shape.properties.basic',
-      'measure.length.direct',
-    ]));
-    expect(mathActiveFrontier(p)).not.toContain('num.cardinality.1_3');
-  });
-
   it('does not let helped answers satisfy provisional mastery', () => {
     let p = freshMathProgress();
     for (let i = 0; i < 8; i++) p = recordMathAttempt(p, attempt({ id: `h${i}`, sessionId: `s${i % 2}`, helpLevel: 'scaffold' }));
@@ -53,7 +42,7 @@ describe('math learner state', () => {
     expect(p.skills['num.cardinality.1_3'].phase).toBe('provisional');
   });
 
-  it('requires delayed independent evidence before secure', () => {
+  const toProvisional = () => {
     let p = freshMathProgress();
     for (let i = 0; i < 5; i++) {
       p = recordMathAttempt(p, attempt({
@@ -63,15 +52,60 @@ describe('math learner state', () => {
         representation: i % 2 ? 'objects' : 'physical',
         responseDirection: 'construct',
         skillId: 'num.construct.1_3',
-        occurredAt: i < 3 ? '2026-09-18T10:00:00Z' : '2026-09-19T10:00:00Z',
       }));
     }
     expect(p.skills['num.construct.1_3'].phase).toBe('provisional');
-    const due = mathAddDays(p.skills['num.construct.1_3'].provisionalAt!, 3);
-    p = recordMathAttempt(p, attempt({
-      id: 'cold', sessionId: 's3', skillId: 'num.construct.1_3', taskFamily: 'construct_quantity', representation: 'objects', responseDirection: 'construct',
-      evidenceKind: 'cold', occurredAt: `${due}T10:00:00Z`,
-    }));
+    return p;
+  };
+  const cold = (id: string, sessionId: string, correct = true) => attempt({
+    id, sessionId, skillId: 'num.construct.1_3', taskFamily: 'construct_quantity', representation: 'objects', responseDirection: 'construct',
+    evidenceKind: 'cold', correct,
+  });
+
+  it('secures after a cold check in a later session the same day, as Reading does', () => {
+    let p = toProvisional();
+    expect(p.skills['num.construct.1_3'].nextReviewAt).toBe('2026-09-18');
+    p = recordMathAttempt(p, cold('c1', 's3'));
+    expect(p.skills['num.construct.1_3'].phase).toBe('provisional');
+    p = recordMathAttempt(p, cold('c2', 's3'));
     expect(p.skills['num.construct.1_3'].phase).toBe('secure');
+  });
+
+  it('a cold check in the session that made it provisional does not count', () => {
+    let p = toProvisional();
+    p = recordMathAttempt(p, cold('c1', 's2'));
+    p = recordMathAttempt(p, cold('c2', 's2'));
+    expect(p.skills['num.construct.1_3'].phase).toBe('provisional');
+  });
+
+  it('a miss in the cold check fails it for that session and the check is due again', () => {
+    let p = toProvisional();
+    p = recordMathAttempt(p, cold('c1', 's3', false));
+    p = recordMathAttempt(p, cold('c2', 's3'));
+    p = recordMathAttempt(p, cold('c3', 's3'));
+    expect(p.skills['num.construct.1_3'].phase).toBe('provisional');
+    expect(p.skills['num.construct.1_3'].nextReviewAt).toBe('2026-09-18');
+    p = recordMathAttempt(p, cold('c4', 's4'));
+    p = recordMathAttempt(p, cold('c5', 's4'));
+    expect(p.skills['num.construct.1_3'].phase).toBe('secure');
+  });
+
+  it('recovers the provisional session for evidence saved before it was recorded', () => {
+    let p = toProvisional();
+    delete p.skills['num.construct.1_3'].provisionalSessionId;
+    p = recordMathAttempt(p, cold('c1', 's2'));
+    p = recordMathAttempt(p, cold('c2', 's2'));
+    expect(p.skills['num.construct.1_3'].phase).toBe('provisional');
+    p = recordMathAttempt(p, cold('c3', 's3'));
+    p = recordMathAttempt(p, cold('c4', 's3'));
+    expect(p.skills['num.construct.1_3'].phase).toBe('secure');
+  });
+
+  it('a cold check saved under the old three-day wait is due now after upgrading', () => {
+    const p = toProvisional();
+    const old = { ...p, skills: { ...p.skills, 'num.construct.1_3': { ...p.skills['num.construct.1_3'], nextReviewAt: '2026-09-21' } } };
+    const migrated = migrateMathProgress(old);
+    expect(migrated.skills['num.construct.1_3'].nextReviewAt).toBe('2026-09-18');
+    expect(migrateMathProgress(migrated)).toEqual(migrated);
   });
 });

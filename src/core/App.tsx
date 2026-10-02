@@ -13,13 +13,14 @@ import { allPassed, currentBasics, currentLevel } from '../modules/reading/engin
 import { MathHome } from '../modules/math/screens/MathHome';
 import { MathSession } from '../modules/math/screens/MathSession';
 import { MathProgressScreen } from '../modules/math/screens/MathProgressScreen';
-import { MathSkillId } from '../modules/math/content/skills';
+import { MathDone } from '../modules/math/screens/MathDone';
 import { MathSessionMode } from '../modules/math/engine/state';
 import { KiteModuleId } from './module';
 import { meter } from '../modules/reading/audio/mic';
 import { initAudio, say } from '../modules/reading/audio/speaker';
 import { ParentCorner, useTap } from './ui/components';
 import { requestPersistence } from './storage';
+import { applyUpdate, useUpdate } from './update';
 
 type View =
   | 'launcher'
@@ -31,6 +32,7 @@ type View =
   | 'stories'
   | 'math-home'
   | 'math-session'
+  | 'math-done'
   | 'math-progress';
 
 function Shell() {
@@ -43,7 +45,7 @@ function Shell() {
   const [requestedBasics, setRequestedBasics] = useState<number | undefined>();
   const [mode, setMode] = useState<SessionMode>('guided');
   const [mathMode, setMathMode] = useState<MathSessionMode>('guided');
-  const [mathSkill, setMathSkill] = useState<MathSkillId | undefined>();
+  const [mathLesson, setMathLesson] = useState<number | undefined>();
 
   useEffect(() => {
     initAudio();
@@ -52,6 +54,11 @@ function Shell() {
     // Initial device setup only; learner changes do not require reinitializing audio.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // A downloaded update goes in on a home screen only, never in the middle of a lesson (progress is saved as it happens).
+  const update = useUpdate();
+  const restingView = ['launcher', 'reading-home', 'math-home', 'done', 'math-done'].includes(view);
+  useEffect(() => { if (update.pending && restingView) void applyUpdate(); }, [update.pending, restingView]);
 
   if (!profileChosen && Object.keys(household.profiles).length > 1) {
     return <ProfileChooser
@@ -88,9 +95,9 @@ function Shell() {
     setView('reading-session');
   };
 
-  const openMath = (nextMode: MathSessionMode, skillId?: MathSkillId) => {
+  const openMath = (nextMode: MathSessionMode, lesson?: number) => {
     setMathMode(nextMode);
-    setMathSkill(skillId);
+    setMathLesson(lesson);
     setView('math-session');
   };
 
@@ -108,9 +115,10 @@ function Shell() {
   />;
   if (view === 'stories') return <StoryChair onClose={() => setView('reading-home')} />;
   if (view === 'readiness') return <Readiness onDone={() => setView('reading-home')} />;
-  if (view === 'math-home') return <MathHome onGuided={() => openMath('guided')} onPractice={() => openMath('practice')} onExplore={(id) => openMath('explore', id)} onLesson={(id) => openMath('guided', id)} onBack={() => setView('launcher')} onParent={() => setView('math-progress')} />;
-  if (view === 'math-progress') return <MathProgressScreen onClose={() => setView('math-home')} />;
-  if (view === 'math-session') return <MathSession key={`${mathMode}:${mathSkill ?? 'auto'}`} mode={mathMode} skillId={mathSkill} onExit={() => setView('math-home')} onParent={() => setView('math-progress')} />;
+  if (view === 'math-home') return <MathHome onStart={() => openMath('guided')} onBack={() => setView('launcher')} onParent={() => setView('math-progress')} />;
+  if (view === 'math-progress') return <MathProgressScreen onClose={() => setView('math-home')} onPractice={(n) => openMath('practice', n)} onExplore={(n) => openMath('explore', n)} />;
+  if (view === 'math-session') return <MathSession key={`${mathMode}:${mathLesson ?? 'auto'}`} mode={mathMode} lesson={mathLesson} onExit={() => setView(mathMode === 'guided' ? 'math-done' : 'math-progress')} onParent={() => setView('math-progress')} />;
+  if (view === 'math-done') return <MathDone onNext={() => openMath('guided')} onHome={() => setView('math-home')} onParent={() => setView('math-progress')} />;
   if (view === 'reading-session') return <Session
     key={`${mode}:${requestedLevel ?? (requestedBasics ? `b${requestedBasics}` : 'main')}`}
     extras={extras}

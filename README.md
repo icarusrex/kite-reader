@@ -109,7 +109,9 @@ The first 20 teachable units are encoded as a dependency graph:
 19. basic shape composition
 20. direct length comparison
 
-Math uses `unseen → introduced → practicing → provisional → secure → maintenance`, evidence across task forms/representations, delayed review, misconceptions and physical transfer. It does not inherit Reading levels or percentage checkout.
+Math progresses exactly like Reading: 20 numbered lessons (one concept each, ordered so every concept follows what it builds on — `src/modules/math/content/lessons.ts`). ▶ plays the current lesson; once it is going well (second session, or a confident first one) there is a 6-task checkout (one miss allowed), the next session opens with a 5-task cold check (same day allowed, one miss allowed), and passing it rolls straight into the next lesson. Passed lessons come back as spaced review with Reading's Leitner boxes. A Done screen offers ▶ for the next lesson; no time cap. Grown-ups → Math progress mirrors Reading's Lessons tab: Mark passed, Start here, Practice, Explore. Until numerals are taught (lessons 8 and 16) the child says "how many" and the grown-up taps ✓/✗. Per-skill evidence (attempts, phases) is still recorded for the grown-up record; it no longer drives progression.
+
+App updates: the service worker checks for a new build every 30 minutes and when the app comes to the front, and installs it on a home screen, never mid-lesson. If the Cloudflare Access login has expired, Grown-ups → Settings shows "Sign in again". Never clear site data to update — it deletes the device's progress.
 
 ## Run locally
 

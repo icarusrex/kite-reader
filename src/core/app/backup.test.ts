@@ -58,6 +58,7 @@ describe('backup validation', () => {
     { skills: [] }, { skills: { 'num.count.verbal.1_5': { phase: 'broken' } } },
     { skills: { 'num.count.verbal.1_5': { representationCoverage: null } } },
     { attempts: [null] }, { attempts: [{}] }, { sessions: [{ skillIds: 'one' }] },
+    { lessons: { 'num.count.verbal.1_5': { status: 'done' } } }, { lessons: { nope: { status: 'active' } } },
   ])('rejects malformed math before migration can discard it %j', (override) => {
     const raw = householdFromLegacy();
     const profile = raw.profiles[raw.activeProfileId];

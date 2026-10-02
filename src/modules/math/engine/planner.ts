@@ -1,5 +1,5 @@
-import { MathSkillId, MATH_SKILL_BY_ID, MATH_SKILLS } from '../content/skills';
-import { MathProgress, MathSessionMode, mathActiveFrontier, mathDueSkills, mathLastGuidedPrimary } from './state';
+import { MathSkillId } from '../content/skills';
+import { MATH_COLD_CHECK_ANSWERS, MathProgress, MathSessionMode, mathDueSkills } from './state';
 import { MathTask, buildPhysicalTask, buildSkillTasks } from './tasks';
 
 export interface MathSessionPlan {
@@ -8,58 +8,8 @@ export interface MathSessionPlan {
   tasks: MathTask[];
 }
 
-function lastSeen(progress: MathProgress, skillId: MathSkillId) {
-  return progress.skills[skillId]?.lastEvidenceAt ?? '';
-}
-
-function chooseGuidedSkill(progress: MathProgress): MathSkillId {
-  const frontier = mathActiveFrontier(progress);
-
-  // A concept still needs evidence from two separate sessions before it can go
-  // provisional, but it does not have to be the very next lesson. Serving it
-  // back-to-back made every second session a repeat, and a child who was not
-  // yet fluent could see the same lesson many times with no way past it.
-  // Interleaving keeps the spacing requirement (and spaces the practice, which
-  // is better for retention anyway) while each new session opens new material.
-  const justDone = mathLastGuidedPrimary(progress);
-  const notJustDone = (ids: MathSkillId[]) => {
-    const rest = ids.filter((id) => id !== justDone);
-    return rest.length ? rest : ids;
-  };
-
-  const developing = notJustDone(frontier.filter((id) => progress.skills[id].phase === 'introduced' || progress.skills[id].phase === 'practicing'));
-  const unseenNow = frontier.filter((id) => progress.skills[id].phase === 'unseen');
-  // After a lesson, prefer opening something new over repeating the same one.
-  if (justDone && developing.length && developing.every((id) => id === justDone) && unseenNow.length) {
-    return [...unseenNow].sort((a, b) => MATH_SKILL_BY_ID[a].priority - MATH_SKILL_BY_ID[b].priority)[0];
-  }
-  if (developing.length) {
-    return [...developing].sort((a, b) => lastSeen(progress, a).localeCompare(lastSeen(progress, b)) || MATH_SKILL_BY_ID[a].priority - MATH_SKILL_BY_ID[b].priority)[0];
-  }
-
-  const unseen = frontier.filter((id) => progress.skills[id].phase === 'unseen');
-  if (unseen.length) {
-    const recentGuided = progress.sessions.filter((s) => s.mode === 'guided').slice(-4);
-    const recentHasNonNumber = recentGuided.some((session) => session.skillIds.some((id) => MATH_SKILL_BY_ID[id].domain !== 'number'));
-    const preferNonNumber = recentGuided.length >= 3 && !recentHasNonNumber;
-    const sorted = [...unseen].sort((a, b) => MATH_SKILL_BY_ID[a].priority - MATH_SKILL_BY_ID[b].priority);
-    return (preferNonNumber ? sorted.find((id) => MATH_SKILL_BY_ID[id].domain !== 'number') : sorted.find((id) => MATH_SKILL_BY_ID[id].domain === 'number')) ?? sorted[0];
-  }
-
-  const provisional = MATH_SKILLS.filter((s) => progress.skills[s.id].phase === 'provisional').sort((a, b) => lastSeen(progress, a.id).localeCompare(lastSeen(progress, b.id)));
-  return mathDueSkills(progress)[0] ?? provisional[0]?.id ?? MATH_SKILLS[0].id;
-}
-
-function choosePracticeSkill(progress: MathProgress): MathSkillId {
-  const due = mathDueSkills(progress);
-  if (due.length) return due[0];
-  const reached = MATH_SKILLS
-    .filter((s) => progress.skills[s.id].phase !== 'unseen')
-    .sort((a, b) => lastSeen(progress, a.id).localeCompare(lastSeen(progress, b.id)) || a.priority - b.priority);
-  return reached[0]?.id ?? chooseGuidedSkill(progress);
-}
-
-function savedTasks(progress: MathProgress, id: MathSkillId, evidence: Parameters<typeof buildSkillTasks>[1], count: number, model: boolean) {
+/** Tasks for one concept, putting back any review a child missed and rotating numeral targets. */
+export function savedTasks(progress: MathProgress, id: MathSkillId, evidence: Parameters<typeof buildSkillTasks>[1], count: number, model: boolean) {
   if (id !== 'num.map.numeral.1_5') {
     const tasks = buildSkillTasks(id, evidence, count, model);
     const candidates = buildSkillTasks(id, evidence, 20);
@@ -95,15 +45,16 @@ function savedTasks(progress: MathProgress, id: MathSkillId, evidence: Parameter
   return tasks;
 }
 
-export function buildMathSessionPlan(progress: MathProgress, mode: MathSessionMode, requestedSkillId?: MathSkillId): MathSessionPlan {
-  const primarySkillId = requestedSkillId ?? (mode === 'practice' ? choosePracticeSkill(progress) : chooseGuidedSkill(progress));
+/** Practice and Explore for one lesson's concept (guided lessons are built in lessons.ts). */
+export function buildMathSessionPlan(progress: MathProgress, mode: MathSessionMode, primarySkillId: MathSkillId): MathSessionPlan {
   const reviewSkillIds = mode === 'guided' ? mathDueSkills(progress).filter((id) => id !== primarySkillId).slice(0, 2) : [];
   const tasks: MathTask[] = [];
 
   for (const id of reviewSkillIds) {
     const state = progress.skills[id];
-    const evidence = state.phase === 'provisional' ? 'cold' : 'independent';
-    tasks.push(...savedTasks(progress, id, evidence, 1, false));
+    // A provisional concept's review is its cold check, which needs enough answers to pass.
+    const coldCheck = state.phase === 'provisional';
+    tasks.push(...savedTasks(progress, id, coldCheck ? 'cold' : 'independent', coldCheck ? MATH_COLD_CHECK_ANSWERS : 1, false));
   }
 
   const primaryState = progress.skills[primarySkillId];

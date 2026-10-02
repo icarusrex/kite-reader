@@ -7,6 +7,7 @@ import {
   MATH_SKILL_BY_ID,
   MATH_SKILLS,
 } from '../content/skills';
+import { MathLessons, freshMathLessons, normalizeLessons } from './lessons';
 
 export const MATH_SCHEMA_VERSION = 1 as const;
 export const MATH_CURRICULUM_VERSION = 'math-2026-09-18-v1';
@@ -47,6 +48,8 @@ export interface MathSkillState {
   lastEvidenceAt?: string;
   nextReviewAt?: string;
   provisionalAt?: string;
+  /** Session in which the concept went provisional; the cold check must come from a later one. */
+  provisionalSessionId?: string;
   securedAt?: string;
   needsCoverageCheck?: boolean;
   reviewFailures?: Pick<MathAttempt, 'target' | 'taskFamily' | 'responseDirection' | 'sessionId' | 'occurredAt'>[];
@@ -72,6 +75,8 @@ export interface MathSettings {
 export interface MathProgress {
   version: typeof MATH_SCHEMA_VERSION;
   curriculumVersion: string;
+  /** The child's path: numbered lessons, as in Reading. Skills/attempts below are the evidence record. */
+  lessons: MathLessons;
   skills: Record<MathSkillId, MathSkillState>;
   attempts: MathAttempt[];
   sessions: MathSessionLog[];
@@ -111,6 +116,7 @@ export function freshMathProgress(): MathProgress {
   return {
     version: MATH_SCHEMA_VERSION,
     curriculumVersion: MATH_CURRICULUM_VERSION,
+    lessons: freshMathLessons(),
     skills: Object.fromEntries(MATH_SKILLS.map((s) => [s.id, freshMathSkillState(s.id)])) as Record<MathSkillId, MathSkillState>,
     attempts: [],
     sessions: [],
@@ -127,6 +133,9 @@ export function migrateMathProgress(raw: unknown): MathProgress {
     const old = p.skills?.[spec.id];
     if (old) {
       skills[spec.id] = { ...freshMathSkillState(spec.id), ...old, skillId: spec.id };
+      // Cold checks used to wait three days; one already scheduled that way is due now instead.
+      const s = skills[spec.id];
+      if (s.phase === 'provisional' && s.provisionalAt && s.nextReviewAt && s.nextReviewAt > s.provisionalAt.slice(0, 10)) s.nextReviewAt = s.provisionalAt.slice(0, 10);
       if (spec.id === 'num.map.numeral.1_5' && ['secure', 'maintenance'].includes(old.phase)) {
         skills[spec.id].needsCoverageCheck = !hasNumeralCoverage((p.attempts ?? []).filter(a => a?.skillId === spec.id));
       }
@@ -138,6 +147,7 @@ export function migrateMathProgress(raw: unknown): MathProgress {
     version: MATH_SCHEMA_VERSION,
     curriculumVersion: MATH_CURRICULUM_VERSION,
     skills,
+    lessons: normalizeLessons(p.lessons, p.skills ? skills : {}),
     attempts: Array.isArray(p.attempts) ? p.attempts.filter((a): a is MathAttempt => !!a && typeof a === 'object' && 'skillId' in a) : [],
     sessions: Array.isArray(p.sessions) ? p.sessions : [],
     settings: { ...base.settings, ...(p.settings ?? {}) },
@@ -160,9 +170,16 @@ function unresolvedErrors(attempts: MathAttempt[]): MathErrorCode[] {
     .map(([code]) => code);
 }
 
+const isDelayedKind = (a: MathAttempt) => a.evidenceKind === 'cold' || a.evidenceKind === 'transfer' || a.evidenceKind === 'physical';
+
+/** Correct, unhelped cold answers needed in one later session to go secure. Two rather than one so a
+ *  single lucky tap on a three-option question cannot certify a concept. */
+export const MATH_COLD_CHECK_ANSWERS = 2;
+
 function nextReviewFor(phase: MathSkillPhase, when: string) {
   if (phase === 'introduced' || phase === 'practicing') return mathAddDays(when, 1);
-  if (phase === 'provisional') return mathAddDays(when, 3);
+  // The cold check is due straight away: it runs in the next session, the same day if the child keeps going.
+  if (phase === 'provisional') return mathAddDays(when, 0);
   if (phase === 'secure') return mathAddDays(when, 21);
   if (phase === 'maintenance') return mathAddDays(when, 60);
   return undefined;
@@ -180,14 +197,25 @@ function evaluateSkill(previous: MathSkillState, attempts: MathAttempt[], newest
   const coverageComplete = previous.skillId !== 'num.map.numeral.1_5' || hasNumeralCoverage(attempts);
   let phase: MathSkillPhase = attempts.length ? (independent.length ? 'practicing' : 'introduced') : 'unseen';
   let provisionalAt = previous.provisionalAt;
+  let provisionalSessionId = previous.provisionalSessionId;
   let securedAt = previous.securedAt;
 
   if (previous.phase === 'secure' || previous.phase === 'maintenance') phase = previous.phase;
   else if (previous.phase === 'provisional' || qualifiesProvisional) {
     phase = 'provisional';
-    provisionalAt ??= newest.occurredAt;
-    const delayedKind = newest.evidenceKind === 'cold' || newest.evidenceKind === 'transfer' || newest.evidenceKind === 'physical';
-    if (coverageComplete && newest.correct && newest.helpLevel === 'none' && delayedKind && provisionalAt && mathDaysBetween(provisionalAt, newest.occurredAt) >= 2) {
+    if (!provisionalAt) { provisionalAt = newest.occurredAt; provisionalSessionId = newest.sessionId; }
+    // Older evidence did not record the session; recover it from the attempt that crossed the line.
+    if (!provisionalSessionId) {
+      const before = attempts.slice(0, -1).filter((a) => a.occurredAt <= provisionalAt!);
+      provisionalSessionId = before[before.length - 1]?.sessionId;
+    }
+    // Like Reading's cold check: a later session on any day, not a calendar wait. Every cold answer in
+    // that session must be right and unhelped.
+    const check = attempts.filter((a) => a.sessionId === newest.sessionId && isDelayedKind(a));
+    const passedCheck = isDelayedKind(newest) && newest.sessionId !== provisionalSessionId
+      && check.filter((a) => a.correct && a.helpLevel === 'none').length >= MATH_COLD_CHECK_ANSWERS
+      && check.every((a) => a.correct && a.helpLevel === 'none');
+    if (coverageComplete && passedCheck) {
       phase = 'secure';
       securedAt = newest.occurredAt;
     }
@@ -229,6 +257,7 @@ function evaluateSkill(previous: MathSkillState, attempts: MathAttempt[], newest
     needsCoverageCheck: !coverageComplete && (phase === 'secure' || phase === 'maintenance'),
     reviewFailures,
     provisionalAt,
+    provisionalSessionId,
     securedAt,
   };
 }
@@ -243,60 +272,6 @@ export function recordMathAttempt(progress: MathProgress, attempt: MathAttempt):
 
 export function recordMathSession(progress: MathProgress, log: MathSessionLog): MathProgress {
   return { ...progress, sessions: [...progress.sessions, log] };
-}
-
-/** The concept the previous guided session was built around, so the planner can
- *  avoid serving the same lesson twice in a row. */
-export function mathLastGuidedPrimary(progress: MathProgress): MathSkillId | undefined {
-  for (let i = progress.sessions.length - 1; i >= 0; i--) {
-    const s = progress.sessions[i];
-    if (s.mode === 'guided') return s.primarySkillId;
-  }
-  return undefined;
-}
-
-/** Grown-up override: "she already knows this". Mirrors Reading's
- *  "Jump to level (marks earlier levels passed)" — it opens the frontier
- *  immediately instead of making the child re-earn a concept they have. */
-export function mathMarkKnown(progress: MathProgress, skillId: MathSkillId, when = new Date().toISOString()): MathProgress {
-  const previous = progress.skills[skillId] ?? freshMathSkillState(skillId);
-  return {
-    ...progress,
-    skills: {
-      ...progress.skills,
-      [skillId]: {
-        ...previous,
-        phase: 'secure',
-        provisionalAt: previous.provisionalAt ?? when,
-        securedAt: previous.securedAt ?? when,
-        lastEvidenceAt: when,
-        nextReviewAt: mathAddDays(when.slice(0, 10), 21),
-        unresolvedErrors: [],
-        reviewFailures: [],
-      },
-    },
-  };
-}
-
-/** Undo of the above, and the way to send a concept back for more work. */
-export function mathResetSkill(progress: MathProgress, skillId: MathSkillId): MathProgress {
-  return {
-    ...progress,
-    skills: { ...progress.skills, [skillId]: freshMathSkillState(skillId) },
-    attempts: progress.attempts.filter((a) => a.skillId !== skillId),
-  };
-}
-
-export function mathSkillIsPrerequisiteReady(progress: MathProgress, skillId: MathSkillId) {
-  const phase = progress.skills[skillId]?.phase ?? 'unseen';
-  return phase === 'provisional' || phase === 'secure' || phase === 'maintenance';
-}
-
-export function mathActiveFrontier(progress: MathProgress): MathSkillId[] {
-  return MATH_SKILLS
-    .filter((skill) => skill.hardPrerequisites.every((id) => mathSkillIsPrerequisiteReady(progress, id)))
-    .filter((skill) => !['secure', 'maintenance'].includes(progress.skills[skill.id]?.phase ?? 'unseen'))
-    .map((skill) => skill.id);
 }
 
 export function mathDueSkills(progress: MathProgress, date = mathToday()): MathSkillId[] {

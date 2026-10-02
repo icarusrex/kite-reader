@@ -1,3 +1,4 @@
+import { useUpdate } from '../update';
 import { useStore } from '../app/store';
 import { KITE_MODULES, KiteModuleId } from '../module';
 import { Kite, ParentCorner } from '../ui/components';
@@ -5,12 +6,14 @@ import { Kite, ParentCorner } from '../ui/components';
 export function ModuleLauncher({ onOpen, onParent }: { onOpen: (id: KiteModuleId) => void; onParent: () => void }) {
   const { reading } = useStore();
   const name = reading.settings.childName;
+  const { accessExpired } = useUpdate();
   return <div className="screen">
     <ParentCorner onOpen={onParent} />
     <div className="stage" style={{ gap: 26, padding: '5vh 6vw' }}>
       <div style={{ position: 'relative', width: '20vmin', height: '22vmin' }}><Kite style={{ left: 0, width: '20vmin', height: '22vmin' }} /></div>
       <h1 className="title">{name ? `Hi ${name}!` : 'Hi!'}</h1>
       <p className="subtitle">What shall we do?</p>
+      {accessExpired && <p className="muted" style={{ fontSize: 15, margin: 0 }}>Grown-ups: sign in again (Grown-ups → Settings) to get app updates.</p>}
       <div className="row" style={{ gap: 18, flexWrap: 'wrap', justifyContent: 'center' }}>
         {KITE_MODULES.map((module) => <button
           key={module.id}

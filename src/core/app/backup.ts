@@ -48,6 +48,10 @@ function math(raw: unknown) {
     for (const k of ['independentEvidence', 'delayedEvidence', 'transferEvidence', 'physicalEvidence']) optional(s, k, num);
     for (const k of ['lastEvidenceAt', 'nextReviewAt', 'provisionalAt', 'securedAt']) optional(s, k, date);
   } });
+  optional(p, 'lessons', x => { const lessons = obj(x); for (const [id, value] of Object.entries(lessons)) { skillId(id); const l = obj(value);
+    one(l.status, ['locked', 'active', 'cold', 'passed']); optional(l, 'sessions', num); optional(l, 'box', num);
+    for (const k of ['checkoutPassedOn', 'passedOn', 'due']) optional(l, k, date);
+  } });
   optional(p, 'attempts', x => list(x, value => { const a = obj(value); skillId(a.skillId); for (const k of ['id', 'sessionId', 'taskFamily', 'representation', 'responseDirection']) str(a[k]); one(a.evidenceKind, ['guided', 'independent', 'cold', 'transfer', 'physical']); one(a.helpLevel, ['none', 'neutral_repeat', 'scaffold', 'modeled']); bool(a.correct); date(a.occurredAt); optional(a, 'target', num); optional(a, 'errorCode', str); }));
   optional(p, 'sessions', x => list(x, value => { const s = obj(value); str(s.id); date(s.date); one(s.mode, ['guided', 'practice', 'explore']); list(s.skillIds, skillId); num(s.activeSeconds); num(s.attempts); optional(s, 'primarySkillId', skillId); }));
 }
