@@ -3,6 +3,7 @@ import { exportHousehold, useStore } from '../../../core/app/store';
 import { parseBackup } from '../../../core/app/backup';
 import { capturePointer } from '../../../core/ui/components';
 import { applyUpdate, checkForUpdate, signIn, useUpdate } from '../../../core/update';
+import { syncNow, useSyncStatus } from '../../../core/app/sync';
 import { LEVELS, MAX_LEVEL, levelByN } from '../content/levels';
 import { SOUNDS as GRAPHEMES } from '../content/phonemes';
 import { PROMPTS } from '../content/prompts';
@@ -120,6 +121,13 @@ function ReadAloudCard() {
 }
 
 /** Updates install themselves on a home screen; never clear the browser's site data — that deletes progress. */
+function CloudSave() {
+  const c = useSyncStatus();
+  const at = c.at ? ` Last saved ${new Date(c.at).toLocaleString()}.` : '';
+  const text = { off: 'Cloud copy starting…', syncing: 'Saving to the cloud…', synced: `Progress is saved to the cloud.${at}`, offline: `Offline: progress is saved on this device and goes to the cloud when back online.${at}`, 'signed-out': 'Sign in again to save progress to the cloud. It is kept on this device meanwhile.', error: `Could not reach the cloud copy; progress is kept on this device.${at}` }[c.state];
+  return <p className={c.state === 'synced' ? '' : 'muted'}>☁️ {text} {c.state !== 'syncing' && c.state !== 'signed-out' && <button className="btn light" onClick={() => void syncNow()}>Save now</button>}{c.state === 'signed-out' && <button className="btn" onClick={signIn}>Sign in again</button>}</p>;
+}
+
 function AppVersion() {
   const u = useUpdate();
   return <div className="card"><h2>App version</h2><p>Built {__BUILD__}</p>
@@ -128,7 +136,8 @@ function AppVersion() {
       : u.pending
         ? <><p>A new version is ready. It installs by itself on the home screen, or now:</p><button className="btn" onClick={() => void applyUpdate()}>Update now</button></>
         : <><p className="muted">{u.checking ? 'Checking for updates…' : u.checkedAt ? `Up to date (checked ${new Date(u.checkedAt).toLocaleTimeString()}).` : 'Checks for updates automatically.'}</p><button className="btn light" disabled={u.checking} onClick={() => void checkForUpdate()}>Check for updates</button></>}
-    <p className="muted" style={{ fontSize: 13 }}>No need to clear the cache to update. Clearing site data deletes this device's progress and recordings.</p>
+    <CloudSave />
+    <p className="muted" style={{ fontSize: 13 }}>No need to clear the cache to update. Clearing site data keeps progress (it comes back from the cloud copy) but deletes this device's sound recordings.</p>
   </div>;
 }
 

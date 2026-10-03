@@ -2,6 +2,7 @@
  * Worker in front of the static app (behind Cloudflare Access). One API:
  *   GET /api/say?text=honey  → Liam's voice (ElevenLabs), generated once and cached in KV.
  * Used for words in books and read-aloud chapters that have no pre-generated clip.
+ *   /api/profiles…           → learner progress in D1 (worker/progress.ts)
  * Secret: ELEVENLABS_API_KEY (`npx wrangler secret put ELEVENLABS_API_KEY`).
  */
 interface Env {
@@ -11,9 +12,12 @@ interface Env {
     put(key: string, value: ArrayBuffer): Promise<void>;
   };
   ELEVENLABS_API_KEY: string;
+  DB: ProgressEnv['DB'];
+  DEV_USER?: string;
 }
 
 import { withPronunciation } from '../src/modules/reading/content/pronounce';
+import { progressApi, ProgressEnv } from './progress';
 
 // Same voice and model as scripts/gen-audio.ts
 const VOICE = 'TX3LPaxmHKxFdv7VOQHJ';
@@ -49,6 +53,7 @@ export default {
   async fetch(req: Request, env: Env): Promise<Response> {
     const path = new URL(req.url).pathname;
     if (path === '/api/say') return say(req, env);
+    if (path === '/api/profiles' || path.startsWith('/api/profiles/')) return progressApi(req, env, path);
     // Update checks: reaching here means the Cloudflare Access login is still valid.
     if (path === '/api/ping') return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
     // After a fresh Access login, back into the app.

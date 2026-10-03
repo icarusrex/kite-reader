@@ -160,6 +160,8 @@ button { font-family: inherit; color: inherit; border: 0; background: none; curs
 .home-books { position: absolute; right: 20px; bottom: 20px; width: 84px; height: 84px; border-radius: 26px; background: var(--card); box-shadow: 0 4px 0 var(--line); font-size: 44px; }
 .local-page { touch-action: pan-y; flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; padding: 0 20px; align-items: center; }
 .local-page img { width: 100%; height: auto; max-height: calc(100vh - 170px); object-fit: contain; border-radius: 16px; }
+.local-page.picture-only { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+.local-page.picture-only img { width: auto; max-width: 100%; max-height: calc(100vh - 150px); }
 .local-text { font-size: clamp(28px, 4.5vmin, 48px); line-height: 1.5; }
 @media (max-aspect-ratio: 1/1) { .local-page { grid-template-columns: 1fr; } }
 .shelf-label { font-size: 22px; color: var(--muted); margin: 8px 0 0; width: 100%; max-width: 1200px; }
@@ -270,3 +272,9 @@ button { font-family: inherit; color: inherit; border: 0; background: none; curs
 
 /* Long-press targets: no context menu, text selection or scrolling takeover (Chrome on Android) */
 .corner, .btn.rec { touch-action: none; -webkit-touch-callout: none; user-select: none; -webkit-user-select: none; }
+
+/* Math: "Yes!" or the right answer after each task. Covers the task so it can't be tapped again meanwhile. */
+.math-feedback { position: absolute; inset: 64px 0 0 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: #FBF6ECcc; z-index: 5; }
+.math-feedback p { margin: 0; padding: 16px 28px; border-radius: 22px; background: #fff; box-shadow: 0 8px 25px #0002; font-size: clamp(28px, 5vmin, 52px); font-weight: 700; text-align: center; max-width: 80vw; }
+.math-feedback-icon { font-size: 18vmin; line-height: 1; }
+.math-feedback.ok .math-feedback-icon { color: #3E9B4F; }

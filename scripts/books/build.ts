@@ -181,7 +181,9 @@ for (const b of [...BOOKS, ...speldBooks()]) {
     const text = override !== undefined ? override ?? '' : jobs[n].text ?? cleanLines(r.lines);
     return { text, ...(r.out ? { image: r.out.split('/').pop(), w: r.width, h: r.height } : {}) };
   });
-  const book: Book = { id: b.id, title: b.title, author: b.author, pages };
+  // Only epub-layers and epub-text keep the picture separate from the words; every other kind renders the whole page.
+  const textInPicture = b.kind !== 'epub-layers' && b.kind !== 'epub-text';
+  const book: Book = { id: b.id, title: b.title, author: b.author, pages, ...(textInPicture ? { textInPicture } : {}) };
   writeFileSync(join(dir, 'book.json'), JSON.stringify(book, null, 1));
   const entry: LibraryEntry = { id: b.id, title: b.title, author: b.author, pages: pages.filter((p) => p.text).length, cover: pages.find((p) => p.image)?.image, analysis: analyzeBook(book, dict) };
   index.splice(0, index.length, ...index.filter((x) => x.id !== b.id), entry);

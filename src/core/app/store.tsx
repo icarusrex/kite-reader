@@ -3,10 +3,12 @@ import { migrateProgress, Progress } from '../../modules/reading/engine/progress
 import { MathProgress, migrateMathProgress } from '../../modules/math/engine/state';
 import { get, set, setMany } from 'idb-keyval';
 import { parseBackup } from './backup';
+import { fetchServerHousehold, loadSyncMeta, noteChange, startSync } from './sync';
 import { addProfile as addHouseholdProfile, Household, migrateHousehold, removeProfile as removeHouseholdProfile, renameProfile as renameHouseholdProfile } from './household';
 
 const HOUSEHOLD_KEY = 'kite:household';
 const RECOVERY_KEY = 'kite:household:before-import';
+const UNREADABLE_KEY = 'kite:household:unreadable';
 
 interface Store {
   reading: Progress;
@@ -67,19 +69,27 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     setLoadError(false);
     (async () => {
       try {
+        await loadSyncMeta();
         const saved = await get<unknown>(HOUSEHOLD_KEY);
         let next: Household;
         if (saved !== undefined && saved !== null) {
-          const parsed = parseBackup(saved);
-          if (parsed.kind !== 'household') throw new Error('Invalid household');
-          next = parsed.household;
+          let parsed: ReturnType<typeof parseBackup> | null = null;
+          try { parsed = parseBackup(saved); } catch { /* try the cloud copy below */ }
+          if (parsed?.kind === 'household') next = parsed.household;
+          else {
+            // This device's copy can't be read: restore from the cloud copy, keeping the unreadable one aside.
+            const cloud = await fetchServerHousehold();
+            if (!cloud) throw new Error('Invalid household');
+            await set(UNREADABLE_KEY, saved);
+            next = cloud;
+          }
         } else {
           const legacy = await get<unknown>('progress');
           if (legacy !== undefined && legacy !== null) {
             const parsed = parseBackup(legacy);
             if (parsed.kind !== 'reading') throw new Error('Invalid legacy progress');
             next = migrateHousehold(null, parsed.reading);
-          } else next = migrateHousehold(null);
+          } else next = (await fetchServerHousehold()) ?? migrateHousehold(null); // cleared browser or new device
         }
         // Recovery is optional. A damaged recovery copy must not hide valid progress.
         let previous: Household | null = null;
@@ -89,6 +99,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         setHousehold(next);
         setRecovery(previous);
         persist(next);
+        startSync({ get: () => current.current!, apply: (h) => { current.current = h; setHousehold(h); persist(h); } });
       } catch { if (!cancelled) setLoadError(true); }
     })();
     return () => { cancelled = true; };
@@ -105,6 +116,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     current.current = next;
     setHousehold(next);
     persist(next);
+    noteChange(before, next);
   };
 
   const updateReading = (fn: (p: Progress) => Progress) => commit((h) => {

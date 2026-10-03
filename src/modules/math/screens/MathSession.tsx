@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../../core/app/store';
 import { ParentCorner } from '../../../core/ui/components';
-import { MathTaskView, MathTaskResult } from '../activities/MathActivities';
+import { MathTaskView, MathTaskResult, correctionFor, praise } from '../activities/MathActivities';
+import { speakText } from '../../../core/audio/speech';
 import { mathLessonSkill } from '../content/lessons';
 import { buildMathSessionPlan } from '../engine/planner';
 import {
@@ -13,6 +14,7 @@ import { MathTask } from '../engine/tasks';
 
 const makeSessionId = () => `math-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 const tally = () => ({ answered: 0, correct: 0 });
+const wait = (ms: number) => new Promise((r) => window.setTimeout(r, ms));
 
 /** One Math session, run the way Reading's Session runs a level: the current lesson's practice, then a
  *  checkout when ready; next time a cold check, and passing it rolls straight into the next lesson.
@@ -139,12 +141,25 @@ export function MathSession({ mode = 'guided', lesson: requested, onExit, onPare
     setIndex(index + 1);
   };
 
+  // After every answer: "Yes!", or the right answer shown and said, before the next task (Reading does the same).
+  const [feedback, setFeedback] = useState<{ ok: boolean; text: string } | null>(null);
+  const respond = (result: MathTaskResult | null) => {
+    if (!result) return onDone(null);
+    if (feedback || finished.current) return;
+    const right = result.correct && result.helpLevel === 'none';
+    const text = right ? praise() : result.correct ? null : correctionFor(queue[index]);
+    if (!text) return onDone(result); // helped, or grown-up scored: the grown-up is already there
+    setFeedback({ ok: right, text });
+    void Promise.all([speakText(text), wait(right ? 900 : 2400)]).then(() => { setFeedback(null); onDone(result); });
+  };
+
   const task = queue[index];
   const pct = Math.round((index / Math.max(1, queue.length)) * 100);
   return <div className="screen">
     <ParentCorner onOpen={onParent} />
     {mode !== 'guided' && <div className="mode-badge">Math · {mode === 'explore' ? 'Explore · no progress saved' : 'Practice'}</div>}
     <div className="topbar" style={{ paddingLeft: 88 }}><div className="dots"><div style={{ width: `${pct}%` }} /></div></div>
-    <MathTaskView key={task.uid} task={task} onDone={onDone} />
+    <MathTaskView key={task.uid} task={task} onDone={respond} />
+    {feedback && <div className={`math-feedback ${feedback.ok ? 'ok' : 'no'}`} role="status"><div className="math-feedback-icon">{feedback.ok ? '✓' : '👀'}</div><p>{feedback.text}</p></div>}
   </div>;
 }

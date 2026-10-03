@@ -26,7 +26,9 @@ export function BookReader({ id, progress, level, onBack }: { id: string; progre
   };
   if (!book) return null;
   const page = pages[i];
+  const pictureOnly = !!(book.textInPicture && page?.image);
   return <div className="screen"><div className="topbar"><button className="icon-btn" onPointerDown={back} aria-label="Back">←</button><div className="topbar-title">{book.title}</div></div>
-    <div className="local-page" onPointerDown={onSwipeStart} onPointerUp={onSwipeEnd} onPointerCancel={() => { swipeStart.current = null; }}>{page?.image && <img src={imageUrl(id, page.image)} alt="" width={page.w} height={page.h} />}<div className="reader-text local-text">{page?.text.split('\n').map((line, li) => <p key={li}>{line.split(/(\s+|-)/).map((chunk, ci) => { const t = tokenize(chunk)[0]; if (!t) return chunk; const lw = t.toLowerCase(); const ok = canDecodeWord(progress, t, level); return <span key={ci} className={ok ? 'cr' : ''} onClick={() => say({ w: lw })}>{chunk}</span>; })}</p>)}</div></div>
+    {/* A scanned page already shows its words: show the page alone, big, rather than printing the words a second time. */}
+    <div className={`local-page${pictureOnly ? ' picture-only' : ''}`} onPointerDown={onSwipeStart} onPointerUp={onSwipeEnd} onPointerCancel={() => { swipeStart.current = null; }}>{page?.image && <img src={imageUrl(id, page.image)} alt={pictureOnly ? page.text.replace(/\n/g, ' ') : ''} width={page.w} height={page.h} />}{!pictureOnly && <div className="reader-text local-text">{page?.text.split('\n').map((line, li) => <p key={li}>{line.split(/(\s+|-)/).map((chunk, ci) => { const t = tokenize(chunk)[0]; if (!t) return chunk; const lw = t.toLowerCase(); const ok = canDecodeWord(progress, t, level); return <span key={ci} className={ok ? 'cr' : ''} onClick={() => say({ w: lw })}>{chunk}</span>; })}</p>)}</div>}</div>
     <div className="reader-nav"><button className="icon-btn" onPointerDown={prev} aria-label="Previous page">◀</button><span className="muted">{i + 1} / {pages.length}</span><button className="icon-btn" onPointerDown={next} aria-label="Next page">▶</button></div></div>;
 }

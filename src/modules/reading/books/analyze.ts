@@ -1,7 +1,8 @@
 import { tokenize, wordLevel, BEYOND, setDictionary } from '../engine/wordLevel';
 
 export interface BookPage { text: string; image?: string; w?: number; h?: number }
-export interface Book { id: string; title: string; author: string; pages: BookPage[] }
+/** textInPicture: the page pictures are whole scanned pages with the words printed on them, so the reader must not print them again. */
+export interface Book { id: string; title: string; author: string; pages: BookPage[]; textInPicture?: boolean }
 export interface BookAnalysis {
   tokens: number; unique: number;
   ready95: number;

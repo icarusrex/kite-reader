@@ -10,6 +10,7 @@ import { MathEvidenceKind } from './state';
 
 export type BasicShape = 'circle' | 'triangle' | 'square' | 'rectangle';
 export type CompareAnswer = 'left' | 'right' | 'same';
+export type ShapePair = 'two_triangles' | 'two_squares' | 'two_circles' | 'rectangle_circle' | 'triangle_circle';
 
 export type MathTaskKind =
   | 'model'
@@ -49,7 +50,10 @@ export interface MathTask {
   orderValues?: number[];
   operation?: 'add' | 'subtract' | 'more1' | 'less1';
   operationAnswer?: number;
-  shapeComposeAnswer?: 'two_triangles' | 'two_circles' | 'rectangle_circle';
+  shapeComposeAnswer?: ShapePair;
+  shapeComposeOptions?: ShapePair[];
+  /** compare: which group is spread out wide (so "longer row" doesn't always point the same way). */
+  spreadSide?: 'left' | 'right';
   visiblePart?: number;
   hiddenPart?: number;
   shapeTarget?: BasicShape;
@@ -157,7 +161,8 @@ function taskFor(skillId: MathSkillId, index: number, evidenceKind: MathEvidence
       const target = 1 + (index % 3);
       if (index % 2 === 0) {
         return {
-          ...base(skillId, 'construct', `This is ${target}. Pick that many strawberries.`, 'map_numeral_quantity', 'numeral', 'symbol_to_quantity', evidenceKind),
+          // The prompt must not say the number: reading the numeral is the skill being checked.
+          ...base(skillId, 'construct', 'This number says how many. Pick that many strawberries.', 'map_numeral_quantity', 'numeral', 'symbol_to_quantity', evidenceKind),
           numeral: target,
           target,
           expectedError: 'numeral.disconnected',
@@ -179,6 +184,7 @@ function taskFor(skillId: MathSkillId, index: number, evidenceKind: MathEvidence
         left,
         right,
         compareAnswer,
+        spreadSide: Math.random() < 0.5 ? 'left' : 'right',
         expectedError: 'comparison.spatial_extent',
       };
     }
@@ -206,7 +212,7 @@ function taskFor(skillId: MathSkillId, index: number, evidenceKind: MathEvidence
       const compareAnswer: CompareAnswer = left === right ? 'same' : left > right ? 'left' : 'right';
       return {
         ...base(skillId, 'compare', 'Which side has more? Choose SAME if they match.', 'compare_sets', index % 2 ? 'objects' : 'random_dots', 'compare', evidenceKind),
-        left, right, compareAnswer, expectedError: 'comparison.spatial_extent',
+        left, right, compareAnswer, spreadSide: Math.random() < 0.5 ? 'left' : 'right', expectedError: 'comparison.spatial_extent',
       };
     }
     case 'num.compose.2_4': {
@@ -258,7 +264,7 @@ function taskFor(skillId: MathSkillId, index: number, evidenceKind: MathEvidence
       const target = 1 + (index % 5);
       if (index % 2 === 0) {
         return {
-          ...base(skillId, 'construct', `This is ${target}. Pick that many strawberries.`, 'map_numeral_quantity', 'numeral', 'symbol_to_quantity', evidenceKind),
+          ...base(skillId, 'construct', 'This number says how many. Pick that many strawberries.', 'map_numeral_quantity', 'numeral', 'symbol_to_quantity', evidenceKind),
           numeral: target, target, expectedError: 'numeral.disconnected',
         };
       }
@@ -307,8 +313,9 @@ function taskFor(skillId: MathSkillId, index: number, evidenceKind: MathEvidence
     case 'geo.shape.properties.basic': {
       const shapes: BasicShape[] = ['triangle', 'square', 'circle', 'rectangle'];
       const target = shapes[index % shapes.length];
-      const options = shuffle(shapes).slice(0, 3);
-      if (!options.includes(target)) options[0] = target;
+      // A square is also a rectangle, so "find the rectangle" never shows a square (it would be a second right answer).
+      const others = shuffle(shapes.filter((s) => s !== target && !(target === 'rectangle' && s === 'square')));
+      const options = [target, ...others.slice(0, 2)];
       return {
         ...base(skillId, 'shape_choice', `Find the ${target}.`, 'shape_classify', 'shape', 'classify', evidenceKind),
         shapeTarget: target,
@@ -317,9 +324,12 @@ function taskFor(skillId: MathSkillId, index: number, evidenceKind: MathEvidence
       };
     }
     case 'geo.compose.shapes.basic': {
+      // Distractors are pairs that cannot make the target at all (two triangles CAN make a rectangle, so it is never a distractor for one).
+      const square = index % 2 === 0;
       return {
-        ...base(skillId, 'shape_compose', 'Which pair can make a square?', 'shape_compose', 'shape', 'classify', evidenceKind),
-        shapeComposeAnswer: 'two_triangles',
+        ...base(skillId, 'shape_compose', `Which pair can make a ${square ? 'square' : 'rectangle'}?`, 'shape_compose', 'shape', 'classify', evidenceKind),
+        shapeComposeAnswer: square ? 'two_triangles' : 'two_squares',
+        shapeComposeOptions: shuffle(square ? ['two_triangles', 'two_circles', 'rectangle_circle'] : ['two_squares', 'two_circles', 'triangle_circle']),
         expectedError: 'shape.prototype',
       };
     }
@@ -327,12 +337,17 @@ function taskFor(skillId: MathSkillId, index: number, evidenceKind: MathEvidence
       const cases = [[70, 110], [120, 85], [100, 100], [90, 125]] as const;
       const [leftLength, rightLength] = cases[index % cases.length];
       const answer: CompareAnswer = leftLength === rightLength ? 'same' : leftLength > rightLength ? 'left' : 'right';
+      // Every other task the shorter bar starts so far in that its end sticks out past the longer one:
+      // "whichever end goes furthest" then gives the wrong answer, and lining up the starts gives the right one.
+      const tricky = Math.floor(index / 4) % 2 === 0;
+      const shortOffset = tricky ? Math.abs(leftLength - rightLength) + 30 : 5;
+      const [leftOffset, rightOffset] = leftLength === rightLength ? [5, 35] : leftLength < rightLength ? [shortOffset, 5] : [5, shortOffset];
       return {
-        ...base(skillId, 'length_compare', 'Line up the starts. Which is longer?', 'length_compare', 'objects', 'compare', evidenceKind),
+        ...base(skillId, 'length_compare', 'Which is longer? You can line up the starts first.', 'length_compare', 'objects', 'compare', evidenceKind),
         leftLength,
         rightLength,
-        leftOffset: index % 2 ? 30 : 5,
-        rightOffset: index % 2 ? 5 : 35,
+        leftOffset,
+        rightOffset,
         compareAnswer: answer,
         expectedError: 'measurement.endpoint',
       };

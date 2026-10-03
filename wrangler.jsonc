@@ -13,5 +13,8 @@
     "run_worker_first": ["/api/*"]
   },
   // Word audio generated on demand (worker/index.ts)
-  "kv_namespaces": [{ "binding": "SAY_CACHE", "id": "b2d59f4ae3094fbf8ec2f30ee098fb28" }]
+  "kv_namespaces": [{ "binding": "SAY_CACHE", "id": "b2d59f4ae3094fbf8ec2f30ee098fb28" }],
+  // Learner progress (worker/progress.ts). Schema: migrations/. Create once with `npx wrangler d1 create kite-progress`,
+  // paste its id here, then `npx wrangler d1 migrations apply kite-progress --remote`.
+  "d1_databases": [{ "binding": "DB", "database_name": "kite-progress", "database_id": "65635fcb-576f-4b81-9b5e-d13398079c30" }]
 }

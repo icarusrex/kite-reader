@@ -1,7 +1,7 @@
 import { MATH_LESSONS, MATH_LESSON_COUNT, mathLessonSkill } from '../content/lessons';
 import { MathSkillId, MATH_SKILL_BY_ID } from '../content/skills';
 import type { MathProgress, MathSkillState } from './state';
-import { MathTask, modelTask } from './tasks';
+import { MathTask, buildPhysicalTask, modelTask } from './tasks';
 import { savedTasks } from './planner';
 
 /** Math progresses exactly like Reading's levels: one current lesson; practise it, pass a checkout, then a
@@ -135,6 +135,9 @@ export function buildLessonMain(p: MathProgress, n: number, date = today()): Mat
   const reviews = mathDueReviews(p, date).flatMap((rid) => savedTasks(p, rid, 'independent', 1, false)).map((t) => ({ ...t, phase: 'main' as const, review: true }));
   const mixed = [...own];
   reviews.forEach((r, i) => mixed.splice(Math.min(mixed.length, 1 + i * 3), 0, r));
+  // "Physical-world prompts" (Grown-ups > Math): every third session of a lesson ends with real objects, when the concept has one.
+  const physical = p.settings.physicalPrompts && (p.lessons[id].sessions ?? 0) % 3 === 2 ? buildPhysicalTask(id) : null;
+  if (physical) mixed.push({ ...physical, phase: 'main' });
   return [...(first ? [{ ...modelTask(id), phase: 'main' as const }] : []), ...mixed];
 }
 

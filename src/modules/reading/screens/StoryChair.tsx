@@ -9,7 +9,27 @@ import { useTap } from '../../../core/ui/components';
 import { LibraryEntry, imageUrl, listBooks } from '../books/library';
 import { BookReader } from '../books/BookReader';
 
-const PARAS_PER_PAGE = 3;
+// A page holds about this many characters, so it fits a tablet screen without scrolling (3 whole paragraphs overflowed).
+const PAGE_CHARS = 650;
+/** Group paragraphs into pages; a paragraph longer than a page is split between sentences. */
+export function paginate(paragraphs: string[], max = PAGE_CHARS): string[][] {
+  const pieces = paragraphs.flatMap((p) => {
+    if (p.length <= max) return [p];
+    const out: string[] = []; let cur = '';
+    for (const s of p.match(/[^.!?]+[.!?]+[”’"')\]]*\s*|[^.!?]+$/g) ?? [p]) {
+      if (cur && cur.length + s.length > max) { out.push(cur.trim()); cur = ''; }
+      cur += s;
+    }
+    if (cur.trim()) out.push(cur.trim());
+    return out;
+  });
+  const pages: string[][] = []; let size = 0;
+  for (const p of pieces) {
+    if (!pages.length || size + p.length > max) { pages.push([]); size = 0; }
+    pages[pages.length - 1].push(p); size += p.length;
+  }
+  return pages;
+}
 const PROMPTS = ['What happened in this part of the story?', 'Who was in this chapter? What did they want?', 'What do you think will happen next?', 'How do you think they felt? Have you ever felt like that?', 'What was your favourite part?'];
 
 export function StoryChair({ onClose }: { onClose: () => void }) {
@@ -41,11 +61,12 @@ export function StoryChair({ onClose }: { onClose: () => void }) {
 
   const ch = book.chapters.find((c) => c.n === chapter)!;
   const words = vocab[book.id]?.[String(chapter)] ?? [];
-  const pages = Math.ceil(ch.paragraphs.length / PARAS_PER_PAGE);
+  const chapterPages = paginate(ch.paragraphs);
+  const pages = chapterPages.length;
   const finished = page >= pages;
   return <div className="screen"><Top onBack={close} title={`${ch.label}${ch.title && ch.title !== ch.label ? ' · ' + ch.title : ''}`} />
     {page === -1 && <div className="stage"><h1 className="title">Listen for these words</h1><div className="row">{words.map((v) => <WordCard key={v.word} v={v} />)}</div><button className="primary" onPointerDown={() => setPage(0)}>Start ▶</button></div>}
-    {page >= 0 && !finished && <ReaderPage paragraphs={ch.paragraphs.slice(page * PARAS_PER_PAGE, (page + 1) * PARAS_PER_PAGE)} progress={progress} level={level} highlight={showDecodable} vocab={words.map((w) => w.word)} footer={<div className="reader-nav"><button className="icon-btn" onPointerDown={() => setPage(Math.max(-1, page - 1))} aria-label="Previous page">◀</button><label className="toggle"><input type="checkbox" checked={showDecodable} onChange={(e) => setShowDecodable(e.target.checked)} /> words he can read</label><span className="muted">{page + 1} / {pages}</span><button className="icon-btn" onPointerDown={() => { stop(); setPage(page + 1); }} aria-label="Next page">▶</button></div>} />}
+    {page >= 0 && !finished && <ReaderPage paragraphs={chapterPages[page]} progress={progress} level={level} highlight={showDecodable} vocab={words.map((w) => w.word)} footer={<div className="reader-nav"><button className="icon-btn" onPointerDown={() => setPage(Math.max(-1, page - 1))} aria-label="Previous page">◀</button><label className="toggle"><input type="checkbox" checked={showDecodable} onChange={(e) => setShowDecodable(e.target.checked)} /> words {progress.settings.childName || 'they'} can read</label><span className="muted">{page + 1} / {pages}</span><button className="icon-btn" onPointerDown={() => { stop(); setPage(page + 1); }} aria-label="Next page">▶</button></div>} />}
     {finished && <div className="stage"><div style={{ fontSize: '16vmin' }}>🪁</div><h1 className="title">The end of this chapter!</h1><div className="prompts">{pickPrompts(chapter).map((q) => <p key={q}>💬 {q}</p>)}{words.map((v) => <p key={v.word}>🔤 Can you use <b>{v.word}</b> in a sentence?</p>)}</div><button className="primary soft" onPointerDown={() => { update((p) => ({ ...p, readAloud: { ...p.readAloud, [book.id]: [...(p.readAloud?.[book.id] ?? []).filter((r) => r.chapter !== chapter), { chapter, date: today() }] } })); setChapter(null); }}>We read it ✓</button></div>}
   </div>;
 }

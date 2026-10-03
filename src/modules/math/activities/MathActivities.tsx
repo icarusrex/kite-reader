@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { speakText, stopSpeech } from '../../../core/audio/speech';
 import { MathErrorCode } from '../content/skills';
 import { MathHelpLevel } from '../engine/state';
-import { BasicShape, CompareAnswer, MathTask } from '../engine/tasks';
+import { BasicShape, CompareAnswer, MathTask, ShapePair } from '../engine/tasks';
 
 export interface MathTaskResult {
   correct: boolean;
@@ -75,7 +75,7 @@ const EXPLAIN: Record<string, string> = {
   'num.successor.predecessor.to5': 'One more makes the next number. One less makes the number before.',
   'geo.shape.properties.basic': 'A shape is still the same shape when you turn it around.',
   'geo.compose.shapes.basic': 'You can put shapes together to make new shapes.',
-  'measure.length.direct': 'To see which is longer, line up the ends first.',
+  'measure.length.direct': 'To see which is longer, line up the starts first.',
 };
 
 function Model({ task, onDone }: MathTaskViewProps) {
@@ -106,18 +106,29 @@ function TapCount({ task, onDone }: MathTaskViewProps) {
   const n = task.quantity ?? 1;
   const [tapped, setTapped] = useState<boolean[]>(Array(n).fill(false));
   const [double, setDouble] = useState(false);
+  const lastTap = useRef<{ i: number; at: number }>({ i: -1, at: 0 });
+  // Scattered, not in a neat row: keeping track of which ones are counted is the skill (spec: "not in a neat row").
+  const spots = useMemo(() => {
+    const cells = Array.from({ length: 6 }, (_, c) => c).sort(() => Math.random() - 0.5).slice(0, n);
+    return cells.map((c) => ({ x: 18 + (c % 3) * 32 + (Math.random() * 12 - 6), y: 28 + Math.floor(c / 3) * 44 + (Math.random() * 12 - 6) }));
+  }, [task.uid, n]);
   const tap = (i: number) => {
-    if (tapped[i]) { setDouble(true); return; }
+    const now = performance.now();
+    const bounce = lastTap.current.i === i && now - lastTap.current.at < 450; // a finger bouncing, not a second count
+    lastTap.current = { i, at: now };
+    if (tapped[i]) { if (!bounce) setDouble(true); return; }
+    // The app doesn't say the numbers: the child counts out loud.
     setTapped((old) => old.map((v, j) => j === i ? true : v));
-    void speakText(numberWord(tapped.filter(Boolean).length + 1));
   };
   const done = () => {
     const count = tapped.filter(Boolean).length;
     onDone({ correct: count === n && !double, helpLevel: 'none', errorCode: double ? 'count.double' : count < n ? 'count.skip' : undefined });
   };
-  return <div className="stage" style={{ gap: 28 }}>
+  return <div className="stage" style={{ gap: 20 }}>
     <Prompt task={task} />
-    <div className="row" style={{ gap: 28, flexWrap: 'wrap' }}>{Array.from({ length: n }, (_, i) => <button key={i} onClick={() => tap(i)} aria-label={`object ${i + 1}`} style={{ border: 0, background: 'transparent', fontSize: '10vmin', opacity: tapped[i] ? .35 : 1 }}>{task.representation === 'random_dots' ? <span style={{ display: 'inline-block', width: 52, height: 52, borderRadius: '50%', background: '#254A5D' }} /> : '⭐'}</button>)}</div>
+    <div style={{ position: 'relative', width: 'min(70vw, 560px)', height: 'min(42vh, 300px)', borderRadius: 22, background: '#fff', boxShadow: '0 8px 25px #0001' }}>
+      {spots.map((p, i) => <button key={i} onClick={() => tap(i)} aria-label={`object ${i + 1}`} style={{ position: 'absolute', left: `${p.x}%`, top: `${p.y}%`, transform: 'translate(-50%,-50%)', border: 0, background: 'transparent', fontSize: '9vmin', opacity: tapped[i] ? .35 : 1 }}>{task.representation === 'random_dots' ? <span style={{ display: 'inline-block', width: 52, height: 52, borderRadius: '50%', background: '#254A5D' }} /> : '⭐'}</button>)}
+    </div>
     <button className="btn" onClick={done}>Done</button>
   </div>;
 }
@@ -149,7 +160,8 @@ function Construct({ task, onDone }: MathTaskViewProps) {
     <Prompt task={task} />
     {task.numeral && <div style={{ fontSize: '18vmin', fontWeight: 800 }}>{task.numeral}</div>}
     <div className="row" style={{ flexWrap: 'wrap', maxWidth: 620 }}>{Array.from({ length: pool }, (_, i) => <button key={i} onClick={() => toggle(i)} style={{ border: 0, background: selected.includes(i) ? '#d9f5f7' : 'transparent', borderRadius: 20, fontSize: '9vmin', opacity: selected.includes(i) ? 1 : .55 }}>🍓</button>)}</div>
-    <div style={{ fontSize: 22 }}>{selected.length} chosen</div>
+    {/* No running count under a numeral: matching "3 chosen" to the 3 would skip reading the numeral as a quantity. */}
+    {!task.numeral && <div style={{ fontSize: 22 }}>{selected.length} chosen</div>}
     <button className="btn" onClick={() => onDone({ correct: selected.length === target, helpLevel: 'none', errorCode: selected.length === target ? undefined : task.expectedError })}>Done</button>
   </div>;
 }
@@ -159,8 +171,8 @@ function Compare({ task, onDone }: MathTaskViewProps) {
   return <div className="stage" style={{ gap: 24 }}>
     <Prompt task={task} />
     <div className="row" style={{ alignItems: 'center', gap: 50 }}>
-      <QuantityVisual n={task.left ?? 1} representation={task.representation} spread />
-      <QuantityVisual n={task.right ?? 1} representation={task.representation} spread={false} />
+      <QuantityVisual n={task.left ?? 1} representation={task.representation} spread={task.spreadSide !== 'right'} />
+      <QuantityVisual n={task.right ?? 1} representation={task.representation} spread={task.spreadSide === 'right'} />
     </div>
     <div className="row"><button className="btn" onClick={() => choose('left')}>← LEFT</button><button className="btn" onClick={() => choose('same')}>SAME</button><button className="btn" onClick={() => choose('right')}>RIGHT →</button></div>
   </div>;
@@ -191,7 +203,8 @@ function Partition({ task, onDone }: MathTaskViewProps) {
     </div>
     <div className="row"><button className="primary soft" style={{ width: 100, height: 90, fontSize: 40 }} disabled={right <= 0} onClick={() => setRight((n) => n - 1)} aria-label="Move one left">◀</button><button className="primary soft" style={{ width: 100, height: 90, fontSize: 40 }} disabled={right >= whole} onClick={() => setRight((n) => n + 1)} aria-label="Move one right">▶</button></div>
     <button className="btn" onClick={() => {
-      const correct = task.splitLeft === undefined ? left > 0 && right > 0 : left === task.splitLeft;
+      // "Make 3 into 1 and 2": 2 on the left and 1 on the right is the same split.
+      const correct = task.splitLeft === undefined ? left > 0 && right > 0 : left === task.splitLeft || right === task.splitLeft;
       onDone({ correct, helpLevel: 'none', errorCode: correct ? undefined : task.expectedError });
     }}>Done</button>
   </div>;
@@ -230,11 +243,14 @@ function StoryOperation({ task, onDone }: MathTaskViewProps) {
 }
 
 function ShapeCompose({ task, onDone }: MathTaskViewProps) {
-  const options: { id: NonNullable<MathTask['shapeComposeAnswer']>; label: JSX.Element }[] = [
-    { id: 'two_triangles', label: <svg width="190" height="120" viewBox="0 0 160 100" aria-label="two triangles"><polygon points="0,10 70,10 0,80" fill="#2CCCD3" /><polygon points="160,90 160,20 90,90" fill="#2CCCD3" /></svg> },
-    { id: 'two_circles', label: <span className="row"><Shape shape="circle" rotation={0} /><Shape shape="circle" rotation={0} /></span> },
-    { id: 'rectangle_circle', label: <span className="row"><Shape shape="rectangle" rotation={0} /><Shape shape="circle" rotation={0} /></span> },
-  ];
+  const labels: Record<ShapePair, JSX.Element> = {
+    two_triangles: <svg width="190" height="120" viewBox="0 0 160 100" aria-label="two triangles"><polygon points="0,10 70,10 0,80" fill="#2CCCD3" /><polygon points="160,90 160,20 90,90" fill="#2CCCD3" /></svg>,
+    two_squares: <span className="row"><Shape shape="square" rotation={0} /><Shape shape="square" rotation={0} /></span>,
+    two_circles: <span className="row"><Shape shape="circle" rotation={0} /><Shape shape="circle" rotation={0} /></span>,
+    rectangle_circle: <span className="row"><Shape shape="rectangle" rotation={0} /><Shape shape="circle" rotation={0} /></span>,
+    triangle_circle: <span className="row"><Shape shape="triangle" rotation={0} /><Shape shape="circle" rotation={0} /></span>,
+  };
+  const options = (task.shapeComposeOptions ?? ['two_triangles', 'two_circles', 'rectangle_circle']).map((id) => ({ id, label: labels[id] }));
   return <div className="stage" style={{ gap: 24 }}><Prompt task={task} /><div className="row" style={{ gap: 18, flexWrap: 'wrap' }}>{options.map((o) => <button key={o.id} className="card" style={{ border: 0, minWidth: 220, minHeight: 170 }} onClick={() => onDone({ correct: o.id === task.shapeComposeAnswer, helpLevel: 'none', errorCode: o.id === task.shapeComposeAnswer ? undefined : task.expectedError })}>{o.label}</button>)}</div></div>;
 }
 
@@ -256,21 +272,46 @@ function ShapeChoice({ task, onDone }: MathTaskViewProps) {
 function LengthCompare({ task, onDone }: MathTaskViewProps) {
   const [aligned, setAligned] = useState(false);
   const choose = (answer: CompareAnswer) => onDone({ correct: answer === task.compareAnswer, helpLevel: 'none', errorCode: answer === task.compareAnswer ? undefined : task.expectedError });
-  const offL = aligned ? 0 : task.leftOffset ?? 0;
-  const offR = aligned ? 0 : task.rightOffset ?? 0;
+  // Task lengths and offsets are units out of 200 (longest end 190): drawn as % of the card, so they fill it on any screen.
+  const pc = (u: number) => `${u / 2}%`;
+  const offL = pc(aligned ? 0 : task.leftOffset ?? 0);
+  const offR = pc(aligned ? 0 : task.rightOffset ?? 0);
   return <div className="stage" style={{ gap: 24 }}>
     <Prompt task={task} />
-    <div className="card" style={{ width: 'min(78vw, 700px)' }}>
-      <div style={{ marginLeft: offL, width: task.leftLength, height: 34, background: '#254A5D', borderRadius: 8, marginBottom: 35 }} />
-      <div style={{ marginLeft: offR, width: task.rightLength, height: 34, background: '#2CCCD3', borderRadius: 8 }} />
+    <div className="card" style={{ width: 'min(86vw, 720px)' }}>
+      <div style={{ marginLeft: offL, width: pc(task.leftLength ?? 0), height: 34, background: '#254A5D', borderRadius: 8, marginBottom: 35 }} />
+      <div style={{ marginLeft: offR, width: pc(task.rightLength ?? 0), height: 34, background: '#2CCCD3', borderRadius: 8 }} />
     </div>
-    {!aligned ? <button className="btn" onClick={() => setAligned(true)}>Line up starts</button> : <div className="row"><button className="btn" onClick={() => choose('left')}>Top</button><button className="btn" onClick={() => choose('same')}>Same</button><button className="btn" onClick={() => choose('right')}>Bottom</button></div>}
+    {/* Lining up is the child's choice, not done for them: whether they think to do it is part of the skill. */}
+    <button className="btn light" disabled={aligned} onClick={() => setAligned(true)}>Line up starts</button>
+    <div className="row"><button className="btn" onClick={() => choose('left')}>Top</button><button className="btn" onClick={() => choose('same')}>Same</button><button className="btn" onClick={() => choose('right')}>Bottom</button></div>
   </div>;
 }
 
 function Physical({ task, onDone }: MathTaskViewProps) {
   return <div className="stage" style={{ gap: 30, paddingRight: 150 }}><Prompt task={task} /><div style={{ fontSize: '18vmin' }}>🏠</div><p className="subtitle">Use real things nearby.</p><ParentScore onDone={onDone} /></div>;
 }
+
+const PRAISE = ['Yes!', 'You got it!', 'That’s right!'];
+const PAIR_WORDS: Record<ShapePair, string> = { two_triangles: 'the two triangles', two_squares: 'the two squares', two_circles: 'the two circles', rectangle_circle: 'the rectangle and the circle', triangle_circle: 'the triangle and the circle' };
+
+/** What to say after a miss, in the child's words: the right answer, so a wrong guess is not the last thing they saw. */
+export function correctionFor(task: MathTask): string | null {
+  switch (task.kind) {
+    case 'quantity_choice': return `It's ${numberWord(task.quantity ?? task.target ?? 0)}.`;
+    case 'tap_count': return `There are ${numberWord(task.quantity ?? 0)}. Touch each one just once.`;
+    case 'construct': return `It's ${numberWord(task.target ?? 0)}. Pick ${numberWord(task.target ?? 0)}.`;
+    case 'compare': return task.compareAnswer === 'same' ? `They are the same. ${numberWord(task.left ?? 0)} and ${numberWord(task.right ?? 0)}.` : `${numberWord(Math.max(task.left ?? 0, task.right ?? 0))} is more than ${numberWord(Math.min(task.left ?? 0, task.right ?? 0))}.`;
+    case 'partition': return task.partitionMode === 'hidden_part' ? `${numberWord(task.hiddenPart ?? 0)} are hiding.` : `${numberWord(task.splitLeft ?? 1)} and ${numberWord((task.target ?? 0) - (task.splitLeft ?? 1))}.`;
+    case 'order_numbers': return [...(task.orderValues ?? [])].sort((a, b) => a - b).map(numberWord).join(', ') + '.';
+    case 'story_operation': return `It's ${numberWord(task.operationAnswer ?? 0)}.`;
+    case 'shape_choice': return `This one is the ${task.shapeTarget}.`;
+    case 'shape_compose': return task.shapeComposeAnswer ? `${PAIR_WORDS[task.shapeComposeAnswer]}.` : null;
+    case 'length_compare': return task.compareAnswer === 'same' ? 'They are the same.' : `The ${task.compareAnswer === 'left' ? 'top' : 'bottom'} one is longer.`;
+    default: return null; // grown-up scored: the grown-up is right there to help
+  }
+}
+export const praise = () => PRAISE[Math.floor(Math.random() * PRAISE.length)];
 
 export function MathTaskView(props: MathTaskViewProps) {
   switch (props.task.kind) {
