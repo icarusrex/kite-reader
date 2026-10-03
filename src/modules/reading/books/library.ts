@@ -5,7 +5,7 @@
 import type { Book, LibraryEntry } from './analyze';
 import { load, save } from '../../../core/storage';
 
-export type { Book, BookAnalysis, BookPage, LibraryEntry } from './analyze';
+export type { Book, BookAnalysis, BookPage, LibraryEntry, PageWord } from './analyze';
 
 let index: Promise<LibraryEntry[]> | null = null;
 export function listBooks(): Promise<LibraryEntry[]> {

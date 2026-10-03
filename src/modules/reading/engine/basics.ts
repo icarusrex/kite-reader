@@ -13,9 +13,15 @@ export function buildBasics(p: Progress, n: number): Step[] {
   const firstTime = (p.basics[n]?.sessions ?? 0) === 0;
   const pool = lesson.sayFast === 'compound' ? COMPOUND.map((c) => c.word) : lesson.sayFast === 'syllable' ? SYLLABLE.map((c) => c.word) : STRETCH;
   const words = pick(pool, 7);
+  // Stretched words spelled only with sounds taught so far (map, man, mat from lesson 9) show their letters, joining
+  // the sounds the child hears to the letters they know. Both options then carry letters, so letters alone never give
+  // the answer away: the child listens for which word it is (map or mat?).
+  const taught = new Set(BASICS.filter((b) => b.n <= n && b.newSound).map((b) => b.newSound!));
+  const spelled = (w: string) => [...w].every((ch) => taught.has(ch));
   const sayFast = (word: string, demo = false): Step => {
-    const other = pick(pool.filter((w) => w !== word), 1)[0];
-    return { uid: uid(), kind: 'sayFast', word, options: shuffle([word, other]), fast: { mode: lesson.sayFast }, demo, phase: 'main' };
+    const letters = lesson.sayFast === 'stretch' && spelled(word) && pool.filter((w) => w !== word && spelled(w)).length > 0;
+    const other = pick(pool.filter((w) => w !== word && (!letters || spelled(w))), 1)[0];
+    return { uid: uid(), kind: 'sayFast', word, options: shuffle([word, other]), fast: { mode: lesson.sayFast, ...(letters ? { letters } : {}) }, demo, phase: 'main' };
   };
   words.slice(0, 4).forEach((w, i) => steps.push(sayFast(w, i === 0 && n === 1)));
   if (lesson.track) steps.push({ uid: uid(), kind: 'trackGame', phase: 'main' });

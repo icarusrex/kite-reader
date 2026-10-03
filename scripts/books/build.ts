@@ -11,7 +11,8 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync, existsSync, mkdtempSync
 import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
 import JSZip from 'jszip';
-import { analyzeBook, Book, BookPage, LibraryEntry } from '../../src/modules/reading/books/analyze';
+import { analyzeBook, Book, BookPage, LibraryEntry, PageWord } from '../../src/modules/reading/books/analyze';
+import { tokenize } from '../../src/modules/reading/engine/wordLevel';
 
 const SRC = process.env.BOOKS_DIR ?? join(homedir(), 'Documents/eBooks');
 const OUT = 'public/books';
@@ -83,7 +84,48 @@ function extractor() {
     if (r.status !== 0) throw new Error(r.stderr);
     return r.stdout.trim().split('\n').map((l) => JSON.parse(l));
   };
-  return { run, pages };
+  const words = (files: string[]): RawWord[][] => {
+    if (!files.length) return [];
+    const r = spawnSync(bin, ['words'], { input: JSON.stringify(files.map((file) => ({ file }))), maxBuffer: 64 * 1024 * 1024, encoding: 'utf8' });
+    if (r.status !== 0) throw new Error(r.stderr);
+    return r.stdout.trim().split('\n').map((l) => JSON.parse(l));
+  };
+  return { run, pages, words };
+}
+
+type RawWord = { t: string; x: number; y: number; w: number; h: number };
+function editDistance(a: string, b: string) {
+  const d = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
+  for (let j = 1; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+  return d[a.length][b.length];
+}
+/** OCR'd word boxes, kept only where they match a word of the page's (checked) text, and named as that word.
+ *  A hyphenated box ("Sam-I-am") is split by character position, so each part can be tapped. */
+function alignWords(raw: RawWord[], text: string): PageWord[] {
+  const known = [...new Set(tokenize(text).map((t) => t.toLowerCase()))];
+  const out: PageWord[] = [];
+  for (const r of raw) {
+    const s = r.t.replace(/[’‘]/g, "'");
+    for (const m of s.replace(/-/g, ' ').matchAll(/[A-Za-z]+(?:'[A-Za-z]+)?/g)) {
+      const lw = m[0].toLowerCase();
+      const max = lw.length >= 6 ? 2 : lw.length >= 3 ? 1 : 0;
+      const t = known.includes(lw) ? lw : known.map((k) => [k, editDistance(lw, k)] as const).filter(([, d]) => d <= max).sort((a, b) => a[1] - b[1])[0]?.[0];
+      if (!t) continue;
+      const r4 = (n: number) => Math.round(n * 1e4) / 1e4;
+      const cw = r.w / s.length;
+      out.push({ t, x: r4(r.x + cw * m.index!), y: r4(r.y), w: r4(cw * m[0].length), h: r4(r.h) });
+    }
+  }
+  return out;
+}
+/** Tappable printed words for books whose pictures are the scanned pages. */
+function addWordBoxes(id: string, book: Book) {
+  if (!book.textInPicture) return book;
+  const withImage = book.pages.map((p, i) => ({ p, i })).filter(({ p }) => p.image && p.text.trim());
+  const found = extract.words(withImage.map(({ p }) => join(OUT, id, p.image!)));
+  withImage.forEach(({ p }, k) => { const w = alignWords(found[k] ?? [], p.text); if (w.length) p.words = w; else delete p.words; });
+  return book;
 }
 
 const htmlText = (html: string) => html.replace(/<br\s*\/?>/g, '\n').replace(/<[^>]+>/g, '')
@@ -156,6 +198,19 @@ const extract = extractor();
 const indexPath = join(OUT, 'index.json');
 const index: LibraryEntry[] = existsSync(indexPath) ? JSON.parse(readFileSync(indexPath, 'utf8')) : [];
 
+// --words: add tappable word positions to existing books from their page pictures (no re-extraction)
+if (process.argv.includes('--words')) {
+  for (const e of index) {
+    if (only.length && !only.includes(e.id)) continue;
+    const path = join(OUT, e.id, 'book.json');
+    const book = addWordBoxes(e.id, JSON.parse(readFileSync(path, 'utf8')));
+    writeFileSync(path, JSON.stringify(book, null, 1));
+    const pages = book.pages.filter((p) => p.text.trim() && p.image);
+    console.log(`${e.title}: words on ${pages.filter((p) => p.words?.length).length}/${pages.length} pages, ${pages.reduce((n, p) => n + (p.words?.length ?? 0), 0)} words for ${pages.reduce((n, p) => n + tokenize(p.text).length, 0)} in the text`);
+  }
+  process.exit(0);
+}
+
 // --analyze-only: re-score existing books (after a curriculum change) without re-extracting pictures and text
 if (process.argv.includes('--analyze-only')) {
   for (const e of index) {
@@ -183,7 +238,7 @@ for (const b of [...BOOKS, ...speldBooks()]) {
   });
   // Only epub-layers and epub-text keep the picture separate from the words; every other kind renders the whole page.
   const textInPicture = b.kind !== 'epub-layers' && b.kind !== 'epub-text';
-  const book: Book = { id: b.id, title: b.title, author: b.author, pages, ...(textInPicture ? { textInPicture } : {}) };
+  const book: Book = addWordBoxes(b.id, { id: b.id, title: b.title, author: b.author, pages, ...(textInPicture ? { textInPicture } : {}) });
   writeFileSync(join(dir, 'book.json'), JSON.stringify(book, null, 1));
   const entry: LibraryEntry = { id: b.id, title: b.title, author: b.author, pages: pages.filter((p) => p.text).length, cover: pages.find((p) => p.image)?.image, analysis: analyzeBook(book, dict) };
   index.splice(0, index.length, ...index.filter((x) => x.id !== b.id), entry);

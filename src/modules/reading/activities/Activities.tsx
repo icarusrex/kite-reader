@@ -581,7 +581,7 @@ function SayFastLive({ step, onDone, setNeutral, intro, slow }: ActivityProps & 
     <div className="stage">
       <div style={{ fontSize: '9vmin' }}>👂</div>
       <ReplayButton onTap={slow} />
-      <div className="row">{step.options!.map((o) => <PictureTile key={o} word={o} onTap={() => choose(o)} state={stateOf(o)} correct={o === word} />)}</div>
+      <div className="row">{step.options!.map((o) => <PictureTile key={o} word={o} onTap={() => choose(o)} state={stateOf(o)} correct={o === word} label={step.fast?.letters ? o : undefined} />)}</div>
     </div>
   );
 }

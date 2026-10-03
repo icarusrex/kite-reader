@@ -1,6 +1,8 @@
 import { tokenize, wordLevel, BEYOND, setDictionary } from '../engine/wordLevel';
 
-export interface BookPage { text: string; image?: string; w?: number; h?: number }
+/** A printed word on the page picture: t is the word as in `text`; x, y, w, h are fractions of the picture (top left origin). */
+export interface PageWord { t: string; x: number; y: number; w: number; h: number }
+export interface BookPage { text: string; image?: string; w?: number; h?: number; words?: PageWord[] }
 /** textInPicture: the page pictures are whole scanned pages with the words printed on them, so the reader must not print them again. */
 export interface Book { id: string; title: string; author: string; pages: BookPage[]; textInPicture?: boolean }
 export interface BookAnalysis {

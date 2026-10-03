@@ -31,7 +31,8 @@ export interface Step {
   required?: boolean;
   model?: boolean;
   demo?: boolean;
-  fast?: { mode: 'compound' | 'syllable' | 'stretch' };
+  /** letters: show each picture's word under it (both options are spelled with sounds already taught). */
+  fast?: { mode: 'compound' | 'syllable' | 'stretch'; letters?: boolean };
   pair?: [string, string];
   rhymes?: boolean;
   source?: string;

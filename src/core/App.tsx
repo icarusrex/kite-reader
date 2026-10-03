@@ -20,6 +20,9 @@ import { meter } from '../modules/reading/audio/mic';
 import { initAudio, say } from '../modules/reading/audio/speaker';
 import { ParentCorner, useTap } from './ui/components';
 import { requestPersistence } from './storage';
+import { MiniGame, StickerReward } from './games/MiniGames';
+import { readingGameTheme } from '../modules/reading/games';
+import { mathGameTheme } from '../modules/math/games';
 import { applyUpdate, useUpdate } from './update';
 
 type View =
@@ -33,7 +36,8 @@ type View =
   | 'math-home'
   | 'math-session'
   | 'math-done'
-  | 'math-progress';
+  | 'math-progress'
+  | 'game';
 
 function Shell() {
   const { reading, household, switchProfile, addProfile } = useStore();
@@ -46,6 +50,15 @@ function Shell() {
   const [mode, setMode] = useState<SessionMode>('guided');
   const [mathMode, setMathMode] = useState<MathSessionMode>('guided');
   const [mathLesson, setMathLesson] = useState<number | undefined>();
+  // Finishing a guided lesson earns a sticker and one short game (played from the Great job screen).
+  const [reward, setReward] = useState<'reading' | 'math' | null>(null);
+  const [game, setGame] = useState<'reading' | 'math'>('reading');
+  const { math } = useStore();
+  const stickers = reading.sessions.filter((s) => !s.practice).length + math.sessions.filter((s) => s.mode === 'guided').length;
+  const rewardFor = (m: 'reading' | 'math') => reward === m ? <>
+    <StickerReward count={stickers} />
+    <button className="btn game-btn" onClick={() => { setGame(m); setReward(null); setView('game'); }}>🎮 Play a game!</button>
+  </> : null;
 
   useEffect(() => {
     initAudio();
@@ -117,8 +130,9 @@ function Shell() {
   if (view === 'readiness') return <Readiness onDone={() => setView('reading-home')} />;
   if (view === 'math-home') return <MathHome onStart={() => openMath('guided')} onBack={() => setView('launcher')} onParent={() => setView('math-progress')} />;
   if (view === 'math-progress') return <MathProgressScreen onClose={() => setView('math-home')} onPractice={(n) => openMath('practice', n)} onExplore={(n) => openMath('explore', n)} />;
-  if (view === 'math-session') return <MathSession key={`${mathMode}:${mathLesson ?? 'auto'}`} mode={mathMode} lesson={mathLesson} onExit={() => setView(mathMode === 'guided' ? 'math-done' : 'math-progress')} onParent={() => setView('math-progress')} />;
-  if (view === 'math-done') return <MathDone onNext={() => openMath('guided')} onHome={() => setView('math-home')} onParent={() => setView('math-progress')} />;
+  if (view === 'math-session') return <MathSession key={`${mathMode}:${mathLesson ?? 'auto'}`} mode={mathMode} lesson={mathLesson} onExit={() => { if (mathMode === 'guided') { setReward('math'); setView('math-done'); } else setView('math-progress'); }} onParent={() => setView('math-progress')} />;
+  if (view === 'math-done') return <MathDone reward={rewardFor('math')} onNext={() => { setReward(null); openMath('guided'); }} onHome={() => { setReward(null); setView('math-home'); }} onParent={() => setView('math-progress')} />;
+  if (view === 'game') return <MiniGame kind={stickers % 2 ? 'pop' : 'memory'} theme={game === 'math' ? mathGameTheme(math) : readingGameTheme(reading)} onDone={() => setView(game === 'math' ? 'math-done' : 'done')} />;
   if (view === 'reading-session') return <Session
     key={`${mode}:${requestedLevel ?? (requestedBasics ? `b${requestedBasics}` : 'main')}`}
     extras={extras}
@@ -132,10 +146,10 @@ function Shell() {
         setRequestedLevel(undefined);
         setRequestedBasics(undefined);
         setView('parent');
-      } else setView('done');
+      } else { setReward('reading'); setView('done'); }
     }}
   />;
-  if (view === 'done') return <Done onNext={startReading} onHome={() => setView('reading-home')} onParent={() => setView('parent')} />;
+  if (view === 'done') return <Done reward={rewardFor('reading')} onNext={() => { setReward(null); void startReading(); }} onHome={() => { setReward(null); setView('reading-home'); }} onParent={() => setView('parent')} />;
   if (view === 'reading-home') return <ReadingHome onStart={startReading} onParent={() => setView('parent')} onStories={() => setView('stories')} onBack={() => setView('launcher')} extraAllowed={extra} />;
   return <ModuleLauncher onOpen={openModule} onParent={() => setView('parent')} />;
 }
@@ -154,7 +168,7 @@ function ProfileChooser({ onChoose, onAdd }: { onChoose: (id: string) => void; o
 }
 
 /** Between lessons: progress is already saved, so the child can go straight on to the next one or stop here. */
-function Done({ onNext, onHome, onParent }: { onNext: () => void; onHome: () => void; onParent: () => void }) {
+function Done({ onNext, onHome, onParent, reward }: { onNext: () => void; onHome: () => void; onParent: () => void; reward?: React.ReactNode }) {
   const { reading } = useStore();
   const complete = reading.track === 'levels' && allPassed(reading);
   const next = useTap(onNext);
@@ -163,6 +177,7 @@ function Done({ onNext, onHome, onParent }: { onNext: () => void; onHome: () => 
     <div style={{ fontSize: '22vmin' }}>🪁</div>
     <h1 className="title">Great job!</h1>
     {!complete && <p className="subtitle">Next: {reading.track === 'basics' ? `lesson ${currentBasics(reading)}` : `level ${currentLevel(reading)}`}</p>}
+    {reward}
     <div className="row" style={{ gap: 14 }}>
       {!complete && <button className="primary" onPointerDown={next} aria-label="Next lesson">▶</button>}
       <button className="btn light" onClick={onHome}>Home</button>

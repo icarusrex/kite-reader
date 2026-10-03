@@ -55,3 +55,20 @@ describe('basics', () => {
     for (const k of Object.keys(PROMPTS)) expect(manifest, k).toHaveProperty(`prompt:${k}`);
   });
 });
+
+describe('say it fast: letters under the pictures', () => {
+  const taughtBy = (n: number) => new Set(BASICS.filter((b) => b.n <= n && b.newSound).map((b) => b.newSound!));
+  it('shows letters only when both pictures are spelled with sounds already taught', () => {
+    for (const b of BASICS) for (let k = 0; k < 20; k++) {
+      for (const s of buildBasics(freshProgress(), b.n).filter((s) => s.kind === 'sayFast')) {
+        if (!s.fast?.letters) continue;
+        expect(b.sayFast).toBe('stretch');
+        for (const o of s.options!) expect([...o].every((ch) => taughtBy(b.n).has(ch)), `B${b.n} ${o}`).toBe(true);
+      }
+    }
+  });
+  it('lessons 9 and 10 do show letters (map, man, mat)', () => {
+    const shown = Array.from({ length: 30 }, () => buildBasics(freshProgress(), 9)).flat().some((s) => s.kind === 'sayFast' && s.fast?.letters);
+    expect(shown).toBe(true);
+  });
+});

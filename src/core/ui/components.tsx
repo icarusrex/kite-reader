@@ -31,13 +31,14 @@ export function Tile(props: {
   );
 }
 
-export function PictureTile(props: { word: string; onTap?: () => void; state?: 'good' | 'hint' | 'dim'; correct?: boolean }) {
+export function PictureTile(props: { word: string; onTap?: () => void; state?: 'good' | 'hint' | 'dim'; correct?: boolean; label?: string }) {
   const tap = useTap(() => props.onTap?.());
   return (
     <button className={`tile ${props.state ?? ''}`} onPointerDown={tap} aria-label={props.word} data-c={props.correct ? '1' : undefined}>
       {pictureUrl(props.word)
         ? <img className="picture-img" src={pictureUrl(props.word)} alt="" draggable={false} />
         : <span className="picture">{pictureFor(props.word) ?? '❓'}</span>}
+      {props.label && <span className="picture-label">{props.label}</span>}
     </button>
   );
 }

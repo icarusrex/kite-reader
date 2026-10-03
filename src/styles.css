@@ -161,7 +161,11 @@ button { font-family: inherit; color: inherit; border: 0; background: none; curs
 .local-page { touch-action: pan-y; flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; padding: 0 20px; align-items: center; }
 .local-page img { width: 100%; height: auto; max-height: calc(100vh - 170px); object-fit: contain; border-radius: 16px; }
 .local-page.picture-only { grid-template-columns: minmax(0, 1fr); justify-items: center; }
-.local-page.picture-only img { width: auto; max-width: 100%; max-height: calc(100vh - 150px); }
+.page-pic { position: relative; max-width: 100%; }
+.page-pic img { display: block; width: 100%; height: 100%; max-height: none; border-radius: 16px; }
+.page-word { position: absolute; border-radius: 6px; cursor: pointer; }
+.page-word.cr { background: #7CC46A55; box-shadow: 0 0 0 2px #7CC46A55; }
+.page-word:active { background: #F2B70566; }
 .local-text { font-size: clamp(28px, 4.5vmin, 48px); line-height: 1.5; }
 @media (max-aspect-ratio: 1/1) { .local-page { grid-template-columns: 1fr; } }
 .shelf-label { font-size: 22px; color: var(--muted); margin: 8px 0 0; width: 100%; max-width: 1200px; }
@@ -278,3 +282,48 @@ button { font-family: inherit; color: inherit; border: 0; background: none; curs
 .math-feedback p { margin: 0; padding: 16px 28px; border-radius: 22px; background: #fff; box-shadow: 0 8px 25px #0002; font-size: clamp(28px, 5vmin, 52px); font-weight: 700; text-align: center; max-width: 80vw; }
 .math-feedback-icon { font-size: 18vmin; line-height: 1; }
 .math-feedback.ok .math-feedback-icon { color: #3E9B4F; }
+
+/* Say it fast: the word's letters under its picture, once every letter has been taught */
+.tile .picture-label { display: block; font-family: 'Andika', sans-serif; font-size: clamp(30px, 5vmin, 52px); letter-spacing: .12em; line-height: 1.1; color: var(--ink, #2A2F3A); }
+.tile:has(.picture-label) { height: auto; min-height: var(--tile); padding: 2vmin 3vmin; gap: 1vmin; }
+
+/* ---------- Reward: stickers and mini games ---------- */
+.sticker-reward { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.sticker-new { font-size: 16vmin; line-height: 1; animation: sticker-in .7s cubic-bezier(.2, 1.6, .4, 1) both; }
+@keyframes sticker-in { from { transform: scale(0) rotate(-30deg); } to { transform: scale(1) rotate(0); } }
+.sticker-row { display: flex; gap: 6px; font-size: 5vmin; opacity: .85; flex-wrap: wrap; justify-content: center; }
+.game-btn { font-size: clamp(22px, 3.5vmin, 32px); padding: 14px 26px; }
+.game-letter { font-family: 'Andika', sans-serif; font-weight: 700; font-size: 1em; line-height: 1; }
+.game-dots { position: relative; display: inline-block; width: 1.6em; height: 1.6em; }
+.game-dots i { position: absolute; width: .32em; height: .32em; border-radius: 50%; background: #254A5D; transform: translate(-50%, -50%); }
+.game-stars { font-size: 9vmin; letter-spacing: .1em; }
+.game-stars.small { position: absolute; top: 8px; right: 16px; font-size: 5vmin; z-index: 2; }
+
+.pop-field { position: relative; flex: 1; overflow: hidden; }
+.pop-ask { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); z-index: 2; font-size: 6vmin; border: 0; background: var(--card); border-radius: 50%; width: 12vmin; height: 12vmin; box-shadow: 0 6px 0 var(--line); }
+.bubble { position: absolute; bottom: -22vmin; width: 18vmin; height: 18vmin; margin-left: -9vmin; padding: 0; border: 0; background: none;
+  animation-name: rise; animation-timing-function: linear; animation-iteration-count: infinite; touch-action: none; }
+.bubble-in { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #9fd8e8; display: grid; place-items: center; color: #23324A; font-size: 9vmin;
+  background: radial-gradient(circle at 30% 30%, #ffffffee, #d6f1f9aa 40%, #a8dcebaa); }
+@keyframes rise { from { transform: translateY(0); } 50% { transform: translateY(-55vh) translateX(2vmin); } to { transform: translateY(-115vh); } }
+.bubble.popped { pointer-events: none; }
+.bubble.popped .bubble-in { animation: pop .25s ease-out forwards; }
+@keyframes pop { to { transform: scale(1.6); opacity: 0; } }
+.bubble.wrong { animation-play-state: paused; }
+.bubble.wrong .bubble-in { border-color: #E9A23B; animation: wobble .4s; }
+@keyframes wobble { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+.game .stage { position: relative; }
+
+.memory { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2.4vmin; width: min(92vw, 820px); }
+.memory-card { aspect-ratio: 1; border: 0; border-radius: 18px; background: #2CCCD3; box-shadow: 0 6px 0 var(--line); font-size: 11vmin; display: grid; place-items: center; transition: transform .25s, background .25s; }
+.memory-card.open { background: var(--card); transform: rotateY(180deg) scaleX(-1); }
+.memory-card.matched { background: #DDF2D4; }
+.memory-back { font-size: 7vmin; }
+
+.confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.confetti span { position: absolute; top: -10vmin; font-size: 6vmin; animation: fall 2.4s ease-in forwards; }
+@keyframes fall { to { transform: translateY(115vh) rotate(360deg); } }
+/* With a sticker on the Great job screen, shrink the big emoji so the game button stays on screen */
+.stage:has(.sticker-reward) { gap: 2vmin; }
+.stage:has(.sticker-reward) > div:first-child { font-size: 11vmin !important; }
+.stage:has(.sticker-reward) .sticker-new { font-size: 13vmin; }

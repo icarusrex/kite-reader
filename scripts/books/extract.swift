@@ -3,6 +3,8 @@
 //   job: { out: "page.jpg", picture: [{file} | {pdf, page}], ocr: [{file} | {pdf, page}] }
 //   Several picture sources are joined side by side (two-page spreads).
 //   result: { out, width, height, lines: [string] }
+// `extract words` reads [{file}] on stdin and writes, per file, the words Vision finds with their boxes
+//   (x, y, w, h as fractions of the picture, origin top left), so a reader can make printed words tappable.
 // `extract pages <file.pdf>` prints the page count; `extract text <file.pdf>` prints each page's text.
 import AppKit
 import PDFKit
@@ -11,6 +13,8 @@ import Vision
 struct Source: Decodable { let file: String?; let pdf: String?; let page: Int?; let rightHalf: Bool? }
 struct Job: Decodable { let out: String?; let picture: [Source]?; let ocr: [Source]; let maxWidth: Int?; let quality: Double? }
 struct Result: Encodable { let out: String?; let width: Int; let height: Int; let lines: [String] }
+struct Word: Encodable { let t: String; let x: Double; let y: Double; let w: Double; let h: Double }
+struct WordsJob: Decodable { let file: String }
 
 var pdfs: [String: PDFDocument] = [:]
 
@@ -92,6 +96,41 @@ if CommandLine.arguments.count == 3, CommandLine.arguments[1] == "text" {
   let d = PDFDocument(url: URL(fileURLWithPath: CommandLine.arguments[2]))
   let pages = (0..<(d?.pageCount ?? 0)).map { d?.page(at: $0)?.string ?? "" }
   print(String(data: try JSONSerialization.data(withJSONObject: pages), encoding: .utf8)!)
+  exit(0)
+}
+
+/// Every recognised word with its own box (Vision gives a box per character range of a line).
+func words(_ img: CGImage) -> [Word] {
+  let req = VNRecognizeTextRequest()
+  req.recognitionLevel = .accurate
+  req.usesLanguageCorrection = true
+  req.recognitionLanguages = ["en-US"]
+  try? VNImageRequestHandler(cgImage: img).perform([req])
+  var out: [Word] = []
+  for o in req.results ?? [] {
+    guard let c = o.topCandidates(1).first, c.confidence > 0.3 else { continue }
+    let s = c.string
+    var i = s.startIndex
+    while i < s.endIndex {
+      while i < s.endIndex, s[i].isWhitespace { i = s.index(after: i) }
+      var j = i
+      while j < s.endIndex, !s[j].isWhitespace { j = s.index(after: j) }
+      if i < j, let b = try? c.boundingBox(for: i..<j)?.boundingBox {
+        out.append(Word(t: String(s[i..<j]), x: b.minX, y: 1 - b.maxY, w: b.width, h: b.height))
+      }
+      i = j
+    }
+  }
+  return out
+}
+
+if CommandLine.arguments.count == 2, CommandLine.arguments[1] == "words" {
+  let wjobs = try JSONDecoder().decode([WordsJob].self, from: FileHandle.standardInput.readDataToEndOfFile())
+  for j in wjobs {
+    let img = loadImage(Source(file: j.file, pdf: nil, page: nil, rightHalf: nil))
+    print(String(data: try JSONEncoder().encode(img.map(words) ?? []), encoding: .utf8)!)
+    fflush(stdout)
+  }
   exit(0)
 }
 
