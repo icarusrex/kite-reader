@@ -278,7 +278,7 @@ button { font-family: inherit; color: inherit; border: 0; background: none; curs
 .corner, .btn.rec { touch-action: none; -webkit-touch-callout: none; user-select: none; -webkit-user-select: none; }
 
 /* Math: "Yes!" or the right answer after each task. Covers the task so it can't be tapped again meanwhile. */
-.math-feedback { position: absolute; inset: 64px 0 0 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: #FBF6ECcc; z-index: 5; }
+.math-feedback { position: absolute; inset: 64px 0 0 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: #FBF6ECcc; z-index: 45; } /* above the grown-up ✓ strip (40), below the corner (50) */
 .math-feedback p { margin: 0; padding: 16px 28px; border-radius: 22px; background: #fff; box-shadow: 0 8px 25px #0002; font-size: clamp(28px, 5vmin, 52px); font-weight: 700; text-align: center; max-width: 80vw; }
 .math-feedback-icon { font-size: 18vmin; line-height: 1; }
 .math-feedback.ok .math-feedback-icon { color: #3E9B4F; }
